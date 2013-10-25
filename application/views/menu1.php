@@ -12,7 +12,18 @@
                           <li id="menu_catalogos_especialidad"><?php echo anchor('catalogos/especialidad', 'Especialidad'); ?></li>
                       </ul>
                   </li>
-
+                 <li class="sub-menu" id="menu_procesos">
+                      <a href="javascript:;" class="">
+                          <i class="icon-book"></i>
+                          <span>Procesos</span>
+                          <span class="arrow"></span>
+                      </a>
+                      <ul class="sub">
+                          <li id="menu_procesos_facturas_oficinas"><?php echo anchor('procesos/facturas_oficinas', 'Factura oficinas'); ?></li>
+                          <li id="menu_procesos_facturas_pdv"><?php echo anchor('procesos/facturas_pdv', 'Factura pdv'); ?></li>
+                          
+                      </ul>
+                  </li>   
                   
                 <li class="sub-menu" id="menu_pedido">
                       <a href="javascript:;" class="">

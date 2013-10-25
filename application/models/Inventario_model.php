@@ -7,8 +7,33 @@ class Inventario_model extends CI_Model
         parent::__construct();
     }
     
-
-  public function inventario()
+ public function compa()
+ {
+ $s="select a.*,b.*,sum(piezas)as piezas,sum(importe) as importe
+from catalogo.compa a
+left join oficinas.inv_mes_suc b on b.cia=a.cia
+where cia_activa=1 and b.mes=10
+group by aaa,mes,a.cia";   
+ $q=$this->db->query($s);
+ return $q;
+ }
+ 
+ public function compa_cia($mes,$cia)
+ {
+ $s="select c.tipo2,c.nombre as sucx,a.*,b.*,sum(piezas)as piezas,sum(importe) as importe
+from catalogo.compa a
+left join oficinas.inv_mes_suc b on b.cia=a.cia
+left join catalogo.sucursal c on c.suc=b.suc
+where cia_activa=1 and b.mes=$mes and a.cia=$cia
+group by aaa,mes,a.cia,b.suc";   
+ $q=$this->db->query($s);
+ return $q;
+ }  
+  
+  
+  
+  
+  public function sdsdsd()
     { $aaa=date('Y'); 
     $s="SELECT aa.*,bb.num,bb.mes,
 
@@ -29,7 +54,7 @@ then
 where a.mes=bb.num  and aa.tipo=b.tipo2 and a.suc>100 and a.suc<1600 and a.aaa=$aaa 
 and a.suc>100 and a.suc<1600 and a.suc<>170 and a.suc<>171 and a.suc<>172 and a.suc<>173 and a.suc<>174
 and a.suc<>175 and a.suc<>176 and a.suc<>177 and a.suc<>178 and a.suc<>179 and a.suc<>180 and a.suc<>181
-and a.suc<>186 group by b.tipo2 )
+and a.suc<>187 and a.suc<>900 group by b.tipo2 )
 
 when tipo='met' 
 then
@@ -68,7 +93,7 @@ when aa.tipo='D' or aa.tipo='G' or aa.tipo='F'
 then (select sum(credito) from vtadc.gc_venta_mes a where aaa=$aaa and a.mes=bb.num and a.tipo2=aa.tipo 
 and a.suc>100 and a.suc<1600 and a.suc<>170 and a.suc<>171 and a.suc<>172 and a.suc<>173 and a.suc<>174
 and a.suc<>175 and a.suc<>176 and a.suc<>177 and a.suc<>178 and a.suc<>179 and a.suc<>180 and a.suc<>181
-and a.suc<>186
+and a.suc<>187 and a.suc<>900
 group by tipo2)
 when aa.tipo='agu' or aa.tipo='ban' or aa.tipo='cht' or aa.tipo='zac' or aa.tipo='met' or aa.tipo='edo'
 then (select sum(importe) from vtadc.gc_venta_clientes a where a.tipo=aa.tipo and aaa=$aaa and a.mes=bb.num
@@ -82,17 +107,22 @@ when aa.tipo='D' or aa.tipo='G' or aa.tipo='F'
 then (select sum(contado) from vtadc.gc_venta_mes a where aaa=$aaa and a.mes=bb.num and a.tipo2=aa.tipo 
 and a.suc>100 and a.suc<1600 and a.suc<>170 and a.suc<>171 and a.suc<>172 and a.suc<>173 and a.suc<>174
 and a.suc<>175 and a.suc<>176 and a.suc<>177 and a.suc<>178 and a.suc<>179 and a.suc<>180 and a.suc<>181
-and a.suc<>186
+and a.suc<>187  and a.suc<>900
 group by tipo2)
 else
 0
-end as contado
+end as contado,
 
+case 
+when aa.tipo='ALM'
+then (select sum(inv1*costo) from desarrollo.inv_cedis) 
+else
+0
+end as inv
 
 FROM catalogo.cat_inv_divicion aa,catalogo.mes bb
 ";
     $q=$this->db->query($s);
-   
      return $q;  
     }
  
@@ -117,7 +147,7 @@ and $condicion";
  public function entrada_suc($suc,$mes)
     {
  $aaa=date('Y');
-    $s="select b.tipo2,b.nombre as sucx,a.*,c.corto as prvx from vtadc.gc_factura a 
+    $s="select b.tipo2,b.nombre as sucx,a.*,case when prv=100 then 'ALMACEN CEDIS' else c.corto end as prvx from vtadc.gc_factura a 
     left join catalogo.sucursal b on a.suc=b.suc 
     left join catalogo.provedor c on c.prov=a.prv
     where mes=$mes and aaa=$aaa and a.suc=$suc";

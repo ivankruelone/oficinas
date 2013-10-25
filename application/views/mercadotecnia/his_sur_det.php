@@ -25,7 +25,7 @@
                                  $num=0;$timp=0;$tcan=0;$tpub=0;
                                 foreach ($q->result()as $r) {
                                 $num=$num+1;
-                                $l0 = anchor('mer_surtido/sumit_borrar/'.$r->id.'/'.$id,'BORRAR</a>', array('title' => 'Haz Click aqui para borrar!', 'class' => 'encabezado'));
+                                $l0 = anchor('mercadotecnia/sumit_borrar/'.$r->id.'/'.$id,'BORRAR</a>', array('title' => 'Haz Click aqui para borrar!', 'class' => 'encabezado'));
                                 ?> 
                                  <tr>
                                    <td style="text-align: left;"><?php echo $r->codigo?></td>                                  

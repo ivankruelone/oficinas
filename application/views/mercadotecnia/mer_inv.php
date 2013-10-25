@@ -8,7 +8,56 @@
                            </span>
                          </div>
                          <div class="widget-body">
+ <?php
+	$atributos = array('id' => 'agrega_inv_sumit');
+    echo form_open('mercadotecnia/agrega_inv_sumit', $atributos);
+    $data_codigo = array(
+              'name'        => 'codigo',
+              'id'          => 'codigo',
+              'value'       => '',
+              'maxlength'   => '14',
+              'size'        => '14'
+              
+            );
+            $data_costo = array(
+              'name'        => 'costo',
+              'id'          => 'costo',
+              'value'       => '',
+              'maxlength'   => '11',
+              'size'        => '11'
+              
+            );
+            $data_can = array(
+              'name'        => 'can',
+              'id'          => 'can',
+              'value'       => '',
+              'maxlength'   => '7',
+              'size'        => '7'
+              
+            );
+  
+  ?>
  
+  <table>
+<tr>
+<tr>
+	<td align="left" ><font size="+1">Codigo: </font></td>
+    <td><?php echo form_input($data_codigo, "", 'required');?></td>
+	<td align="left" ><font size="+1">Piezas: </font></td>
+    <td><?php echo form_input($data_can, "", 'required');?></td>
+    <td align="left" ><font size="+1">Costo: </font></td>
+    <td><?php echo form_input($data_costo, "", 'required');?></td>
+ </tr>
+ 
+
+
+	<td colspan="2"align="center"><?php echo form_submit('envio', 'AGREGAR');?></td>
+</tr>
+</table>
+  <?php
+ 
+	echo form_close();
+  ?>
   <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                  <tr>

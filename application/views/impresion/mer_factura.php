@@ -81,7 +81,7 @@ $totfal=0;
                              </tr>
                                  <tr>
                                      <th width=\"85\">Codigo</th>
-                                     <th width=\"250\">Descriocion</th>
+                                     <th width=\"250\">Descripcion</th>
                                      <th width=\"70\" align=\"right\">Cantidad</th>
                                      <th width=\"70\" align=\"right\">Costo</th>
                                      <th width=\"70\" align=\"right\">Importe</th>

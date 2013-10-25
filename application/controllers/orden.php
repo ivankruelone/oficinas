@@ -24,7 +24,6 @@ class Orden extends CI_Controller
     }
    function orden_compra_detalle($prv,$id_ped)
     {
-        
         $prvx=$this->catalogos_model->busca_prv_uno($prv);
         $data['titulo'] = "Ordenes  de compra para $prvx";
         $data['a'] = $this->orden_model->orden_compra_detalle($prv,$id_ped);
@@ -75,7 +74,6 @@ class Orden extends CI_Controller
         //$data['js'] = 'orden/imprime_js';
         $this->load->view('impresion/orden_imprime', $data);
    }
-   
    
    
    

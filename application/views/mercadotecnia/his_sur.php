@@ -26,8 +26,8 @@
                                  $num=0;
                                 foreach ($q->result()as $r) {
                                 $num=$num+1;
-                                $l0 = anchor('mer_surtido/his_sur_det/'.$r->id,$r->sucx.'</a>', array('title' => 'Haz Click aqui para capturar detalle!', 'class' => 'encabezado'));
-                                $l1 = anchor('mer_surtido/sumit_imprimir/'.$r->id,'Imprime</a>', array('title' => 'Haz Click aqui para cerrar factura!', 'class' => 'encabezado'));
+                                $l0 = anchor('mercadotecnia/his_sur_det/'.$r->id,$r->sucx.'</a>', array('title' => 'Haz Click aqui para capturar detalle!', 'class' => 'encabezado'));
+                                $l1 = anchor('mercadotecnia/sumit_ped_imprimir/'.$r->id,'Imprime</a>', array('title' => 'Haz Click aqui para cerrar factura!', 'class' => 'encabezado'));
                                 ?> 
                                  <tr>
                                    <td style="text-align: left;"><?php echo $r->id?></td>

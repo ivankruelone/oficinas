@@ -50,7 +50,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_inv_inventario"><?php echo anchor('inventario/inve', 'Inventario'); ?></li>
+                          <li id="menu_inv_inventario"><?php echo anchor('inventario/compa', 'Inventario'); ?></li>
                           
                       </ul>
                   </li>

@@ -9,8 +9,8 @@
                          </div>
                          <div class="widget-body">
 <?php
-	$atributos = array('id' => 'agrega');
-    echo form_open('mercadotecnia/agrega_det_sumit', $atributos);
+	$atributos = array('id' => 'agrega_ped_det_sumit');
+    echo form_open('mercadotecnia/agrega_ped_det_sumit', $atributos);
     $data_costo = array(
               'name'        => 'costo',
               'id'          => 'costo',
@@ -19,20 +19,28 @@
               'size'        => '11'
               
             );
-    $data_codigo = array(
-              'name'        => 'codigo',
-              'id'          => 'codigo',
+    $data_publico = array(
+              'name'        => 'publico',
+              'id'          => 'publico',
               'value'       => '',
-              'maxlength'   => '14',
-              'size'        => '14'
+              'maxlength'   => '11',
+              'size'        => '11'
               
             );
             $data_cantidad = array(
               'name'        => 'cantidad',
               'id'          => 'cantidad',
               'value'       => '',
-              'maxlength'   => '7',
-              'size'        => '7'
+              'maxlength'   => '11',
+              'size'        => '11'
+              
+            );
+             $data_codigo = array(
+              'name'        => 'codigo',
+              'id'          => 'codigo',
+              'value'       => '',
+              'maxlength'   => '14',
+              'size'        => '14'
               
             );
   
@@ -45,9 +53,12 @@
 	<td><?php echo form_input($data_codigo, "", 'required');?></td>
 	<td align="left" ><font size="+1">Cantidad: </font></td>
     <td><?php echo form_input($data_cantidad, "", 'required');?></td>
+    </tr>
+    <tr>
     <td align="left" ><font size="+1">Costo: </font></td>
     <td><?php echo form_input($data_costo, "", 'required');?></td>
-    
+    <td align="left" ><font size="+1">Publico: </font></td>
+    <td><?php echo form_input($data_publico, "", 'required');?></td>
 	
  </tr>
  
@@ -69,16 +80,18 @@
                                  <th style="text-align: left">Descripcion</th>
                                  <th style="text-align: right">Cantidad</th>
                                  <th style="text-align: right">Costo</th>
-                                 <th style="text-align: right">Importe</th>
+                                 <th style="text-align: right">Importe a costo</th>
+                                 <th style="text-align: right">Importe a publico</th>
+                                 <th></th>
                                  </tr>
                              </thead>
                              <tbody>
                              
                                  <?php
-                                 $num=0;$timp=0;$tcan=0;
+                                 $num=0;$timp=0;$tcan=0;$tpub=0;
                                 foreach ($q->result()as $r) {
                                 $num=$num+1;
-                                $l0 = anchor('mercadotecnia/sumit_borrar/'.$r->id.'/'.$id,'BORRAR</a>', array('title' => 'Haz Click aqui para borrar!', 'class' => 'encabezado'));
+                                $l0 = anchor('mercadotecnia/sumit_ped_borrar/'.$r->id.'/'.$id,'BORRAR</a>', array('title' => 'Haz Click aqui para borrar!', 'class' => 'encabezado'));
                                 ?> 
                                  <tr>
                                    <td style="text-align: left;"><?php echo $r->codigo?></td>                                  
@@ -86,9 +99,10 @@
                                    <td style="text-align: right;"><?php echo $r->can?></td>
                                    <td style="text-align: right;"><?php echo $r->costo?></td>
                                    <td style="text-align: right;"><?php echo number_format(($r->costo*$r->can),2)?></td>
+                                   <td style="text-align: right;"><?php echo number_format(($r->publico*$r->can),2)?></td>
                                    <td style="text-align: right;"><?php echo $l0?></td>
                                   </tr>
-                               <?php $timp=$timp+($r->costo*$r->can);$tcan=$tcan+$r->can;} ?>
+                               <?php $timp=$timp+($r->costo*$r->can);$tcan=$tcan+$r->can;$tpub=$tpub+($r->can*$r->publico);} ?>
                               </tbody>
                               <tfoot>
                               <tr>
@@ -97,6 +111,7 @@
                               <td style="text-align: right;"><?php echo number_format($tcan,0)?></td>
                               <td></td>
                               <td style="text-align: right;"><?php echo number_format($timp,2)?></td>
+                              <td style="text-align: right;"><?php echo number_format($tpub,2)?></td>
                               <td></td>
                               </tr>
                               </tfoot>

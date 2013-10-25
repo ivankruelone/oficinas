@@ -6,6 +6,42 @@ class Catalogos_model extends CI_Model
     {
         parent::__construct();
     }
+
+    public function mante_susa($var)
+    {
+    $s="select *from catalogo.cat_nuevo_general group by $var";
+    $q=$this->db->query($s);
+    return $q;      
+    }
+    
+    public function mante_susa_una($id)
+    {
+    $l="select  *from catalogo.cat_nuevo_general where id=$id";
+    $qq=$this->db->query($l);
+    if($qq->num_rows()>0){$rr=$qq->row();$susa=$rr->susa;}else{$susa='';}
+    $s="select *from catalogo.cat_nuevo_general where susa='$susa' order by clagob,sec_cedis";
+    $q=$this->db->query($s);
+    return $q;      
+    }
+    public function mod_generico()
+    {
+    $s="select a.*,b.corto,c.linx, d.descripcion as sublinx from catalogo.cat_nuevo_general_sec a 
+    left join catalogo.provedor b on a.prv=b.prov
+    left join catalogo.lineas_cosvta c on c.lin=a.lin
+    left join catalogo.sublinea d on d.lin=a.lin and d.slin=a.sublin
+    ";
+    $q=$this->db->query($s);
+    return $q;      
+    }
+    public function mante_susa_completa_una($clagob,$sec_cedis)
+    {
+    $l="select  *from catalogo.cat_nuevo_general where clagob='$clagob' and sec_cedis=$sec_cedis";
+    $qq=$this->db->query($l);
+    if($qq->num_rows()>0){$rr=$qq->row();$susa=$rr->susa;}else{$susa='';}
+    $s="select *from catalogo.cat_nuevo_general_prv where sec='$sec_cedis' and clagob='$clagob'";
+    $q=$this->db->query($s);
+    return $q;      
+    }
     
     public function genericos()
     {
@@ -44,7 +80,6 @@ order by b.sec asc,b.costo ";
 
      return $a;  
     }
-
  public function seguro_popular()
     {
         $s = "select b.sec, a.*, b.codigo,b.costo,b.prv,b.preferencia,b.prvxx,b.marca,
@@ -160,6 +195,34 @@ order by b.clagob asc,b.costo";
         }
         return $prvv;  
     }
+    function busca_prv_mer()
+    {
+        
+        $sql = "SELECT *from catalogo.cat_mer_prv order by razo";
+        $query = $this->db->query($sql);
+        
+        $prv = array();
+        $prv[0] = "Seleccione Provedor";
+        
+        foreach($query->result() as $row){
+            $prv[$row->prov] = $row->razo.' '.$row->prov;
+        }
+        
+        return $prv;  
+    }
+     function busca_prv_uno_mer($prv)
+    {
+        
+        $sql = "SELECT corto,prov,razo FROM  catalogo.cat_mer_prv where prov=$prv";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+        $row= $query->row();
+        $prvv=$row->razo;    
+        }else{
+            $prvv='';
+        }
+        return $prvv;  
+    }
    function firma()
     {
         $firma=$this->session->userdata('id_firma');
@@ -250,17 +313,62 @@ order by b.clagob asc,b.costo";
     function busca_codigo()
     {
         
-        $sql = "SELECT *from catalogo.cat_saba_temp";
+        $sql = "SELECT *from catalogo.cat_mercadotecnia";
         $query = $this->db->query($sql);
         
         $codigo = array();
         $codigo[0] = "Seleccione Producto";
         
         foreach($query->result() as $row){
-            $codigo[$row->ean] = $row->descripcion;
+            $codigo[$row->codigo] = $row->descripcion;
         }
         
         return $codigo;  
-    }         
+    }
+    public function busca_producto_nu($clagob,$sec)
+    {
+    $l="select  *from catalogo.cat_nuevo_general where clagob=$clagob and sec_cedis=$sec";
+    $qq=$this->db->query($l);
+    
+    return $qq;      
+    }
+    public function busca_sec($sec)
+    {
+    $l="select a.*,b.corto,c.linx, d.descripcion as sublinx from catalogo.cat_nuevo_general_sec a 
+    left join catalogo.provedor b on a.prv=b.prov
+    left join catalogo.lineas_cosvta c on c.lin=a.lin
+    left join catalogo.sublinea d on d.lin=a.lin and d.slin=a.sublin
+     where sec=$sec";
+    $qq=$this->db->query($l);
+    
+    return $qq;      
+    }
+    function busca_lin_uno($l)
+    {
+        
+        $sql = "SELECT *from catalogo.lineas_cosvta
+        ";
+        $query = $this->db->query($sql);
+        
+        $lin = array();
+        $lin[$l] = "Seleccione Linea";
+        
+        foreach($query->result() as $row){
+            $lin[$row->lin] = $row->linx;
+        }
+        
+        return $lin;  
+    }
+    function busca_activo_uno($p)
+    {
+        
+        $sql = "SELECT *from catalogo.cat_mer_activo";
+        $query = $this->db->query($sql);
+        $pro = array();
+        $pro[$p]='';
+        foreach($query->result() as $row){
+            $pro[$row->var] = $row->nombre;
+        }
+        }          
 
 }

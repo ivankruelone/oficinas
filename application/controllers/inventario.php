@@ -23,20 +23,30 @@ class Inventario extends CI_Controller
         $this->load->view('main', $data);
     }
     
-    function inve()
+    function compa()
     {
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
-        $data['a'] = $this->inventario_model->inventario();
-        //$data['js'] = 'ventas/ventas_cortes_js';
+        $data['a'] = $this->inventario_model->compa();
+        //$data['js'] = 'inventario/inventario_js';
         $this->load->view('main', $data);
     }
+    
+    function compa_cia($mes,$cia)
+    {
+        $data['titulo'] = "Reporte de inventario";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->compa_cia($mes,$cia);
+        //$data['js'] = 'inventario/inventario_js';
+        $this->load->view('main', $data);
+    }
+    
     function entrada($tipo,$mes)
     {
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
         $data['a'] = $this->inventario_model->entrada($tipo,$mes);
-        //$data['js'] = 'ventas/ventas_cortes_js';
+        $data['js'] = 'inventario/entrada_js';
         $this->load->view('main', $data);
     }
     function entrada_suc($suc,$mes)
@@ -44,7 +54,7 @@ class Inventario extends CI_Controller
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
         $data['a'] = $this->inventario_model->entrada_suc($suc,$mes);
-        //$data['js'] = 'ventas/ventas_cortes_js';
+        $data['js'] = 'inventario/entrada_suc_js';
         $this->load->view('main', $data);
     }
  

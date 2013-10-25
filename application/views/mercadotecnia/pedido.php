@@ -9,8 +9,8 @@
                          </div>
                          <div class="widget-body">
 <?php
-	$atributos = array('id' => 'agrega');
-    echo form_open('mer_surtido/agrega_sumit', $atributos);
+	$atributos = array('id' => 'agrega_ped_sumit');
+    echo form_open('mercadotecnia/agrega_ped_sumit', $atributos);
      ?>
  
   <table>
@@ -46,8 +46,8 @@
                                  $num=0;
                                 foreach ($q->result()as $r) {
                                 $num=$num+1;
-                                $l0 = anchor('mer_surtido/pedido_det/'.$r->id,$r->sucx.'</a>', array('title' => 'Haz Click aqui para capturar detalle!', 'class' => 'encabezado'));
-                                $l1 = anchor('mer_surtido/sumit_cerrar/'.$r->id,'CERRAR</a>', array('title' => 'Haz Click aqui para cerrar factura!', 'class' => 'encabezado'));
+                                $l0 = anchor('mercadotecnia/pedido_det/'.$r->id,$r->sucx.'</a>', array('title' => 'Haz Click aqui para capturar detalle!', 'class' => 'encabezado'));
+                                $l1 = anchor('mercadotecnia/sumit_ped_cerrar/'.$r->id,'CERRAR</a>', array('title' => 'Haz Click aqui para cerrar factura!', 'class' => 'encabezado'));
                                 ?> 
                                  <tr>
                                    <td style="text-align: left;"><?php echo $r->id?></td>

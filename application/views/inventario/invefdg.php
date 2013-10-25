@@ -12,11 +12,12 @@
                          <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                  <tr>
+                                     <th style="text-align: left"></th> 
                                      <th style="text-align: left">Mes</th> 
-                                     <th style="text-align: left">Negocio</th>
-                                     <th style="text-align: right">Entradas</th>
-                                     <th style="text-align: right">Venta Credito</th>
-                                     <th style="text-align: right">Venta Contado</th>
+                                     <th style="text-align: left">Compañia</th>
+                                     <th style="text-align: right">Inventarios</th>
+                                     <th style="text-align: right">Compras</th>
+                                     <th style="text-align: right">Venta de contado</th>
                                  </tr>
                              </thead>
                              <tbody>
@@ -29,22 +30,20 @@
                                $l0 = anchor('inventario/entrada/'.$r->tipo.'/'.$r->num,'_</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                 if($r->tipo=='D' || $r->tipo=='G' || $r->tipo=='F'){$color='blue';}else{$color='green';}?>
                                 <tr>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->num?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->mes?></td>
                                 <td style="color: <?php echo $color?>; text-align: left"><?php echo $r->nombre?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->entrada,2).$l0?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->credito,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->contado,2)?></td>
-                                <td></td>
-                                <td></td>
+                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->inv,2)?></td>
                                 </tr>
                                <?php  } ?>
                               </tbody>
                               <tfoot>
                               <tr>
-                                    <td style="color: maroon;text-align: right;">TOTAL ANUAL</td>                                  
-                                   
-                                  </tr>
-                              </tfoot>
+                              </tr>
+                             </tfoot>
                          </table>   
                             
                             

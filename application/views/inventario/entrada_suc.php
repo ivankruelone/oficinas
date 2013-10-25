@@ -34,15 +34,13 @@
                                 <td style="color: <?php echo $color?>; text-align: left"><?php echo $r->fecha_prv?></td>
                                 <td style="color: <?php echo $color?>; text-align: left"><?php echo $r->factura?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->importe_prvcosto,2)?></td>
-                                <td></td>
-                                <td></td>
                                 </tr>
                                <?php  $tentrada=$tentrada+$r->importe_prvcosto;} ?>
                               </tbody>
                               <tfoot>
                               <tr>
                                     <td></td>
-                                    <td style="color: maroon;text-align: right;">TOTAL </td>
+                                    <td colspan ="5" style="color: maroon;text-align: right;">TOTAL </td>
                                     <td style="color: maroon;text-align: right;"><?php echo number_format($tentrada,2)?> </td>                                  
                                    
                                   </tr>

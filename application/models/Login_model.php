@@ -40,6 +40,8 @@ class Login_model extends CI_Model
             'depto' => $row->depto,
             'id_desarro' => $row->id_desarro,
             'logged_in' => true);
+            
+            
 
         $this->session->set_userdata($newdata);
 

@@ -15,6 +15,7 @@
                                  <th style="text-align: left">Nomina</th>
                                  <th style="text-align: left">Empleado</th>
                                  <th style="text-align: left">Puesto</th>
+                                 <th colspan="2">Accion</th>
                                  </tr>
                              </thead>
                              <tbody>
@@ -37,15 +38,19 @@
                                  <tr>
                                     <td style="color: gray;text-align: right;"><?php echo $r2['nomina']?></td>
                                     <td style="color: gray;text-align: left;"><?php echo $r2['completo']?></td>
-                                    <td style="color: gray;text-align: left;"><?php echo $r2['puestox']?></td>                                  
-                                    </tr>
+                                    <td style="color: gray;text-align: left;"><?php echo $r2['puestox']?></td>
+                                    <td style="color: gray; "><?php echo anchor ('empleados/evaluacion/'.$r1['suc'].'/'.$r2['id'], 'Evaluaci&oacute;n'); ?></td>                              
+                                    <td style="color: gray; "><?php echo anchor ('empleados/evaluacion_impresion/'.$r1['suc'].'/'.$r2['id'], 'Imprimir', array('target' => '_blank')); ?></td>                              
+                                 </tr>
                                <?php $nomina=0;$plantilla=0;$superv=0;$suc=0;}}}}}} ?>
                               </tbody>
                               <tfoot>
                               <tr>
-                              <td></td>
-                                    <td style="color: blue;text-align: left;">EMPLEADOS ACTIVOS <?php echo number_format($tnomina,0)?></td>
-                                    <td style="color: blue;text-align: left;">PLANTILLA AUTORUZADA <?php echo number_format($tplantilla,0)?></td>
+                                    <td></td>
+                                    <td style="color: blue;text-align: left;">Empleados activos <?php echo number_format($tnomina,0)?></td>
+                                    <td style="color: blue;text-align: left;">Plantilla autorizada <?php echo number_format($tplantilla,0)?></td>
+                                    <td></td>
+                                    <td></td>
                                   </tr>
                               </tfoot>
                          </table>   

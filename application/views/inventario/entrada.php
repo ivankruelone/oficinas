@@ -30,8 +30,6 @@
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->suc?></td>
                                 <td style="color: <?php echo $color?>; text-align: left"><?php echo $l0?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->importe_prvocosto,2)?></td>
-                                <td></td>
-                                <td></td>
                                 </tr>
                                <?php  $tentrada=$tentrada+$r->importe_prvocosto;} ?>
                               </tbody>

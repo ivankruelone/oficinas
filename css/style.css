@@ -2405,7 +2405,7 @@ ul.icons {
 
 /*lock page*/
 body.lock {
-    background: #393939;
+    background: #DCDCDC;
 }
 
 .lock-header {
