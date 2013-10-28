@@ -1,4 +1,4 @@
-         <div class="span12">
+                 <div class="span12">
                      <!-- BEGIN BLANK PAGE PORTLET-->
                      <div class="widget blue">
                          <div class="widget-title">
@@ -17,11 +17,10 @@
                                  <th colspan="1" style="color:black; text-align: center">ENTRADAS</th>
                                  <th colspan="3" style="color:blue; text-align: center">VENTA</th>
                                  <th colspan="2" style="color:green; text-align: center">INVENTARIO FINAL</th>
-                                 
                                  </tr>
                                  <tr>
-                                     <th style="text-align: left">Nid</th> 
-                                     <th style="text-align: left">Sucursal</th>
+                                     <th style="text-align: left">A&ntilde;o</th> 
+                                     <th style="text-align: left">Mes</th>
                                      <th style="color:gray; text-align: right">Piezas</th>
                                      <th style="color:gray; text-align: right">Importe</th>
                                      <th style="color:black; text-align: right">Compras</th>
@@ -35,13 +34,14 @@
                              <tbody>
                              
                                  <?php
-                                 $color='gray'; $color1='black'; $color2='blue'; $color3='green'; 
+                                $color='gray'; $color1='black'; $color2='blue'; $color3='green';  $aaa=date('Y');
                                 $num=0;$tinv=0;$tinv_impo=0;$tinvf=0;$tinvf_impo=0;$tfac_impo=0;$trec_impo=0;$tcon_impo=0;$tcre_impo=0;
                                 foreach ($a->result()as $r){
+                               $l0 = anchor('inventario/compa/'.$aaa.'/'.$r->num,$r->mesx.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                 ?>
                                 <tr>
-                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->suc?></td>
-                                <td style="color: <?php echo $color?>; text-align: left"><?php echo $r->nombre?></td>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->num?></td>
+                                <td style="color: <?php echo $color?>; text-align: left"><?php echo $l0?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->ini_piezas,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->ini_importe,2)?></td>
                                 <td style="color: <?php echo $color1?>; text-align: right"><?php echo number_format($r->facturas,2)?></td>
@@ -50,7 +50,6 @@
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($r->contado,2)?></td>
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($r->fin_piezas,0)?></td>
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($r->fin_importe,2)?></td>
-                                
                                 </tr>
                                <?php 
                                $tinv=$tinv+$r->ini_piezas;

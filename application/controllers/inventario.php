@@ -22,21 +22,28 @@ class Inventario extends CI_Controller
         $data['titulo'] = "Indice";
         $this->load->view('main', $data);
     }
-    
-    function compa()
+    function mes()
     {
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
-        $data['a'] = $this->inventario_model->compa();
+        $data['a'] = $this->inventario_model->mes();
+        //$data['js'] = 'inventario/inventario_js';
+        $this->load->view('main', $data);
+    }
+    function compa($aaa,$mes)
+    {
+        $data['titulo'] = "Reporte de inventario";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->compa($aaa,$mes);
         //$data['js'] = 'inventario/inventario_js';
         $this->load->view('main', $data);
     }
     
-    function compa_cia($mes,$cia)
+    function compa_cia($aaa,$mes,$cia)
     {
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
-        $data['a'] = $this->inventario_model->compa_cia($mes,$cia);
+        $data['a'] = $this->inventario_model->compa_cia($aaa,$mes,$cia);
         //$data['js'] = 'inventario/inventario_js';
         $this->load->view('main', $data);
     }

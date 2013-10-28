@@ -36,6 +36,17 @@ class Procesos extends CI_Controller
     $this->procesos_model->facturas_pdv();
         
     }
+    function inventario()
+    {
+    $aaa=2013; $mes=10;
+    $this->procesos_model->inventario($aaa,$mes);
+        
+    }
+    function maximo_por_igual()
+    {
+    $clave=908;
+    $this->procesos_model->max_por($clave);
+    }
        
     
 }

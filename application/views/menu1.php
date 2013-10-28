@@ -21,6 +21,7 @@
                       <ul class="sub">
                           <li id="menu_procesos_facturas_oficinas"><?php echo anchor('procesos/facturas_oficinas', 'Factura oficinas'); ?></li>
                           <li id="menu_procesos_facturas_pdv"><?php echo anchor('procesos/facturas_pdv', 'Factura pdv'); ?></li>
+                          <li id="menu_procesos_inventario"><?php echo anchor('procesos/inventario', 'Inventario'); ?></li>
                           
                       </ul>
                   </li>   

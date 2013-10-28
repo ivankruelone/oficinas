@@ -6,27 +6,85 @@ class Inventario_model extends CI_Model
     {
         parent::__construct();
     }
-    
- public function compa()
+ public function mes()
  {
- $s="select a.*,b.*,sum(piezas)as piezas,sum(importe) as importe
+ $aaa=date('Y');$mes=10; $mesa=$mes-1;
+ $s="select $aaa as aaa,a.num, a.mes as mesx,b.*,sum(b.piezas)as fin_piezas,sum(b.importe) as fin_importe,
+ sum(c.piezas)as ini_piezas,sum(c.importe) as ini_importe,
+(select sum(importe_prvocosto) from vtadc.gc_factura_suc aa 
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num
+) as facturas,
+(select sum(contado) from  vtadc.gc_venta_mes aa 
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)
+as contado,
+(select sum(credito) from  vtadc.gc_venta_mes aa 
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)
+as credito ,
+(select sum(recarga) from  vtadc.gc_venta_mes aa 
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)
+as recarga
+from catalogo.mes a
+left join oficinas.inv_mes_suc b on b.suc>100 and b.suc<=2000 and b.suc<>900 and b.suc<>1600 and b.aaa=$aaa and b.mes=a.num
+left join oficinas.inv_mes_suc c on c.suc>100 and c.suc<=2000 and c.suc<>900 and c.suc<>1600 and c.aaa=$aaa and c.mes=a.num-1
+where num>9 
+group by a.num";  
+
+ $q=$this->db->query($s);
+ return $q;
+ }   
+ public function compa($aaa,$mes)
+ {
+ $mesa=$mes-1;
+ $s="select a.*,b.*,sum(b.piezas)as fin_piezas,sum(b.importe) as fin_importe,
+ sum(c.piezas)as ini_piezas,sum(c.importe) as ini_importe,
+(select sum(importe_prvocosto) from vtadc.gc_factura_suc aa 
+where aa.cia=a.cia and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes
+) as facturas,
+(select sum(contado) from  vtadc.gc_venta_mes aa 
+where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes)
+as contado,
+(select sum(credito) from  vtadc.gc_venta_mes aa 
+where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes)
+as credito ,
+(select sum(recarga) from  vtadc.gc_venta_mes aa 
+where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes)
+as recarga
 from catalogo.compa a
-left join oficinas.inv_mes_suc b on b.cia=a.cia
-where cia_activa=1 and b.mes=10
-group by aaa,mes,a.cia";   
+left join oficinas.inv_mes_suc b on b.cia=a.cia and b.suc>100 and b.suc<=2000 and b.suc<>900 and b.suc<>1600 and b.aaa=$aaa and b.mes=$mes
+left join oficinas.inv_mes_suc c on c.cia=a.cia and c.suc>100 and c.suc<=2000 and c.suc<>900 and c.suc<>1600 and c.aaa=$aaa and c.mes=$mesa
+where cia_activa=1 
+group by a.cia";  
+
  $q=$this->db->query($s);
  return $q;
  }
  
- public function compa_cia($mes,$cia)
+ public function compa_cia($aaa,$mes,$cia)
  {
- $s="select c.tipo2,c.nombre as sucx,a.*,b.*,sum(piezas)as piezas,sum(importe) as importe
-from catalogo.compa a
-left join oficinas.inv_mes_suc b on b.cia=a.cia
-left join catalogo.sucursal c on c.suc=b.suc
-where cia_activa=1 and b.mes=$mes and a.cia=$cia
-group by aaa,mes,a.cia,b.suc";   
- $q=$this->db->query($s);
+ $mesa=$mes-1;
+$s="select a.*,(b.piezas)as fin_piezas,(b.importe) as fin_importe,
+ (c.piezas)as ini_piezas,(c.importe) as ini_importe,
+
+(select (importe_prvocosto) from vtadc.gc_factura_suc aa 
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+ as facturas,
+(select (contado) from  vtadc.gc_venta_mes aa 
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+as contado,
+(select (credito) from  vtadc.gc_venta_mes aa 
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+as credito ,
+(select (recarga) from  vtadc.gc_venta_mes aa 
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+as recarga
+from catalogo.sucursal a
+left join oficinas.inv_mes_suc b on 
+b.cia=a.cia and b.suc=a.suc and b.aaa=$aaa and b.mes=$mes
+left join oficinas.inv_mes_suc c on 
+c.cia=a.cia and c.suc=a.suc and c.aaa=$aaa and c.mes=$mesa
+
+where a.cia=$cia and a.suc>100 and a.suc<=2000 and a.suc<>900 and a.suc<>1600 and tlid=1 ";  
+$q=$this->db->query($s);
  return $q;
  }  
   
