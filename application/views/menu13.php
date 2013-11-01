@@ -43,6 +43,16 @@
                           <li id="menu_entradas_facturas_ss"><?php echo anchor('entradas/facturas_ss/1', 'Facturas Locales'); ?></li>
                       </ul>
                   </li>
-               
+                  <li class="sub-menu" id="menu_desplazamientos">
+                      <a href="javascript:;" class="">
+                          <i class="icon-book"></i>
+                          <span>Desplazamientos</span>
+                          <span class="arrow"></span>
+                      </a>
+                      <ul class="sub">
+                          <li id="menu_desplazamientos_clasificacion"><?php echo anchor('desplazamientos/clasificacion', 'Clasificaci&oacute;n de Productos '); ?></li>
+                      </ul>
+                  </li>
+                 
                   
               </ul>

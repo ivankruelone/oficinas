@@ -36,18 +36,26 @@ class Catalogos extends CI_Controller
         $data['js'] = 'catalogos/genericos_js';
         $this->load->view('main', $data);
     }
+     function mante_codigo()
+    {
+        $data['titulo'] = "Catalogo por Codigo de Barras";
+        $data['q'] = $this->catalogos_model->mante_codigo();
+        $data['js'] = 'catalogos/genericos_js';
+        $this->load->view('main', $data);
+    }
     
     function mod_generico()
     {
         $var='susa';
         $data['titulo'] = "Catalogo por secuencia interna ";
         $data['q'] = $this->catalogos_model->mod_generico();
-        $data['js'] = 'catalogos/genericos_js';
+        $data['js'] = 'catalogos/mod_generico_js';
         $this->load->view('main', $data);
     }
-    function mod_generico_sec($sec)
+    function mod_generico_sec($tipo,$sec)
     {
         $data['titulo'] = "Catalogo por secuencia interna ";
+        $data['tipo'] = $this->catalogos_model->tipo_producto_uno($tipo);
         $data['q'] = $this->catalogos_model->busca_sec($sec);
         $this->load->view('main', $data);
     }
@@ -57,11 +65,12 @@ class Catalogos extends CI_Controller
     'ddr'=>$this->input->post('ddr'),
     'gen'=>$this->input->post('gen'),
     'natur'=>$this->input->post('natur'),
-    'clasi'=>$this->input->post('clasi')
+    'clasi'=>$this->input->post('clasi'),
+    'tipo'=>$this->input->post('tipo')
     );
     $this->db->where('sec',$this->input->post('sec'));
     $this->db->update('catalogo.cat_nuevo_general_sec',$a);
-    redirec('catalogos/mod_generico');    
+    redirect('catalogos/mod_generico');    
     }
     
     

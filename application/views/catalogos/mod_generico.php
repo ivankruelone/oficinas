@@ -12,6 +12,8 @@
                              <thead>
                                <tr>
                                <th style="text-align: left;">Sec</th>
+                               <th style="text-align: left;">Stat</th>
+                               <th style="text-align: left;">Clas</th>
                                <th style="text-align: left;">Sustancia Activa</th>
                                <th style="text-align: left;">Prv</th>
                                <th style="text-align: left;">Provedor</th>
@@ -29,24 +31,31 @@
                                  $num=0;$margen=0;
                                  foreach ($q->result()as $r){
                                 $num=$num+1;
-                                $l0=anchor('catalogos/mod_generico_sec/'.trim($r->sec).'/'.$r->sec,$r->sec.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                                $l0=anchor('catalogos/mod_generico_sec/'.trim($r->tipo).'/'.$r->sec,$r->sec.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                 if($r->cos>0 and $r->gen>0){
                                     if($r->iva==0){$margen=100-(($r->cos*100)/$r->gen);}
                                     else{$margen=100-((($r->cos*1.16)*100)/$r->gen);}
                                     }else{$margen=0;}
+                                    if($r->tipo=='D'){$color='orange';}
+                                    elseif($r->tipo=='X'){$color='red';}
+                                    elseif($r->tipo=='A'){$color='gray';}
+                                    elseif($r->tipo=='F'){$color='brown';}
+                                    elseif($r->tipo=='T'){$color='green';}else{$color='blue';}
                                  ?> 
                                  <tr>
-                                   <td style="text-align: left;"><?php echo $l0?></td>
-                                   <td style="text-align: left;"><?php echo $r->susa?></td>
-                                   <td style="text-align: left;"><?php echo $r->prv?></td>
-                                   <td style="text-align: left;"><?php echo $r->corto?></td>
-                                   <td style="text-align: left;"><?php echo $r->linx?></td>
-                                   <td style="text-align: left;"><?php echo $r->sublinx?></td>
-                                   <td style="text-align: right;"><?php echo $r->iva?></td>
-                                   <td style="text-align: right;"><?php echo number_format($r->cos,2)?></td>
-                                   <td style="text-align: right;"><?php echo number_format($r->ddr,2)?></td>
-                                   <td style="text-align: right;"><?php echo number_format($r->gen,2)?></td>
-                                   <td style="text-align: right;"><?php echo number_format($margen,2)?></td>
+                                   <td style=" text-align: left;"><?php echo $l0?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->tipo?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->clasi?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->susa?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->prv?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->corto?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->linx?></td>
+                                   <td style="color:<?php echo $color?>;text-align: left;"><?php echo $r->sublinx?></td>
+                                   <td style="color:<?php echo $color?>;text-align: right;"><?php echo $r->iva?></td>
+                                   <td style="color:<?php echo $color?>;text-align: right;"><?php echo number_format($r->cos,2)?></td>
+                                   <td style="color:<?php echo $color?>;text-align: right;"><?php echo number_format($r->ddr,2)?></td>
+                                   <td style="color:<?php echo $color?>;text-align: right;"><?php echo number_format($r->gen,2)?></td>
+                                   <td style="color:<?php echo $color?>;text-align: right;"><?php echo number_format($margen,2)?></td>
                                                                      
                                  </tr> 
                            

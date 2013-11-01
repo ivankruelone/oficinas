@@ -77,13 +77,7 @@ $r=$q->row();
     <td align="left" ><font size="+1"><strong>Clasifica: </strong></font></td>
     <td><?php echo form_input($data_clasi, "", 'required');?></td>
     <td align="left" ><font size="+1"><strong>Tipo:</strong></font></td>
-    <td align="left"> 
-    <select name="tipo" id="tipo">
-    <option value="A"><?php if($r->tipo=='A')?>Activo</option>
-    <option value="D"><?php if($r->tipo=='D')?><strong>Descontinuado</strong></option>
-    <option value="X"><?php if($r->tipo=='X')?><strong>Borrado</strong></option>
-    </select>
-    </td>
+    <td align="left"><?php echo form_dropdown('tipo', $tipo, '', 'id="tipo"') ;?> </td>
     </tr>
 <tr>
 	<td colspan="8" align="center"><?php echo form_submit('envio', 'Cambiar');?></td>

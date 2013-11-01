@@ -19,9 +19,10 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
+                      <li id="menu_procesos_ims"><?php echo anchor('procesos/ims', 'Ims'); ?></li>
                           <li id="menu_procesos_facturas_oficinas"><?php echo anchor('procesos/facturas_oficinas', 'Factura oficinas'); ?></li>
                           <li id="menu_procesos_facturas_pdv"><?php echo anchor('procesos/facturas_pdv', 'Factura pdv'); ?></li>
-                          <li id="menu_procesos_inventario"><?php echo anchor('procesos/inventario', 'Inventario'); ?></li>
+                          <li id="menu_procesos_pro_inv"><?php echo anchor('procesos/pro_inv', 'Inventario'); ?></li>
                           
                       </ul>
                   </li>   

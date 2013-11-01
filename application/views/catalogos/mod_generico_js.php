@@ -39,6 +39,8 @@ $(document).ready(function() {
             "aoColumns": [
                 { "sSortDataType": "dom-text", "sType": "num-html" },
                 { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text" },
                 { "sSortDataType": "dom-text", "sType": "num-html" },
                 { "sSortDataType": "dom-text" },
                 { "sSortDataType": "dom-text" },

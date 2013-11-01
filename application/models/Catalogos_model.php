@@ -42,7 +42,12 @@ class Catalogos_model extends CI_Model
     $q=$this->db->query($s);
     return $q;      
     }
-    
+    public function mante_codigo()
+    {
+    $s="select *from catalogo.cat_nuevo_general where tipo='A'";
+    $q=$this->db->query($s);
+    return $q;      
+    }
     public function genericos()
     {
         $s = "select b.clagob,a.*, b.codigo,b.costo,b.prv,b.preferencia,b.prvxx,b.marca,
@@ -166,6 +171,36 @@ order by b.clagob asc,b.costo";
         }
         
         return $alm;  
+    }
+    function tipo_producto()
+    {
+        
+        $sql = "SELECT * FROM catalogo.cat_estatus_producto";
+        $query = $this->db->query($sql);
+        
+        $tipo = array();
+        $tipo[0] = "Seleccione Tipo producto";
+        
+        foreach($query->result() as $row){
+            $tipo[$row->tipo] = $row->nombre;
+        }
+        
+        return $tipo;  
+    }
+    function tipo_producto_uno($t)
+    {
+        
+        $sql = "SELECT * FROM catalogo.cat_estatus_producto";
+        $query = $this->db->query($sql);
+        
+        $tipo = array();
+        $tipo[$t] = '';
+        
+        foreach($query->result() as $row){
+            $tipo[$row->tipo] = $row->nombre;
+        }
+        
+        return $tipo;  
     }
     function busca_prv()
     {

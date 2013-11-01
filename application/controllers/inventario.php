@@ -66,8 +66,46 @@ class Inventario extends CI_Controller
     }
  
  
- 
- 
+  function almacen()
+    {
+        $data['titulo'] = "Reporte de inventario de almacen";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->almacen();
+        //$data['js'] = 'inventario/entrada_suc_js';
+        $this->load->view('main', $data);
+    }
+  function almacen_lot($tipo)
+    {
+        $data['titulo'] = "Reporte de inventario de almacen";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->almacen_lot($tipo);
+        $data['js'] = 'inventario/almacen_lot_js';
+        $this->load->view('main', $data);
+    }
+    function almacen_lot_s($tipo)
+    {
+        $data['titulo'] = "Reporte de inventario de almacen";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->almacen_lot_s($tipo);
+        $data['js'] = 'inventario/almacen_lot_s_js';
+        $this->load->view('main', $data);
+    }
+    function almacen_det($tipo)
+    {
+        $data['titulo'] = "Reporte de inventario de almacen";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->almacen_det($tipo);
+        $data['js'] = 'inventario/almacen_det_js';
+        $this->load->view('main', $data);
+    }
+    function inv_sucursal()
+    {
+        $data['titulo'] = "Reporte de inventario de almacen y farmacias";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->inv_sucursal();
+        $data['js'] = 'inventario/inv_sucursal_js';
+        $this->load->view('main', $data);
+    }
  
  
  

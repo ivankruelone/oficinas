@@ -27,7 +27,8 @@ left join catalogo.sucursal c on c.suc=a.suc
 where a.fechasur>='$fec' and a.tid='C' and b.sur>0 group by a.id)
 on duplicate key update fecha_prv=values(fecha_prv),importe_prv=values(importe_prv),
 importe_prvcosto=values(importe_prvcosto),cia=values(cia)"; 
-$this->db->query($s);    
+$this->db->query($s);
+    
 $s1="insert into vtadc.gc_factura
 (suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc,aaa,mes,prv,importe_prvcosto,cia)
 (
@@ -60,24 +61,26 @@ $this->db->query($s3);
 }
 public function facturas_pdv()
 {
-$s1="select *from vtadc.gc_factura where aaa=2013 and mes>=07";
+$s="update vtadc.gc_factura a,vtadc.gc_compra_det_suc_fac b set importe_suc=b.importe, fecha_suc=fecha   
+where   a.suc=b.suc and a.factura=b.factura and  
+a.suc=b.suc and a.factura=b.factura"; 
+$this->db->query($s); 
+
+$s1="select *from vtadc.gc_factura where aaa=year(now()) and mes=9";
 $q1=$this->db->query($s1);
  foreach ($q1->result() as $r1) {
-$s="update vtadc.gc_factura a,vtadc.gc_compra_det b set importe_suc=imp_fac,fecha_suc=fecha   
-where   a.suc=b.suc and a.factura=b.factura and  
-b.suc=$r1->suc and b.factura='$r1->factura'"; 
-$this->db->query($s); 
+
 $ss="update vtadc.gc_factura a,vtadc.gc_compra_det_back b set importe_suc=importe,fecha_suc=fecha   
 where   a.suc=b.suc and a.factura=b.factura  and  
 date_format(fecha,'%Y')=$r1->aaa and  date_format(fecha,'%m')=$r1->mes and b.suc=$r1->suc and b.factura='$r1->factura'"; 
 $this->db->query($ss); 
 }
 $s3="insert into vtadc.gc_factura_suc(aaa, mes, suc, importe_prvo, importe_suco, importe_prvs, importe_sucs,importe_prvocosto,cia)
-(SELECT aaa,mes,suc,0,0, sum(importe_prv), sum(importe_suc),0,cia FROM vtadc.gc_factura  where importe_prv=0 group by aaa,mes,suc)
+(SELECT aaa,mes,suc,0,0, sum(importe_prv), sum(importe_suc),0,cia FROM vtadc.gc_factura   group by aaa,mes,suc)
 on duplicate key update importe_prvs=values(importe_prvs),importe_sucs=values(importe_sucs);";
 $this->db->query($s3);
 $s4="insert into vtadc.gc_factura_suc(aaa, mes, suc, importe_prvo, importe_suco, importe_prvs, importe_sucs,importe_prvocosto,cia)
-(SELECT aaa,mes,suc, sum(importe_prv), sum(importe_suc),0,0 ,sum(importe_prvcosto),cia FROM vtadc.gc_factura  where importe_prv>0 group by aaa,mes,suc)
+(SELECT aaa,mes,suc, sum(importe_prv), sum(importe_suc),0,0 ,sum(importe_prvcosto),cia FROM vtadc.gc_factura  group by aaa,mes,suc)
 on duplicate key update importe_prvo=values(importe_prvo),importe_suco=values(importe_suco),importe_prvocosto=values(importe_prvocosto);";
 $this->db->query($s4);
 }
@@ -172,124 +175,144 @@ on duplicate key update final=values(final)
  $this->db->query($s);
 } 
  
- 
+public function ver_inv()
+    {
+$s="select aaa,mes,dia,sum(piezas)as piezas, count(suc)as numero,sum(importe)as importe  from oficinas.inv_mes_suc group by aaa,mes";
+$q=$this->db->query($s);
+return $q;
+    }
+public function ver_inv_suc()
+    {
+$s="select date_add(b.fechai,interval +1 day)as fecha,a.suc,a.nombre,ifnull(sum(b.cantidad),0)as inv
+from catalogo.sucursal a
+left join desarrollo.inv b on b.suc=a.suc and b.mov=7 or b.suc=a.suc and b.mov=3
+where a.suc>=100 and a.suc<=1999 and a.tlid=1
+group by a.suc order by fecha";
+$q=$this->db->query($s);
+return $q;
+    }
+public function ver_inv_suc_his()
+    {
+$s="select aaa,mes,dia,sum(piezas)as piezas, count(suc)as numero,sum(importe)as importe 
+from oficinas.inv_mes_suc_his group by aaa,mes";
+$q=$this->db->query($s);
+return $q;
+    }
  
     
-    public function inventario($aaa,$mes)
-    {
+public function genera_inv($aaa,$mes,$dia,$sem)
+{
+$x1="delete from oficinas.inv_mes_suc_det";$this->db->query($x1);
+$x="delete from oficinas.inv_mes_suc";$this->db->query($x);
 
-$s="insert ignore into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo)
-(SELECT $aaa,$mes, a.cia,a.suc,a.sec,' ',a.codigo,'',' ',a.cantidad,
-0,0,'FARMACIA'
+$s="insert ignore into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(SELECT $aaa,$mes, a.cia,a.suc,a.sec,' ',a.codigo,' ',a.cantidad,
+0,0,'FARMACIA',$dia
 FROM desarrollo.inv a
 where a.mov=03 and a.cantidad>0)";
 $this->db->query($s);
 
 $s="load data infile 'c:/wamp/www/subir10/costop.txt'
 replace into table catalogo.cat_costo_fac FIELDS TERMINATED BY '||' LINES TERMINATED BY '\r\n' (prv, codigo, @descri, iva, far, cos, margen) set descri = CONVERT(CAST(@descri as BINARY) USING LATIN1);";        
+$this->db->query($s);
 
 $s="update  catalogo.cat_costo_fac  a, desarrollo.catbackoffice b
 set a.descri=b.descripcion,
 lin=substring(linea,1,1)
 where a.codigo=b.ean";
-
+$this->db->query($s);
+$s="insert into catalogo.cat_costo_fac(prv, codigo, descri, iva, far, cos, margen, lin)
+(select prv,codigo,susa2,case when lin in(2,5,9) then 1 else 0 end,round((costo*1.20),2),round((costo*1.20),2),0,lin
+from catalogo.almacen where sec>0 and costo>0 and sec<=2000)
+on duplicate key update cos=values(cos)";
+$this->db->query($s);
 $s="update oficinas.inv_mes_suc_det a, catalogo.cat_costo_fac b
 set a.costo=b.cos,a.lin=b.lin
 where a.codigo=b.codigo and a.aaa=$aaa and a.mes=$mes";
 $this->db->query($s);        
 
-$s="insert ignore into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo)
-(SELECT year(now()),month(now()), a.cia,a.suc,a.sec,' ',a.codigo,b.susa1,a.cantidad,
-case when a.cia=13 then round((b.costo*1.10),2)else round((b.costo*1.20),2) end,b.lin,'FARMACIA'
+$s="insert ignore into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(SELECT $aaa,$mes, a.cia,a.suc,a.sec,' ',a.codigo,b.susa1,a.cantidad,
+case when a.cia=13 then round((b.costo*1.20),2)else round((b.costo*1.20),2) end,b.lin,'FARMACIA',$dia
 FROM desarrollo.inv a
 left join catalogo.almacen b on b.sec=a.sec
 where tsuc<>'F' and a.mov=07 and a.cantidad>0 and a.suc<1600 group by a.suc,a.sec)";
 $this->db->query($s);
+$s="insert ignore into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(SELECT $aaa,$mes, a.cia,a.suc,a.sec,' ',a.codigo,b.susa1,a.cantidad,
+case when a.cia=13 then round((b.costo*1.10),2)else round((b.costo*1.10),2) end,b.lin,'FARMACIA',$dia
+FROM desarrollo.inv a
+left join catalogo.almacen b on b.clabo=a.sec
+where tsuc<>'F' and a.mov=07 and a.cantidad>0 and a.suc in(1601,1602,1603) group by a.suc,a.sec)";
+$this->db->query($s);
 
-$s="insert into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo)
-(select year(now()),month(now()),13,900,aa.sec,' ',aa.codigo,bb.susa1,sum(inv1),aa.costo,bb.lin,'ALM CEDIS'
+$s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(select $aaa,$mes,13,900,aa.sec,' ',aa.codigo,bb.susa1,sum(inv1),aa.costo,bb.lin,'ALM CEDIS',$dia
 from desarrollo.inv_cedis aa left join catalogo.sec_generica bb on bb.sec=aa.sec where aa.inv1>0 group by aa.sec)
 ";
 $this->db->query($s);
 
-$s="insert into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo)
-(select year(now()),month(now()),1,100,0,aa.clave,aa.codigo,aa.descri,sum(cantidad),aa.costo,1,'ALM ESPECIALIDAD'
+$s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(select $aaa,$mes,1,100,0,aa.clave,aa.codigo,aa.descri,sum(cantidad),aa.costo,1,'ALM ESPECIALIDAD',$dia
 from especialidad.inventario_d aa where aa.cantidad>0 group by aa.clave)";
 $this->db->query($s);
 
-$s="insert into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo)
-(select year(now()),month(now()),13,1600 ,aa.clave,' ',aa.codigo,bb.susa1,sum(cantidad),aa.costo,bb.lin,'ALM FARMABODEGA'
+$s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(select $aaa,$mes,13,1600 ,aa.clave,' ',aa.codigo,bb.susa1,sum(cantidad),aa.costo,bb.lin,'ALM FARMABODEGA',$dia
 from farmabodega.inventario_d aa left join catalogo.almacen bb on bb.clabo=aa.clave where aa.cantidad>0 group by aa.clave)
 ";
 $this->db->query($s);
   
-$s="insert into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo)
-(select year(now()),month(now()),1,100,0,aa.clave,ifnull(codigo,0),bb.susa1,sum(invf),aa.costo,bb.lin,'ALM CONTROLADOS'
+$s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(select $aaa,$mes,1,100,0,aa.clave,ifnull(codigo,0),bb.susa1,sum(invf),aa.costo,bb.lin,'ALM CONTROLADOS',$dia
 from almacen.control_invd aa left join catalogo.segpop bb on bb.claves=aa.clave where aa.invf>0 and lin is not null group by aa.clave)";
 $this->db->query($s);
 
 //////////////seguros populares
-$s = "update  inv_seguros a set piezas_paquete=piezas, clave_sin_punto=clave where  a.aaa=$aaa and a.mes=$mes";
+$s = "update  oficinas.inv_seguros a set piezas_paquete=piezas, clave_sin_punto=clave where  a.aaa=$aaa and a.mes=$mes";
 $q = $this->db->query($s);
  
-$s = "update  inv_seguros a,convertir_claves b
+$s = "update  oficinas.inv_seguros a,oficinas.convertir_claves b
 set clave_sin_punto=b.clave
 where a.clave=b.clave_punto and a.aaa=$aaa and a.mes=$mes";
 $q = $this->db->query($s);
 
-$s = "update inv_seguros a, catalogo.costos_gobierno b
+$s = "update oficinas.inv_seguros a, catalogo.costos_gobierno b
 set a.costo=b.costo,piezas_paquete= case when paquete>0 then paquete else a.piezas end
 where a.clave_sin_punto=b.clave and  a.aaa=$aaa and a.mes=$mes";
 $q = $this->db->query($s);
 
-$s="insert into inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo)
-(select aaa, mes, 1, suc,0, clave_sin_punto,0, substr(descripcion,1,70), piezas_paquete, costo, lin, 'ALM SEGPOP' 
-from inv_seguros where a.aaa=$aaa and a.mes=$mes)";
+$s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo,dia)
+(select aaa, mes, 1, suc,0, clave_sin_punto,0, substr(descripcion,1,70), piezas_paquete, costo, lin, 'ALM SEGPOP',$dia 
+from oficinas.inv_seguros a where a.aaa=$aaa and a.mes=$mes and suc in(17000,14000,16000))";
 $this->db->query($s);
  
-$s="insert into inv_mes_suc(aaa, mes, cia, suc, piezas, importe)
-(select aaa,mes,cia,suc,sum(piezas),sum(piezas*costo) from inv_mes_suc_det where  aaa=$aaa and mes=$mes group by aaa,mes,suc)";
+$s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia)
+(select aaa,mes,cia,suc,sum(piezas),sum(piezas*costo),dia from oficinas.inv_mes_suc_det where  aaa=$aaa and mes=$mes group by aaa,mes,suc)";
 $this->db->query($s);
-//////////////seguros populares
-die();
+
+$s="insert into desarrollo.inv_cosvta(cia, suc, sem, aaaa, mes, lin, plaza, succ, importe)
+(select a.cia,a.suc,$sem,aaa,mes,lin,b.plaza,b.suc_contable,sum(piezas*costo) from oficinas.inv_mes_suc_det a
+left join catalogo.sucursal b on b.suc=a.suc
+where a.costo>0 and a.aaa=$aaa and a.mes=$mes and a.dia=$dia
+group by a.aaa,a.mes,a.dia,a.suc,a.lin
+)";
+$this->db->query($s);
+
+}
 
 
+public function respalda_inv()
+{
+$s="insert into oficinas.inv_mes_suc_det_his (aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia)
+(select aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia from  oficinas.inv_mes_suc_det)";
+$this->db->query($s);
+$s1="insert into oficinas.inv_mes_suc_his(aaa, mes, cia, suc, piezas, importe, dia)
+(select aaa, mes, cia, suc, piezas, importe, dia from oficinas.inv_mes_suc)";
+$this->db->query($s1);    
+}
 
-/////////farmabodega
-$s = "insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe)
-(SELECT year(now()),month(now()),13,1600,sum(cantidad),sum(cantidad*costo) FROM farmabodega.inventario_d where cantidad>0)";
- $q = $this->db->query($s);
- /////////especialidad
-$s = "insert ignore into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe)
-(SELECT year(now()),month(now()),1,90030,sum(cantidad),sum(cantidad*costo) FROM especialidad.inventario_d where cantidad>0)";
- $q = $this->db->query($s);
- /////////almacencedis
-$s = "insert ignore into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe)
-(SELECT year(now()),month(now()),13,900,sum(inv1),sum(inv1*costo) FROM desarrollo.inv_cedis where inv1>0)";
- $q = $this->db->query($s);
- 
-  /////////controlados
- $s = "update almacen.control_invd a,catalogo.segpop b
-set a.costo=b.costo
-where a.clave=b.claves and b.costo>10 and b.costo>0";
- $q = $this->db->query($s);
 
- $s = "insert ignore into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe)
-(SELECT year(now()),month(now()),1,100,sum(invf),sum(invf*costo) FROM almacen.control_invd where invf>0)";
- $q = $this->db->query($s);
-       
-/////////metro
- $s = "update metro.inventario_d a, compra_d b
-set a.costo=b.costo
-where a.clave=b.clave";
- $q = $this->db->query($s);
-
- $s = "insert ignore into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe)
-(SELECT year(now()),month(now()),1,100,sum(invf),sum(invf*costo) FROM almacen.control_invd where invf>0)";
- $q = $this->db->query($s);    
-    
-    
-    }
 
 
 }

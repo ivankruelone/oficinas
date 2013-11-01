@@ -6,6 +6,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
+                          <li id="menu_Juridico_rentas"><?php echo anchor('juridico/rentas', 'Arrendatarios'); ?></li>
                           <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/genericos_venta', 'Genericos'); ?></li>
                       </ul>
                   </li>

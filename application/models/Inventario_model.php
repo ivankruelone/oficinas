@@ -215,10 +215,208 @@ and $condicion";
     }
 
 
+ public function almacen()
+    {
+ $aaa=date('Y');
+    $s="SELECT a.tipo, a.nombre as almacen,
+case
+when a.tipo='alm'
+then (select sum(inv1) from  desarrollo.inv_cedis)
+when a.tipo='fbo'
+then (select sum(cantidad) from  farmabodega.inventario_d)
+when a.tipo='con'
+then (select sum(invf) from  almacen.control_invd)
+when a.tipo='esp'
+then (select sum(cantidad) from  especialidad.inventario_d)
+when a.tipo='agu'
+then (select sum(piezas) from  oficinas.inv_seguros where suc=14000)
+when a.tipo='cht'
+then (select sum(piezas) from  oficinas.inv_seguros where suc=16000)
+when a.tipo='zac'
+then (select sum(piezas) from  oficinas.inv_seguros where suc=17000)
+else 0
+end as piezas,
+
+case
+when a.tipo='alm'
+then (select sum(inv1*costo) from  desarrollo.inv_cedis)
+when a.tipo='fbo'
+then (select sum(cantidad*costo) from  farmabodega.inventario_d)
+when a.tipo='con'
+then (select sum(invf*costo) from  almacen.control_invd)
+when a.tipo='esp'
+then (select sum(cantidad*costo) from  especialidad.inventario_d)
+when a.tipo='agu'
+then (select sum(piezas*costo) from  oficinas.inv_seguros where suc=14000)
+when a.tipo='cht'
+then (select sum(piezas*costo) from  oficinas.inv_seguros where suc=16000)
+when a.tipo='zac'
+then (select sum(piezas*costo) from  oficinas.inv_seguros where suc=17000)
+
+else 0
+end as importe,
+case
+when a.tipo='alm'
+then (select sum(inv1*costo) from  desarrollo.inv_cedis)
+when a.tipo='fbo'
+then (select sum(cantidad*costo) from  farmabodega.inventario_d)
+when a.tipo='con'
+then (select sum(invf*costo) from  almacen.control_invd)
+when a.tipo='esp'
+then (select sum(cantidad*costo) from  especialidad.inventario_d)
+when a.tipo='agu'
+then (select sum(piezas_paquete*costo) from  oficinas.inv_seguros where suc=14000)
+when a.tipo='cht'
+then (select sum(piezas_paquete*costo) from  oficinas.inv_seguros where suc=16000)
+when a.tipo='zac'
+then (select sum(piezas_paquete*costo) from  oficinas.inv_seguros where suc=17000)
+else 0
+end as importe_paq,
+
+case
+when a.tipo='agu'
+then (select sum(piezas) from  oficinas.inv_seguros where suc>=14001 and suc<=14999)
+when a.tipo='cht'
+then (select sum(piezas) from  oficinas.inv_seguros where suc>=16001 and suc<=16999)
+when a.tipo='zac'
+then (select sum(piezas) from  oficinas.inv_seguros where suc>=17001 and suc<=17999)
+else 0
+end as modulos,
+case
+when a.tipo='agu'
+then (select sum(piezas_paquete*costo) from  oficinas.inv_seguros where suc>=14001 and suc<=14999)
+when a.tipo='cht'
+then (select sum(piezas_paquete*costo) from  oficinas.inv_seguros where suc>=16001 and suc<=16999)
+when a.tipo='zac'
+then (select sum(piezas_paquete*costo) from  oficinas.inv_seguros where suc>=17001 and suc<=17999)
+else 0
+end as modulos_importe
+
+FROM catalogo.cat_almacenes a
+
+where a.tipo='alm'
+or a.tipo='cht' or a.tipo='esp' or a.tipo='fbo' or a.tipo='agu' or a.tipo='zac' or a.tipo='con'";
+    $q=$this->db->query($s);
     
-   
+    return $q;
+    } 
+    
+  public function almacen_lot($tipo)
+    {
+if($tipo=='alm'){
+$s="select a.*,b.susa 
+from desarrollo.inv_cedis a
+left join catalogo.cat_nuevo_general_sec b on a.sec=b.sec 
+where inv1>0";
+$q=$this->db->query($s);
+}elseif($tipo=='agu'){
+$s="select a.*
+from oficinas.inv_seguros where suc=14000";
+$q=$this->db->query($s);
+}
+    return $q;
+}
+
+
+public function almacen_lot_s($tipo)
+    {
+if($tipo=='alm'){
+$s="select a.*,b.susa 
+from desarrollo.inv_cedis a
+left join catalogo.cat_nuevo_general_sec b on a.sec=b.sec 
+where inv1>0";
+$q=$this->db->query($s);
+}elseif($tipo=='agu'){
+$s="select a.*
+from oficinas.inv_seguros where suc=14000";
+$q=$this->db->query($s);
+}
+    return $q;
+}
+
+
+ public function almacen_det($tipo)
+    {
+if($tipo=='alm'){
+$s="select a.clasi, a.sec,a.susa,
+ifnull(m7,0)as m7,ifnull(m8,0)as m8,ifnull(m9,0)as m9,ifnull(m10,0)as m10,ifnull(m11,0)as m11,ifnull(m12,0)as m12,
+ifnull(inv1,0)as inv1,
+sum(venta7)as venta7,sum(venta8)as venta8,sum(venta9)as venta9,sum(venta10)as venta10,sum(venta11)as venta11,
+sum(venta12)as venta12
+from catalogo.cat_nuevo_general_sec a
+left join almacen.max_cedis b on b.sec=a.sec
+left join desarrollo.inv_cedis_sec1 c on c.sec=a.sec
+left join vtadc.producto_mes_suc_gen d on d.sec=a.sec
+group by a.sec";
+$q=$this->db->query($s);
+}elseif($tipo=='agu'){
+$s="select '' as clasi, a.clave as sec,a.descripcion as susa, 
+0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,piezas as inv1,
+0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
+from oficinas.inv_seguros a where suc=14000";
+$q=$this->db->query($s);
+}
+elseif($tipo=='zac'){
+$s="select '' as clasi, a.clave as sec,a.descripcion as susa, 
+0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,piezas as inv1,
+0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
+from oficinas.inv_seguros a where suc=17000";
+$q=$this->db->query($s);
+}
+elseif($tipo=='cht'){
+$s="select '' as clasi, a.clave as sec,a.descripcion as susa, 
+0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,piezas as inv1,
+0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
+from oficinas.inv_seguros a where suc=16000";
+$q=$this->db->query($s);
+}
+elseif($tipo=='con'){
+$s="select '' as clasi, a.clave as sec,b.susa as susa, 
+0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,sum(invf) as inv1,
+0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
+from almacen.control_invd a 
+left join catalogo.cat_nuevo_general_cla b on b.clagob=a.clave
+where invf>0 
+group by a.clave
+";
+$q=$this->db->query($s);
+}
+elseif($tipo=='esp'){
+$s="select '' as clasi, a.clave as sec,b.susa as susa, 
+0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,sum(cantidad) as inv1,
+0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
+from especialidad.inventario_d a 
+left join catalogo.cat_nuevo_general_cla b on b.clagob=a.clave
+where cantidad>0 
+group by a.clave
+";
+$q=$this->db->query($s);
+}
+elseif($tipo=='fbo'){
+$s="select '' as clasi, a.clave as sec,b.susa1 as susa, 
+0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,sum(cantidad) as inv1,
+0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
+from farmabodega.inventario_d a 
+left join catalogo.catalogo_bodega_clave b on b.clabo=a.clave
+where cantidad>0 
+group by a.clave
+";
+$q=$this->db->query($s);
+}
+    
+    return $q;
+    }
  
- 
-         
+public function inv_sucursal()
+    {
+
+$s="select a.clasi, a.sec,a.susa,sum(cantidad)as cantidad,inv1 from catalogo.cat_nuevo_general_sec a 
+left join desarrollo.inv b on a.sec=b.sec 
+left join desarrollo.inv_cedis_sec1 c on c.sec=a.sec
+where mov=7 and a.sec>=1 and a.sec<=2000
+group by a.sec";
+$q=$this->db->query($s);
+return $q;
+}
 
 }
