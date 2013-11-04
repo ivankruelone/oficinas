@@ -31,7 +31,7 @@
                              
                                  <?php
                                 $color='gray'; $color1='black'; $color2='blue'; $color3='green';  $aaa=date('Y');
-                                $tinv_impo=0;$tinv=0;
+                                $tinv_impo=0;$tinv=0;$tinv_impop=0;
                                 foreach ($a->result()as $r){
                                if($this->session->userdata('nivel')==4){
                                $l0 = anchor('inventario/almacen_lot/'.$r->tipo,'Lote</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado')); 
@@ -53,15 +53,16 @@
                                <?php 
                                $tinv=$tinv+$r->piezas;
                                $tinv_impo=$tinv_impo+$r->importe;
+                               $tinv_impop=$tinv_impop+$r->importe_paq;
                                
                                 } ?>
                               </tbody>
                               <tfoot>
                               <tr>
-                              <td colspan="1">TOTAL</td>
+                              <td colspan="2">TOTAL</td>
                               <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv,0)?></td>
                               <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv_impo,2)?></td>
-                              
+                              <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv_impop,2)?></td>
                               </tr>
                              </tfoot>
                          </table>   

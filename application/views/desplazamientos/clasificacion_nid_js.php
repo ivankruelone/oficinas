@@ -36,15 +36,26 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 $(document).ready(function() {
     
  var oTable = $('#tabla1').dataTable( {
-    "sScrollY": "300px",
+    "sScrollY": "290px",
 		"sScrollX": "100%",
 		"sScrollXInner": "150%",
 		"bScrollCollapse": true,
 		"bPaginate": false,
-    
             "aoColumns": [
-            { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"}
@@ -52,10 +63,6 @@ $(document).ready(function() {
             "bJQueryUI": true,
             "bPaginate": false
         });
-                
-
-                
 } );
 }();
-
 </script>

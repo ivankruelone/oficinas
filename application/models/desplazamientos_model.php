@@ -8,7 +8,7 @@ class Desplazamientos_model extends CI_Model
     }
   
     
-function control_desplaza_ab_ger_nid($var,$reg,$tit)
+function control_desplaza_suc($var,$reg)
     {
         $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;$t8=0;$t9=0;$t10=0;$t11=0;$t12=0;
         if($var==1){$varx='A y B';$var0="'a','b'";}
@@ -90,99 +90,42 @@ group by regional,a.suc
 order by prome desc
 "; 
         $q = $this->db->query($s);
-        
-$num=0;
-        $tabla= "
-        <table cellpadding=\"3\" border=\"2\">
-        <thead>
-        <tr>
-        <th colspan=\"19\">$tit <br />Clasificacion $varx</th>
-        </tr>
-        <tr>
-        <th>#</th>
-        <th>Farmacia</th>
-        <th>Nid</th>
-        <th>Sucursal</th>
-        <th>Promedio de 3 meses</th>
-        <th>Enero</th>
-        <th>Febrero</th>
-        <th>Marzo</th>
-        <th>Abril</th>
-        <th>Mayo</th>
-        <th>Junio</th>
-        <th>Julio</th>
-        <th>Agosto</th>
-        <th>Septiembre</th>
-        <th>Octubre</th>
-        <th>Noviembre</th>
-        <th>Diciembre</th>
-        </tr>
 
-        </thead>
-        <tbody>
-        ";
-        
-  $pedtot=0;
-        foreach($q->result() as $r)
-        {
-            
-		$num=$num+1;
-       $l1 = anchor('nacional/tabla_desplaza_t_ger_suc_nid/'.$var.'/'.$reg.'/'.$r->suc,$r->suc.'</a>', array('title' => 'Haz Click aqui para ver el detalle!', 'class' => 'encabezado'));  
-            
-            $tabla.="
-            <tr>
-            <td align=\"left\"><font color=\"orange\">".$num."</font></td>
-            <td align=\"left\">".$l1."</td>
-            <td align=\"left\">".$r->tipo2."</td>
-             <td align=\"left\">".$r->sucx."</td>
-            <td align=\"right\"><font color=\"green\">".number_format($r->prome,0)."</font></td>
-            <td align=\"right\">".number_format($r->venta1,0)."</td>
-            <td align=\"right\">".number_format($r->venta2,0)."</td>
-            <td align=\"right\">".number_format($r->venta3,0)."</td>
-            <td align=\"right\">".number_format($r->venta4,0)."</td>
-            <td align=\"right\">".number_format($r->venta5,0)."</td>
-            <td align=\"right\">".number_format($r->venta6,0)."</td>
-            <td align=\"right\">".number_format($r->venta7,0)."</td>
-            <td align=\"right\">".number_format($r->venta8,0)."</td>
-            <td align=\"right\">".number_format($r->venta9,0)."</td>
-            <td align=\"right\">".number_format($r->venta10,0)."</td>
-            <td align=\"right\">".number_format($r->venta11,0)."</td>
-            <td align=\"right\">".number_format($r->venta12,0)."</td>
-            </tr>
-            ";
-$t1=$t1+($r->venta1);
-$t2=$t2+($r->venta2);
-$t3=$t3+($r->venta3);
-$t4=$t4+($r->venta4);
-$t5=$t5+($r->venta5);
-$t6=$t6+($r->venta6);
-$t7=$t7+($r->venta7);
-$t8=$t8+($r->venta8);
-$t9=$t9+($r->venta9);
-$t10=$t10+($r->venta10);
-$t11=$t11+($r->venta11);
-$t12=$t12+($r->venta12);      
-        }
-         $tabla.="
-        <tr>   
-            <td align=\"right\" colspan=\"5\">TOTAL</td>
-            <td align=\"right\">".number_format($t1,0)."</td>
-            <td align=\"right\">".number_format($t2,0)."</td>
-            <td align=\"right\">".number_format($t3,0)."</td>
-            <td align=\"right\">".number_format($t4,0)."</td>
-            <td align=\"right\">".number_format($t5,0)."</td>
-            <td align=\"right\">".number_format($t6,0)."</td>
-            <td align=\"right\">".number_format($t7,0)."</td>
-            <td align=\"right\">".number_format($t8,0)."</td>
-            <td align=\"right\">".number_format($t9,0)."</td>
-            <td align=\"right\">".number_format($t10,0)."</td>
-            <td align=\"right\">".number_format($t11,0)."</td>
-            <td align=\"right\">".number_format($t12,0)."</td>
-         </tr>   
-        </tbody>
-        </table>";
-        
-        echo $tabla;
-    
+return $q;        
+}
+function control_desplaza_suc_una($var,$suc)
+    {
+        if($var==1){$varx='A y B';$var0="'a','b'";}
+        if($var==2){$varx='A,B y C';$var0="'a','b','c'";}
+        if($var==3){$varx='A,B,C y D';$var0="'a','b','c','d'";}
+        if($var==4){$varx='A,B,C,D y E';$var0="'a','b','c','d','e'";}
+         $s="select a.*,
+ifnull(m2013,0)as m2013,
+ifnull(m2012,0)as m2012,
+ifnull(m2011,0)as m2011,
+ifnull(final,2)as final,
+ifnull(venta1,0)as venta1,
+ifnull(venta2,0)as venta2,
+ifnull(venta3,0)as venta3,
+ifnull(venta4,0)as venta4,
+ifnull(venta5,0)as venta5,
+ifnull(venta6,0)as venta6,
+ifnull(venta7,0)as venta7,
+ifnull(venta8,0)as venta8,
+ifnull(venta9,0)as venta9,
+ifnull(venta10,0)as venta10,
+ifnull(venta11,0)as venta11,
+ifnull(venta12,0)as venta12
+from catalogo.cat_almacen_clasifica a
+left join vtadc.producto_mes_suc_gen b on a.sec=b.sec  and  b.suc=$suc
+where  a.tipo in($var0) 
+order by final desc
+"; 
+        $q = $this->db->query($s);   
+ return $q;   
     }
+
+
+
+
 }

@@ -19,7 +19,7 @@ a.suc,a.id,sum(sur*vta),0,date_format(a.fechasur,'%Y-%m-%d'),'0000-00-00',date_f
 
 case
 when c.cia=13
-then sum(sur*(costo*1.10))
+then sum(sur*(costo*1.20))
 else sum(sur*(costo*1.20))
 end,c.cia from  catalogo.folio_pedidos_cedis_especial a
 left join desarrollo.pedidos b on a.id=b.fol
@@ -38,7 +38,7 @@ a.suc,a.id,sum(sur*vta),0,date_format(a.fechasur,'%Y-%m-%d'),'0000-00-00',date_f
 
 case
 when c.cia=13
-then sum(sur*(costo*1.10))
+then sum(sur*(costo*1.20))
 else sum(sur*(costo*1.20))
 end,c.cia from  catalogo.folio_pedidos_cedis a
 left join desarrollo.pedidos b on a.id=b.fol
@@ -66,7 +66,7 @@ where   a.suc=b.suc and a.factura=b.factura and
 a.suc=b.suc and a.factura=b.factura"; 
 $this->db->query($s); 
 
-$s1="select *from vtadc.gc_factura where aaa=year(now()) and mes=9";
+$s1="select *from vtadc.gc_factura where aaa=year(now()) and mes>=9";
 $q1=$this->db->query($s1);
  foreach ($q1->result() as $r1) {
 
@@ -258,6 +258,11 @@ from especialidad.inventario_d aa where aa.cantidad>0 group by aa.clave)";
 $this->db->query($s);
 
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
+(select $aaa,$mes,1,100,0,aa.clave,aa.codigo,ifnull((select susa1 from catalogo.almacen bb where bb.sec=aa.clave group by bb.sec),''),sum(cantidad),aa.costo,1,'ALM METRO',$dia
+from metro.inventario_d aa left join catalogo.almacen bb on bb.sec=aa.clave where aa.cantidad>0 group by aa.clave)";
+$this->db->query($s);
+
+$s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
 (select $aaa,$mes,13,1600 ,aa.clave,' ',aa.codigo,bb.susa1,sum(cantidad),aa.costo,bb.lin,'ALM FARMABODEGA',$dia
 from farmabodega.inventario_d aa left join catalogo.almacen bb on bb.clabo=aa.clave where aa.cantidad>0 group by aa.clave)
 ";
@@ -284,7 +289,7 @@ $q = $this->db->query($s);
 
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo,dia)
 (select aaa, mes, 1, suc,0, clave_sin_punto,0, substr(descripcion,1,70), piezas_paquete, costo, lin, 'ALM SEGPOP',$dia 
-from oficinas.inv_seguros a where a.aaa=$aaa and a.mes=$mes and suc in(17000,14000,16000))";
+from oficinas.inv_seguros a where a.aaa=$aaa and a.mes=$mes and suc in(17000,14000,16000,6050,90002))";
 $this->db->query($s);
  
 $s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia)
@@ -292,7 +297,13 @@ $s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia)
 $this->db->query($s);
 
 $s="insert into desarrollo.inv_cosvta(cia, suc, sem, aaaa, mes, lin, plaza, succ, importe)
-(select a.cia,a.suc,$sem,aaa,mes,lin,b.plaza,b.suc_contable,sum(piezas*costo) from oficinas.inv_mes_suc_det a
+(select a.cia,a.suc,$sem,aaa,mes,lin,b.plaza,b.suc_contable,
+case when a.suc=900
+then (select sum(piezas*costo) from oficinas.inv_mes_suc_det c
+where c.suc in(900,1600,6050,90002) and c.lin=a.lin and c.aaa=$aaa and c.mes=$mes and c.dia=$dia)
+when a.suc in(1600,6050,90002) then 0 else sum(piezas*costo) end
+
+from oficinas.inv_mes_suc_det a
 left join catalogo.sucursal b on b.suc=a.suc
 where a.costo>0 and a.aaa=$aaa and a.mes=$mes and a.dia=$dia
 group by a.aaa,a.mes,a.dia,a.suc,a.lin

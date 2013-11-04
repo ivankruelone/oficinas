@@ -48,6 +48,36 @@ class Inventario extends CI_Controller
         $this->load->view('main', $data);
     }
     
+    function mes_tod()
+    {
+        $data['titulo'] = "Reporte de inventario General";
+        $data['tit1']='Reporte de inventario Sucursales';
+        $data['tit2']='Reporte de inventario Almacenes';
+        $data['a'] = $this->inventario_model->mes();
+        $data['b'] = $this->inventario_model->mes_alm();
+        //$data['js'] = 'inventario/inventario_js';
+        $this->load->view('main', $data);
+    }
+    function mes_alm()
+    {
+        $data['titulo'] = "Reporte de inventario General";
+        $data['tit1']='Reporte de inventario Sucursales';
+        $data['tit2']='Reporte de inventario Almacenes';
+        $data['b'] = $this->inventario_model->mes_alm();
+        //$data['js'] = 'inventario/inventario_js';
+        $this->load->view('main', $data);
+    }
+    function div_alm($aaa,$mes)
+    {
+        $data['titulo'] = "Reporte de inventario General";
+        $data['tit']='Reporte de inventario Almacenes';
+        $data['a'] = $this->inventario_model->div_alm($aaa,$mes);
+        //$data['js'] = 'inventario/inventario_js';
+        $this->load->view('main', $data);
+    }
+    
+    
+    
     function entrada($tipo,$mes)
     {
         $data['titulo'] = "Reporte de inventario";

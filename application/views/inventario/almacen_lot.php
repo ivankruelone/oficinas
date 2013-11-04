@@ -39,12 +39,12 @@
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->lote?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->cadu ?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->inv1,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->costo,2)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format(($r->inv1*$r->costo),2)?></td>
+                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->costoo,2)?></td>
+                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format(($r->inv1*$r->costoo),2)?></td>
                                 </tr>
                                <?php 
                                $tinv=$tinv+$r->inv1;
-                               $tinv_impo=$tinv_impo+($r->inv1*$r->costo);
+                               $tinv_impo=$tinv_impo+($r->inv1*$r->costoo);
                                
                                 } ?>
                               </tbody>

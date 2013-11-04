@@ -51,8 +51,8 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_inv_inventario"><?php echo anchor('inventario/mes', 'Inventario'); ?></li>
-                          
+                          <li id="menu_inv_inventario"><?php echo anchor('inventario/mes', 'Sucursales'); ?></li>
+                           <li id="menu_inv_inventario_tod"><?php echo anchor('inventario/mes_tod','TODOS'); ?></li>
                       </ul>
                   </li>
                   

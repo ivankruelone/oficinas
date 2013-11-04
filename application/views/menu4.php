@@ -9,7 +9,7 @@
                       <ul class="sub">
                           <li id="menu_inventario_almacen"><?php echo anchor('inventario/almacen', 'Almacen'); ?></li>
                           <li id="menu_inventario_inv_sucursal"><?php echo anchor('inventario/inv_sucursal', 'Sucursales'); ?></li>
-                          
+                          <li id="menu_inv_inventario_tod"><?php echo anchor('inventario/mes_tod','Hist.Mensual'); ?></li>
                       </ul>
                   </li>
                   
