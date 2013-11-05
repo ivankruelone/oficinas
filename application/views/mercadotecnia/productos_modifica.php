@@ -81,8 +81,32 @@
               'name'        => 'susa',
               'id'          => 'susa',
               'value'       => $susa,
-              'maxlength'   => '20',
-              'size'        => '20'
+              'maxlength'   => '200',
+              'size'        => '200'
+              
+            );
+            $data_max = array(
+              'name'        => 'max',
+              'id'          => 'max',
+              'value'       => $max,
+              'maxlength'   => '7',
+              'size'        => '7'
+              
+            );
+            $data_min = array(
+              'name'        => 'min',
+              'id'          => 'min',
+              'value'       => $min,
+              'maxlength'   => '7',
+              'size'        => '7'
+              
+            );
+            $data_antibio = array(
+              'name'        => 'antibio',
+              'id'          => 'antibio',
+              'value'       => $antibio,
+              'maxlength'   => '1',
+              'size'        => '1'
               
             );
             
@@ -136,6 +160,14 @@
 	<td><?php echo form_dropdown('lin', $lin, '', 'id="lin"') ;?> </td>
     <td align="left" ><font size="+1"><strong>Sublin: </strong></font></td>
 	<td><?php echo form_dropdown('sublin', $sublin, '', 'id="sublin"') ;?> </td>
+ </tr>
+  <tr>
+    <td align="left" ><font size="+1"><strong>Minimo:</strong></font></td>
+    <td><?php echo form_input($data_min, "");?></td>
+    <td align="left" ><font size="+1"><strong>Maximo: </strong></font></td>
+	<td><?php echo form_input($data_max, "");?></td>
+    <td align="left" ><font size="+1"><strong>Antibiotico: </strong></font></td>
+	<td><?php echo form_input($data_antibio, "");?></td>
  </tr>
 
 	<td colspan="2"align="center"><?php echo form_submit('envio', 'CAMBIAR');?></td>

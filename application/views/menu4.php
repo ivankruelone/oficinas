@@ -12,5 +12,15 @@
                           <li id="menu_inv_inventario_tod"><?php echo anchor('inventario/mes_tod','Hist.Mensual'); ?></li>
                       </ul>
                   </li>
+                  <li class="sub-menu" id="menu_orden">
+                      <a href="javascript:;" class="">
+                          <i class="icon-book"></i>
+                          <span>Orden</span>
+                          <span class="arrow"></span>
+                      </a>
+                      <ul class="sub">
+                          <li id="menu_orden_busca_orden"><?php echo anchor('inventario/busca_orden', 'Busca Orden'); ?></li>
+                      </ul>
+                  </li>
                   
               </ul>

@@ -188,7 +188,10 @@ class Mercadotecnia extends CI_Controller
     $this->input->post('venta'),
     $this->input->post('publico'),
     $this->input->post('lin'),
-    $this->input->post('sublin')
+    $this->input->post('sublin'),
+    $this->input->post('max'),
+    $this->input->post('min'),
+    $this->input->post('antibio')
     
     );
     $lab=$this->input->post('lab');
@@ -237,7 +240,10 @@ class Mercadotecnia extends CI_Controller
         $data['fecha_registro']=$r->fecha_registro;
         $data['tipo_p']=$this->mercadotecnia_model->busca_pro_uno($r->producto);
         $data['clave']=$r->clave;
+        $data['max']=$r->max;
+        $data['min']=$r->min;
         $data['susa']=$r->susa;
+        $data['antibio']=$r->antibiotico;
         $data['id']=$r->id;
         
         $this->load->view('main', $data); 
@@ -259,7 +265,10 @@ class Mercadotecnia extends CI_Controller
     $this->input->post('publico'),
     $this->input->post('tipo'),
     $this->input->post('lin'),
-    $this->input->post('sublin')
+    $this->input->post('sublin'),
+    $this->input->post('max'),
+    $this->input->post('min'),
+    $this->input->post('antibio')
     );
     $lab=$this->input->post('lab');
     redirect('mercadotecnia/productos_labora/'.$lab); 

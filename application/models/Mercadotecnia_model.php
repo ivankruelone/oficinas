@@ -385,7 +385,7 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
         return $a;
     }  
   public function agrega_producto($codigo,$descri,$registro,$registro_fec,$clave,$susa,$tipo_p,$iva,$lab,$far,
-  $venta,$pub,$lin,$sublin)
+  $venta,$pub,$lin,$sublin,$max,$min,$antibio)
     {
     $s="select *from catalogo.cat_mercadotecnia where codigo=$codigo";
     $q=$this->db->query($s);
@@ -407,14 +407,17 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
     'clave'=>$clave,
     'susa'=>strtoupper(trim($susa)),
     'lin'=>$lin,
-    'sublin'=>$sublin
+    'sublin'=>$sublin,
+    'max'=>$max,
+    'min'=>$min,
+    'antibiotico'=>$antibio
     );
     $this->db->insert('catalogo.cat_mercadotecnia',$a);
     }
     
      }
      public function cambia_producto($id,$descri,$registro,$registro_fec,$clave,$susa,$tipo_p,$iva,
-     $lab,$far,$venta,$pub,$tipo,$lin,$sublin)
+     $lab,$far,$venta,$pub,$tipo,$lin,$sublin,$max,$min,$antibio)
     {
     $a=array(
     'descripcion'=>strtoupper(trim($descri)),
@@ -432,7 +435,10 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
     'clave'=>$clave,
     'susa'=>strtoupper(trim($susa)),
     'lin'=>$lin,
-    'sublin'=>$sublin
+    'sublin'=>$sublin,
+    'max'=>$max,
+    'min'=>$min,
+    'antibiotico'=>$antibio
     );
     $this->db->where('id',$id);
     $this->db->update('catalogo.cat_mercadotecnia',$a);

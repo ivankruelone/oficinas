@@ -99,25 +99,25 @@ $this->db->query($s4);
 public function max_sucursal()
     {
 $s="update vtadc.producto_mes_suc_gen a, almacen.max_sucursal b
-set b.final=round((venta7+venta8+venta9)/case when
-venta7=0 and venta8=0 and venta9>0 or
-venta7=0 and venta8>0 and venta9=0 or
-venta7>0 and venta8=0 and venta9=0
+set b.final=round((venta10+venta8+venta9)/case when
+venta10=0 and venta8=0 and venta9>0 or
+venta10=0 and venta8>0 and venta9=0 or
+venta10>0 and venta8=0 and venta9=0
 then 1
 when
-venta7=0 and venta8>0 and venta9>0 or
-venta7>0 and venta8>0 and venta9=0 or
-venta7>0 and venta8=0 and venta9>0
+venta10=0 and venta8>0 and venta9>0 or
+venta10>0 and venta8>0 and venta9=0 or
+venta10>0 and venta8=0 and venta9>0
 then 2
 when
-venta7>0 and venta8>0 and venta9>0
+venta10>0 and venta8>0 and venta9>0
 then 3
 end)
 
-  where a.suc=b.suc and a.sec=b.sec and (venta7+venta8+venta8)>0";
+  where a.suc=b.suc and a.sec=b.sec and (venta10+venta9+venta8)>0";
 $this->db->query($s);
 $s="update vtadc.producto_mes_suc_gen a, almacen.max_sucursal b
-set b.final=venta9
+set b.final=venta10
 where a.suc=b.suc and a.sec=b.sec and b.final=0";
 $this->db->query($s);
 $s="update vtadc.producto_mes_suc_gen a, almacen.max_sucursal b

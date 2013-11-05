@@ -136,6 +136,14 @@ class Inventario extends CI_Controller
         $data['js'] = 'inventario/inv_sucursal_js';
         $this->load->view('main', $data);
     }
+    function inv_sucursal_espe($sec)
+    {
+        $data['titulo'] = "Reporte de inventario de farmacias";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->inv_sucursal_espe($sec);
+        $data['js'] = 'inventario/inv_sucursal_espe_js';
+        $this->load->view('main', $data);
+    }
  
  
  

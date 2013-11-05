@@ -13,9 +13,8 @@
                              <thead>
                                  <tr>
                                      <th style="text-align: left">Sec</th> 
-                                     <th style="text-align: left">Clasifica</th>
-                                     <th style="color:gray; text-align: left">Sustancia Activa</th>
-                                     <th style="color:gray; text-align: left">Inv Cedis</th>
+                                     <th style="text-align: left">Suc</th>
+                                     <th style="color:gray; text-align: left">Sucursal</th>
                                      <th style="color:gray; text-align: right">Inv Farmacia</th>
                                      
                                  </tr>
@@ -26,17 +25,14 @@
                                 $color='gray'; $color1='black'; $color2='blue'; $color3='green';  $aaa=date('Y');
                                 $tinv_impo=0;$tinv=0;
                                 foreach ($a->result()as $r){
-                                $l0 = anchor('inventario/inv_sucursal_espe/'.$r->sec,$r->sec.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                 ?>
                                 <tr>
-                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $l0?></td>
-                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->clasi?></td>
-                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->susa?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->inv1,0)?></td>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->sec?></td>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->suc?></td>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->sucx?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->cantidad,0)?></td>
                                 </tr>
                                <?php 
-                               $tinv=$tinv+$r->inv1;
                                $tinv_impo=$tinv_impo+$r->cantidad;
                                
                                 } ?>
@@ -44,7 +40,6 @@
                               <tfoot>
                               <tr>
                               <td colspan="3">TOTAL</td>
-                              <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv,0)?></td>
                               <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv_impo,0)?></td>
                               
                               </tr>

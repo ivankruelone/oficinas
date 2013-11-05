@@ -84,7 +84,30 @@
               'size'        => '20'
               
             );
-  
+   $data_max = array(
+              'name'        => 'max',
+              'id'          => 'max',
+              'value'       => '',
+              'maxlength'   => '7',
+              'size'        => '7'
+              
+            );
+            $data_min = array(
+              'name'        => 'min',
+              'id'          => 'min',
+              'value'       => '',
+              'maxlength'   => '7',
+              'size'        => '7'
+              
+            );
+            $data_antibio = array(
+              'name'        => 'antibio',
+              'id'          => 'antibio',
+              'value'       => '',
+              'maxlength'   => '1',
+              'size'        => '1'
+              
+            );
   ?>
  
   <table>
@@ -141,7 +164,14 @@
     <td></td>
     <td></td>
  </tr>
- 
+<tr>
+    <td align="left" ><font size="+1"><strong>Minimo:</strong></font></td>
+    <td><?php echo form_input($data_min, "");?></td>
+    <td align="left" ><font size="+1"><strong>Maximo: </strong></font></td>
+	<td><?php echo form_input($data_max, "");?></td>
+    <td align="left" ><font size="+1"><strong>Antibiotico: </strong></font></td>
+	<td><?php echo form_input($data_antibio, "");?></td>
+ </tr>  
 
 <tr>
 	<td colspan="8" align="center"><?php echo form_submit('envio', 'AGREGAR');?></td>

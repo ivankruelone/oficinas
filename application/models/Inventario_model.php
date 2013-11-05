@@ -525,21 +525,21 @@ left join vtadc.producto_mes_suc_gen d on d.sec=a.sec
 group by a.sec";
 $q=$this->db->query($s);
 }elseif($tipo=='agu'){
-$s="select '' as clasi, a.clave as sec,a.descripcion as susa, 
+$s="select '' as clasi, a.clave_sin_punto as sec,a.descripcion as susa, 
 0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,piezas as inv1,
 0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
 from oficinas.inv_seguros a where suc=14000";
 $q=$this->db->query($s);
 }
 elseif($tipo=='zac'){
-$s="select '' as clasi, a.clave as sec,a.descripcion as susa, 
+$s="select '' as clasi, a.clave_sin_punto as sec,a.descripcion as susa, 
 0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,piezas as inv1,
 0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
 from oficinas.inv_seguros a where suc=17000";
 $q=$this->db->query($s);
 }
 elseif($tipo=='cht'){
-$s="select '' as clasi, a.clave as sec,a.descripcion as susa, 
+$s="select '' as clasi, a.clave_sin_punto as sec,a.descripcion as susa, 
 0 as m7,0 as m8,0 as m9,0 as m10,0 as m11,0 as m12,piezas as inv1,
 0 as venta7,0 as venta8,0 as venta9,0 as venta10,0 as venta11,0 as venta12
 from oficinas.inv_seguros a where suc=16000";
@@ -588,8 +588,17 @@ public function inv_sucursal()
 $s="select a.clasi, a.sec,a.susa,sum(cantidad)as cantidad,inv1 from catalogo.cat_nuevo_general_sec a 
 left join desarrollo.inv b on a.sec=b.sec 
 left join desarrollo.inv_cedis_sec1 c on c.sec=a.sec
-where mov=7 and a.sec>=1 and a.sec<=2000
+where mov=7 and a.sec>=1 and a.sec<=2000 and b.suc>100
 group by a.sec";
+$q=$this->db->query($s);
+return $q;
+}
+public function inv_sucursal_espe($sec)
+    {
+
+$s="select b.nombre as sucx,a.* from desarrollo.inv a
+left join catalogo.sucursal b on b.suc=a.suc
+where mov=7 and a.sec=$sec and a.suc>100 and a.cantidad>0";
 $q=$this->db->query($s);
 return $q;
 }
