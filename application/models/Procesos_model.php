@@ -9,7 +9,7 @@ class Procesos_model extends CI_Model
  
 public function facturas_oficinas()
 {
-$fec=date('Y-m-d')-31;
+$fec=date('Y-m-d')-15;
 $s="insert into vtadc.gc_factura
 (suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc,aaa,mes,prv,importe_prvcosto,cia)
 (
@@ -24,7 +24,7 @@ else sum(sur*(costo*1.20))
 end,c.cia from  catalogo.folio_pedidos_cedis_especial a
 left join desarrollo.pedidos b on a.id=b.fol
 left join catalogo.sucursal c on c.suc=a.suc
-where a.fechasur>='$fec' and a.tid='C' and b.sur>0 group by a.id)
+where a.fechasur>=date_add(now(),interval-15 day) and a.tid='C' and b.sur>0 group by a.id)
 on duplicate key update fecha_prv=values(fecha_prv),importe_prv=values(importe_prv),
 importe_prvcosto=values(importe_prvcosto),cia=values(cia)"; 
 $this->db->query($s);
@@ -43,7 +43,7 @@ else sum(sur*(costo*1.20))
 end,c.cia from  catalogo.folio_pedidos_cedis a
 left join desarrollo.pedidos b on a.id=b.fol
 left join catalogo.sucursal c on c.suc=a.suc
-where a.fechasur>='$fec' and a.tid='C' and b.sur>0 group by a.id)
+where a.fechasur>=date_add(now(),interval-15 day) and a.tid='C' and b.sur>0 group by a.id)
 on duplicate key update fecha_prv=values(fecha_prv),importe_prv=values(importe_prv),
 importe_prvcosto=values(importe_prvcosto),cia=values(cia)"; 
 $this->db->query($s1);    
@@ -54,7 +54,7 @@ $s3="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_
 (select a.suc,factura,importe,0,fecha,'0000-00-00',date_format(fecha,'%Y'),date_format(fecha,'%m'),prv,importe, b.cia
 from vtadc.gc_compra_mayorista a
 left join catalogo.sucursal b on b.suc=a.suc
-where fecha>='$fec')
+where fecha>=date_add(now(),interval-15 day))
 on duplicate key update importe_prv=values(importe_prv),fecha_prv=values(fecha_prv),importe_prvcosto=values(importe_prvcosto)";
 $this->db->query($s3);
 
@@ -66,7 +66,7 @@ where   a.suc=b.suc and a.factura=b.factura and
 a.suc=b.suc and a.factura=b.factura"; 
 $this->db->query($s); 
 
-$s1="select *from vtadc.gc_factura where aaa=year(now()) and mes>=9";
+$s1="select *from vtadc.gc_factura where aaa=year(now()) and mes>=10";
 $q1=$this->db->query($s1);
  foreach ($q1->result() as $r1) {
 
@@ -267,6 +267,15 @@ $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo,
 from farmabodega.inventario_d aa left join catalogo.almacen bb on bb.clabo=aa.clave where aa.cantidad>0 group by aa.clave)
 ";
 $this->db->query($s);
+$s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
+(select $aaa,$mes,$dia,90002,clave,descri,sum(cantidad), 0,1,sum(cantidad),clave from segpop.inventario_d group by clave)
+";
+$this->db->query($s);
+$s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
+(select $aaa,$mes,$dia,6050,clave,descri,sum(cantidad), 0,5,sum(cantidad),clave from trasimeno140.inventario_d group by clave)
+";
+$this->db->query($s);
+
   
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
 (select $aaa,$mes,1,100,0,aa.clave,ifnull(codigo,0),bb.susa1,sum(invf),aa.costo,bb.lin,'ALM CONTROLADOS',$dia
@@ -283,7 +292,7 @@ where a.clave=b.clave_punto and a.aaa=$aaa and a.mes=$mes";
 $q = $this->db->query($s);
 
 $s = "update oficinas.inv_seguros a, catalogo.costos_gobierno b
-set a.costo=b.costo,piezas_paquete= case when paquete>0 then paquete else a.piezas end
+set a.costo=b.costo,piezas_paquete= case when paquete>1 then (a.piezas/b.paquete) else a.piezas end
 where a.clave_sin_punto=b.clave and  a.aaa=$aaa and a.mes=$mes";
 $q = $this->db->query($s);
 
@@ -298,11 +307,7 @@ $this->db->query($s);
 
 $s="insert into desarrollo.inv_cosvta(cia, suc, sem, aaaa, mes, lin, plaza, succ, importe)
 (select a.cia,a.suc,$sem,aaa,mes,lin,b.plaza,b.suc_contable,
-case when a.suc=900
-then (select sum(piezas*costo) from oficinas.inv_mes_suc_det c
-where c.suc in(900,1600,6050,90002) and c.lin=a.lin and c.aaa=$aaa and c.mes=$mes and c.dia=$dia)
-when a.suc in(1600,6050,90002) then 0 else sum(piezas*costo) end
-
+ sum(piezas*costo)
 from oficinas.inv_mes_suc_det a
 left join catalogo.sucursal b on b.suc=a.suc
 where a.costo>0 and a.aaa=$aaa and a.mes=$mes and a.dia=$dia

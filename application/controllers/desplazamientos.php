@@ -57,12 +57,14 @@ class Desplazamientos extends CI_Controller
         if($var==3){$varx='A,B,C y D';$var0="'a','b','c','d'";}
         if($var==4){$varx='A,B,C,D y E';$var0="'a','b','c','d','e'";}
         
+        
         $data['tit']= $this->session->userdata('nombre');
         $data['titulo']= 'Maximo generado por producto '.$varx;
         $data['a'] = $this->desplazamientos_model->control_desplaza_suc_una($var,$suc);
-        $data['js'] = 'desplazamientos/clasificacion_nid_suc_js';
+        $data['js'] = 'desplazamientos/clasificacion_nid_una_js';
         $this->load->view('main', $data);
     }    
+  
   
     
 }

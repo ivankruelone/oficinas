@@ -172,6 +172,60 @@ order by b.clagob asc,b.costo";
         
         return $alm;  
     }
+    function busca_almacen_uno($alm)
+    {
+        
+        $sql = "SELECT a.*from catalogo.cat_almacenes a and tipo='$alm'";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+        $row= $query->row();
+        $alm=$row->nombre;    
+        }else{
+            $alm='';
+        }
+        return $alm;
+    }
+    function busca_almacen_por($alm)
+    {
+        
+        $sql = "SELECT a.*from catalogo.cat_almacenes a where tipo='$alm'";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+        $row= $query->row();
+        $alm=$row->por;    
+        }else{
+            $alm='';
+        }
+        return $alm;
+    }
+    function busca_almacen_ped($id)
+    {
+        
+        $sql = "SELECT a.* from catalogo.cat_almacenes a, compras.pedido_c b where b.almacen=a.tipo and b.id=$id";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+        $row= $query->row();
+        $alm=$row->nombre;    
+        }else{
+            $alm='';
+        }
+        return $alm;
+    }
+     function busca_almacen_pedidos()
+    {
+        
+        $sql = "SELECT *from catalogo.cat_almacenes where pedido=1 ";
+        $query = $this->db->query($sql);
+        
+        $alm = array();
+        $alm[0] = "Seleccione Almacen";
+        
+        foreach($query->result() as $row){
+            $alm[$row->tipo] = $row->nombre;
+        }
+        
+        return $alm;  
+    }
     function tipo_producto()
     {
         
@@ -212,7 +266,7 @@ order by b.clagob asc,b.costo";
         $prv[0] = "Seleccione Provedor";
         
         foreach($query->result() as $row){
-            $prv[$row->prov] = $row->corto;
+            $prv[$row->prov] = $row->prov.' - '.$row->razo;
         }
         
         return $prv;  
@@ -224,7 +278,7 @@ order by b.clagob asc,b.costo";
         $query = $this->db->query($sql);
         if($query->num_rows()>0){
         $row= $query->row();
-        $prvv=$row->corto;    
+        $prvv=$row->razo.' - '.$row->prv;    
         }else{
             $prvv='';
         }

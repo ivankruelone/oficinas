@@ -15,6 +15,11 @@ class Orden extends CI_Controller
         $this->load->model('orden_model');
 
     }
+     function index()
+    {
+        $data['titulo'] = "Indice";
+        $this->load->view('main', $data);
+    }
     function orden_compra()
     {
         $data['titulo'] = "Ordenes  de compra";
@@ -84,9 +89,5 @@ class Orden extends CI_Controller
    
    
    
-     function index()
-    {
-        $data['titulo'] = "Indice";
-        $this->load->view('main', $data);
-    }
+
 }

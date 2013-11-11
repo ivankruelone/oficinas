@@ -60,11 +60,12 @@ class Procesos extends CI_Controller
     }
     function genera_inv()
     {
-        //$this->enlaces_model->getInventarioAguascalientes();
-        //$this->enlaces_model->getInventarioFresnillo();
-        //$this->enlaces_model->getInventarioSucursalesZacatecas();
-        //$this->enlaces_model->getInventarioSucursalesAguascalientes();
-        //$this->enlaces_model->getCostos();
+        $this->enlaces_model->getInventarioAguascalientes();
+        $this->enlaces_model->getInventarioFresnillo();
+        $this->enlaces_model->getInventarioSucursalesZacatecas();
+        $this->enlaces_model->getInventarioSucursalesAguascalientes();
+        $this->enlaces_model->getCostos();
+    die();
     $aaa=substr($this->input->post('fecha'),0,4);
     $mes=substr($this->input->post('fecha'),5,2);
     $dia=substr($this->input->post('fecha'),8,2);

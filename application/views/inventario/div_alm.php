@@ -32,15 +32,15 @@
                              <tbody>
                              
                                  <?php
-                                $color='gray'; $color1='black'; $color2='blue'; $color3='green';  $aaa=date('Y');
+                                $color='gray'; $color1='black'; $color2='blue'; $color3='green';
                                 $tinv_impo=0;$tinv=0;$tinvf=0;$tinvf_impo=0;$tcom=0;$tfac=0;
                                 foreach ($a->result()as $r){
                                $l0 = anchor('inventario/almacen_lot_s/'.$r->tipox,'Lote</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
-                               $l1 = anchor('inventario/almacen_det/'.$r->tipox,'Det</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                               $l1 = anchor('inventario/div_alm_uno/'.$r->aaa.'/'.$r->mes.'/'.$r->tipo,$r->tipox.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                
                                 ?>
                                 <tr>
-                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->tipox?></td>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $l1?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->in_piezas,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->in_importe,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->compra,2)?></td>

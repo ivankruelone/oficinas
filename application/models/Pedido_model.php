@@ -240,18 +240,86 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
         return $a;
     }   
     
- 
+ ////////////////////////////////////////////////////compra_pedidos
+public function com_pedido()
+    {
+    $id_user=$this->session->userdata('id');
+    $s="select a.*, b.nombre as almacenx,c.razo as prvx,
+    (select sum(ped*costo) from compras.pedido_d where id_cc=a.id)as importe 
+    From compras.pedido_c a 
+    left join catalogo.cat_almacenes b on b.tipo=a.almacen
+    left join catalogo.provedor c on c.prov=a.prv
+    where a.tipo='A' and id_user=$id_user order by id desc ";
+    $q=$this->db->query($s);
+    return $q;
+    }
+public function com_pedido_det($id)
+    {
+    $id_user=$this->session->userdata('id');
+    $s="select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
+    left join catalogo.provedor b on b.prov=a.prv
+    left join catalogo.provedor c on c.prov=a.prvbase
+    where id_cc=$id order by id desc";
+    $q=$this->db->query($s);
+    return $q;
+    }
 
+public function agrega_pedido_det($id_cc,$sec,$can)
+    {
+    $s="select a.*,b.almacen from catalogo.cat_nuevo_general_sec a,compras.pedido_c b where sec=$sec and b.id=$id_cc ";
+    $q=$this->db->query($s);
+    if($q->num_rows()>0){
+    $ss="select *from compras.pedido_d where id_cc=$id_cc and sec=$sec";
+    $qq=$this->db->query($ss);
+    if($qq->num_rows()==0){    
+    $r=$q->row();    
+$data=array( //id, id_cc, almacen, sec, clagob, codigo, susa, inv, ped, prv, costo
+    'id_cc'=>$id_cc,
+    'almacen'=>$r->almacen,
+    'sec'=>$sec,
+    'clagob'=>$r->clave,
+    'codigo'=>0,
+    'susa'=>$r->susa,
+    'inv'=>0,
+    'ped'=>$can,
+    'prv'=>$r->prv,
+    'costo'=>$r->cos);
+     $this->db->insert('compras.pedido_d',$data);
+     }}
+}
 
+public function agrega_pedido_det_prv_sec($alm,$prv)
+{
+     
+     $data=array('fecha'=>date('Y-m-d'),'id_user'=>$this->session->userdata('id'),
+     'almacen'=>$alm,'prv'=>$prv);   
+     $this->db->insert('compras.pedido_c',$data);
+     $id_cc= $this->db->insert_id();
+     $s="insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa, inv, ped, prv, costo,costobase,prvbase)
+     (select $id_cc,'$alm',a.sec,a.clagob,a.codigo,concat(trim(b.susa),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
+     0,0,a.prv,a.costo,c.cos,c.prv from catalogo.cat_nuevo_general_prv a
+     left join catalogo.cat_nuevo_general b on a.codigo=b.codigo
+     left join catalogo.cat_nuevo_general_sec c on c.sec=a.sec 
+     where a.prv=$prv and a.sec>0 and b.susa is not null group by a.clagob,a.sec)";
+     $this->db->query($s);
+}
 
-
-
-
-
-
-
-
-
+public function agrega_pedido_det_prv_cla($alm,$prv)
+{
+     
+     $data=array('fecha'=>date('Y-m-d'),'id_user'=>$this->session->userdata('id'),
+     'almacen'=>$alm,'prv'=>$prv);   
+     $this->db->insert('compras.pedido_c',$data);
+     $id_cc= $this->db->insert_id();
+     $s="insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa, inv, ped, prv, costo,costobase,prvbase)
+     (select $id_cc,'$alm',a.sec,a.clagob,a.codigo,concat(trim(b.susa),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
+     0,0,a.prv,a.costo,c.cos,c.prv from catalogo.cat_nuevo_general_prv a
+     left join catalogo.cat_nuevo_general b on a.codigo=b.codigo
+     left join catalogo.cat_nuevo_general_cla c on c.clagob=a.clagob 
+     where a.prv=$prv and a.clagob>' ' and b.susa is not null group by a.clagob,a.sec)";
+     
+     $this->db->query($s);
+}
 
 
 

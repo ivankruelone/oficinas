@@ -16,6 +16,13 @@ class Pedido extends CI_Controller
         $this->load->model('Pedido_model');
 
     }
+    
+       function index()
+    {
+        $data['titulo'] = "Indice";
+        $this->load->view('main', $data);
+    }
+    
     function generar()
     {
         $data['titulo'] = "Genera Pedidos de compra";
@@ -102,12 +109,55 @@ if($clagob==null){
         redirect('pedido/precios');   
     }
    
-   
-   
-   
-     function index()
+     function com_pedido()
     {
-        $data['titulo'] = "Indice";
+        $data['titulo'] = "Generar pedido";
+        $data['alm'] = $this->catalogos_model->busca_almacen_pedidos();
+        $data['prv'] = $this->catalogos_model->busca_prv();
+        $data['q'] = $this->Pedido_model->com_pedido();
+        $this->load->view('main', $data);
+    } 
+    function com_generar_sumit()
+    {
+     if($this->input->post('pass') == 'unico'){
+     $por=$this->catalogos_model->busca_almacen_por($this->input->post('alm'));
+     if($this->input->post('prv') == 0){
+     $data=array('fecha'=>date('Y-m-d'),'id_user'=>$this->session->userdata('id'),
+     'almacen'=>$this->input->post('alm'),'prv'=>$this->input->post('prv'));   
+     $this->db->insert('compras.pedido_c',$data);
+     }else{
+     if($por=='sec'){$this->Pedido_model->agrega_pedido_det_prv_sec($this->input->post('alm'),$this->input->post('prv'));   
+     }else{$this->Pedido_model->agrega_pedido_det_prv_cla($this->input->post('alm'),$this->input->post('prv'));}
+      
+     }}
+     redirect('pedido/com_pedido');
+    }
+    function com_pedido_det($id)
+    {
+        $alma = $this->catalogos_model->busca_almacen_ped($id);
+        $data['titulo'] = "Generar pedido ".$alma;
+        $data['id_cc']=$id;
+        $data['q'] = $this->Pedido_model->com_pedido_det($id);
+        $data['js'] = 'pedido/com_pedido_det_js';
         $this->load->view('main', $data);
     }
+  function com_generar_det_sumit()
+    {
+     $this->Pedido_model->agrega_pedido_det($this->input->post('id_cc'),$this->input->post('sec'),$this->input->post('can'));  
+     redirect('pedido/com_pedido_det/'.$this->input->post('id_cc'));
+    }
+     function com_ped_cambia()
+    {
+        $data = array('ped' => $this->input->post('pedi'));
+        $this->db->where('id', $this->input->post('id'));
+        $this->db->update('compras.pedido_d', $data);  
+     redirect('pedido/com_pedido_det/'.$this->input->post('id_cc'));
+    }
+    function com_pedido_det_b($id_cc,$id)
+    {
+    $this->db->delete('compras.pedido_d', array('id' => $id));  
+     redirect('pedido/com_pedido_det/'.$id_cc);
+    }
+    
+    
 }

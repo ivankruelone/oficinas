@@ -75,6 +75,14 @@ class Inventario extends CI_Controller
         //$data['js'] = 'inventario/inventario_js';
         $this->load->view('main', $data);
     }
+     function div_alm_uno($aaa,$mes,$tipo)
+    {
+        $data['titulo'] = "Reporte de inventario General";
+        $data['tit']='Reporte de inventario Almacenes';
+        $data['a'] = $this->inventario_model->div_alm_uno($aaa,$mes,$tipo);
+        $data['js'] = 'inventario/div_alm_uno_js';
+        $this->load->view('main', $data);
+    }
     
     
     
@@ -142,6 +150,14 @@ class Inventario extends CI_Controller
         $data['tit']='Reporte de inventario';
         $data['a'] = $this->inventario_model->inv_sucursal_espe($sec);
         $data['js'] = 'inventario/inv_sucursal_espe_js';
+        $this->load->view('main', $data);
+    }
+    function inv_gral()
+    {
+        $data['titulo'] = "Reporte de inventario de farmacias";
+        $data['tit']='Reporte de inventario';
+        $data['a'] = $this->inventario_model->inv_gral();
+        $data['js'] = 'inventario/inv_gral_js';
         $this->load->view('main', $data);
     }
  

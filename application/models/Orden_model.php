@@ -170,7 +170,7 @@ public function cerrar($prv,$id_ped,$cia,$tipo)
 left join orden_d b on b.id_ped=a.id_ped and b.prv=a.prv and a.almacen=b.almacen
 where a.tipo='C'
 group by a.id_ped,a.prv,a.almacen
-order by folprv desc";
+order by fechag desc limit 200";
         $q = $this->db->query($s);
         if ($q->num_rows() > 0) {
             $b = 0;

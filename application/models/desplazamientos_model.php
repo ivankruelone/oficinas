@@ -100,6 +100,8 @@ function control_desplaza_suc_una($var,$suc)
         if($var==3){$varx='A,B,C y D';$var0="'a','b','c','d'";}
         if($var==4){$varx='A,B,C,D y E';$var0="'a','b','c','d','e'";}
          $s="select a.*,
+         ifnull((select (cantidad) from desarrollo.inv where suc = $suc and sec = a.sec and mov<>41 group by suc,sec), 0) as cantidad,
+         (select fechai+ INTERVAL 1 day from desarrollo.inv where suc = $suc and sec = a.sec and mov<>41 group by suc,sec) as fechai,
 ifnull(m2013,0)as m2013,
 ifnull(m2012,0)as m2012,
 ifnull(m2011,0)as m2011,
@@ -121,8 +123,12 @@ left join vtadc.producto_mes_suc_gen b on a.sec=b.sec  and  b.suc=$suc
 where  a.tipo in($var0) 
 order by final desc
 "; 
-        $q = $this->db->query($s);   
+        $q = $this->db->query($s);
+        //ECHO $this->db->last_query();
+        //echo die;
  return $q;   
+    
+    
     }
 
 

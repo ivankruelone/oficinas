@@ -9,23 +9,40 @@ class Inventario_model extends CI_Model
  public function mes()
  {
  $aaa=date('Y');$mes=10; $mesa=$mes-1;
- $s="select $aaa as aaa,a.num, a.mes as mesx,b.*,sum(b.piezas)as fin_piezas,sum(b.importe) as fin_importe,
- sum(c.piezas)as ini_piezas,sum(c.importe) as ini_importe,
+ $s="select $aaa as aaa,a.num, a.mes as mesx,
+ 
+ ifnull((select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=a.num-1),0)as ini_piezas,
+
+ifnull((select sum(importe) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=a.num-1),0)as ini_importe,
+
+ifnull(case when a.num=month(now())
+then (select sum(piezas) from oficinas.inv_mes_suc x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=a.num)
+else
+(select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=a.num)
+end,0) as fin_piezas,
+
+ifnull(case when a.num=month(now())
+then (select sum(importe) from oficinas.inv_mes_suc x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=a.num)
+else
+(select sum(importe) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=a.num)
+end,0) as fin_importe,
+
 (select sum(importe_prvocosto) from vtadc.gc_factura_suc aa 
-where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num
-) as facturas,
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)as facturas,
 (select sum(contado) from  vtadc.gc_venta_mes aa 
-where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)
-as contado,
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)as contado,
 (select sum(credito) from  vtadc.gc_venta_mes aa 
-where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)
-as credito ,
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)as credito ,
 (select sum(recarga) from  vtadc.gc_venta_mes aa 
-where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)
-as recarga
+where aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=a.num)as recarga
+
 from catalogo.mes a
-left join oficinas.inv_mes_suc_his b on b.suc>100 and b.suc<=2000 and b.suc<>900 and b.suc<>1600 and b.aaa=$aaa and b.mes=a.num
-left join oficinas.inv_mes_suc_his c on c.suc>100 and c.suc<=2000 and c.suc<>900 and c.suc<>1600 and c.aaa=$aaa and c.mes=a.num-1
 where num>9 
 group by a.num";  
 
@@ -35,23 +52,44 @@ group by a.num";
  public function compa($aaa,$mes)
  {
  $mesa=$mes-1;
- $s="select a.*,b.*,sum(b.piezas)as fin_piezas,sum(b.importe) as fin_importe,
- sum(c.piezas)as ini_piezas,sum(c.importe) as ini_importe,
+ $s="select a.*,$aaa as aaa, $mes as mes,
+ 
+ ifnull((select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mesa and x.cia=a.cia),0)as ini_piezas,
+
+ifnull((select sum(importe) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mesa and x.cia=a.cia),0)as ini_importe,
+ 
+ifnull(case when $mes=month(now())
+then (select sum(piezas) from oficinas.inv_mes_suc x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=a.cia)
+else
+(select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=a.cia)
+end,0) as fin_piezas,
+
+ifnull(case when $mes=month(now())
+then (select sum(importe) from oficinas.inv_mes_suc x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=a.cia)
+else
+(select sum(importe) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=a.cia)
+end,0) as fin_importe,
+
+
 (select sum(importe_prvocosto) from vtadc.gc_factura_suc aa 
-where aa.cia=a.cia and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes
+where aa.cia=a.cia and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia
 ) as facturas,
 (select sum(contado) from  vtadc.gc_venta_mes aa 
-where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes)
+where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
 as contado,
 (select sum(credito) from  vtadc.gc_venta_mes aa 
-where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes)
+where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
 as credito ,
 (select sum(recarga) from  vtadc.gc_venta_mes aa 
-where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes)
+where aa.cia=a.cia  and aa.suc>100 and aa.suc<=2000 and aa.suc<>900 and aa.suc<>1600 and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
 as recarga
 from catalogo.compa a
-left join oficinas.inv_mes_suc_his b on b.cia=a.cia and b.suc>100 and b.suc<=2000 and b.suc<>900 and b.suc<>1600 and b.aaa=$aaa and b.mes=$mes
-left join oficinas.inv_mes_suc_his c on c.cia=a.cia and c.suc>100 and c.suc<=2000 and c.suc<>900 and c.suc<>1600 and c.aaa=$aaa and c.mes=$mesa
 where cia_activa=1 
 group by a.cia";  
 
@@ -62,8 +100,31 @@ group by a.cia";
  public function compa_cia($aaa,$mes,$cia)
  {
  $mesa=$mes-1;
-$s="select a.*,(b.piezas)as fin_piezas,(b.importe) as fin_importe,
- (c.piezas)as ini_piezas,(c.importe) as ini_importe,
+$s="select a.*,
+
+
+ ifnull((select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mesa and x.cia=$cia and x.suc=a.suc),0)as ini_piezas,
+
+ifnull((select sum(importe) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mesa and x.cia=$cia and x.suc=a.suc),0)as ini_importe,
+ 
+ifnull(case when $mes=month(now())
+then (select sum(piezas) from oficinas.inv_mes_suc x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=$cia and x.suc=a.suc)
+else
+(select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=$cia and x.suc=a.suc)
+end,0) as fin_piezas,
+
+ifnull(case when $mes=month(now())
+then (select sum(importe) from oficinas.inv_mes_suc x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=$cia and x.suc=a.suc)
+else
+(select sum(importe) from oficinas.inv_mes_suc_his x where x.suc>100 and x.suc<2000 and x.suc<>900 and x.suc<>1600 and
+x.aaa=$aaa and x.mes=$mes and x.cia=$cia and x.suc=a.suc)
+end,0) as fin_importe,
+
 
 (select (importe_prvocosto) from vtadc.gc_factura_suc aa 
 where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
@@ -78,11 +139,6 @@ as credito ,
 where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
 as recarga
 from catalogo.sucursal a
-left join oficinas.inv_mes_suc_his b on 
-b.cia=a.cia and b.suc=a.suc and b.aaa=$aaa and b.mes=$mes
-left join oficinas.inv_mes_suc_his c on 
-c.cia=a.cia and c.suc=a.suc and c.aaa=$aaa and c.mes=$mesa
-
 where a.cia=$cia and a.suc>100 and a.suc<=2000 and a.suc<>900 and a.suc<>1600 and tlid=1 ";  
 $q=$this->db->query($s);
  return $q;
@@ -91,9 +147,31 @@ $q=$this->db->query($s);
 public function mes_alm()
  {
  $aaa=date('Y'); $mesa=date('m')-1;
- $s="select $aaa as aaa,a.num, a.mes as mesx,b.*,sum(b.piezas)as fin_piezas,sum(b.importe) as fin_importe,
- sum(c.piezas)as ini_piezas,sum(c.importe) as ini_importe,
+ $s="select $aaa as aaa,a.num, a.mes as mesx,
+ 
+ifnull((select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc in(100,17000,14000,16000,6050,900,90002,1600) and
+x.aaa=$aaa and x.mes=a.num-1),0)as ini_piezas,
 
+ifnull((select sum(importe) from oficinas.inv_mes_suc_his x where x.suc in(100,17000,14000,16000,6050,900,90002,1600) and
+x.aaa=$aaa and x.mes=a.num-1),0)as ini_importe,
+
+ifnull(case when a.num=month(now())
+then (select sum(piezas) from oficinas.inv_mes_suc x where x.suc in(100,17000,14000,16000,6050,900,90002,1600) and
+x.aaa=$aaa and x.mes=a.num)
+else
+(select sum(piezas) from oficinas.inv_mes_suc_his x where x.suc in(100,17000,14000,16000,6050,900,90002,1600) and
+x.aaa=$aaa and x.mes=a.num)
+end,0) as fin_piezas,
+
+ifnull(case when a.num=month(now())
+then (select sum(importe) from oficinas.inv_mes_suc x where x.suc in(100,17000,14000,16000,6050,900,90002,1600) and
+x.aaa=$aaa and x.mes=a.num)
+else
+(select sum(importe) from oficinas.inv_mes_suc_his x where x.suc in(100,17000,14000,16000,6050,900,90002,1600) and
+x.aaa=$aaa and x.mes=a.num)
+end,0) as fin_importe,
+
+ 
 (select sum(importe) from vtadc.gc_compra_mayorista
 where suc in(100,17000,17900,14000,14900,16000,16900,6050,900) 
 and date_format(fecha,'%Y')=$aaa and date_format(fecha,'%m')=a.num ) as facturas,
@@ -105,8 +183,6 @@ as facturado,
 as facturadofbo,
 (SELECT sum(cantidads*costo) FROM almacen.salidas_c where aaas=$aaa and mess=a.num)as facturadocon
 from catalogo.mes a
-left join oficinas.inv_mes_suc_his b on b.suc in(100,1600,900,90002,17000,14000,16000,6050) and b.aaa=$aaa and b.mes=a.num
-left join oficinas.inv_mes_suc_his c on c.suc in(100,1600,900,90002,17000,14000,16000,6050) and c.aaa=$aaa and c.mes=a.num-1
 where num>9 
 group by a.num";  
 
@@ -117,7 +193,7 @@ group by a.num";
  public function div_alm($aaa,$mes)
  {
  $mesa=$mes-1;
-    $s="SELECT a.nombre as tipox,
+    $s="SELECT a.nombre as tipox,a.tipo,
 case
 when a.tipo='agu'
 then (select sum(piezas) from oficinas.inv_mes_suc_his b where suc=14000 and b.aaa=$aaa and b.mes=$mesa)
@@ -235,26 +311,27 @@ else 0 end as fi_piezas,
 
 case
 when a.tipo='agu'
-then (select sum(importe) from oficinas.inv_mes_suc_his b where suc=14000 and b.aaa=$aaa and b.mes=$mes)
+then (select sum(importe) from oficinas.inv_mes_suc b where suc=14000 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='alm'
-then (select sum(piezas*costo) from oficinas.inv_mes_suc_det_his b where b.suc=900 and b.aaa=$aaa and b.mes=$mes)
+then (select sum(piezas*costo) from oficinas.inv_mes_suc_det b where b.suc=900 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='cht'
-then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=16000 and b.aaa=$aaa and b.mes=$mes)
+then (select sum(importe) from oficinas.inv_mes_suc b where b.suc=16000 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='con'
-then (select sum(piezas*costo) from oficinas.inv_mes_suc_det_his b where b.suc=100 and b.tipo='ALM CONTROLADOS' and b.aaa=$aaa and b.mes=$mes)
+then (select sum(piezas*costo) from oficinas.inv_mes_suc_det b where b.suc=100 and b.tipo='ALM CONTROLADOS' and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='esp'
-then (select sum(piezas*costo) from oficinas.inv_mes_suc_det_his b where b.suc=100  and b.tipo='ALM ESPECIALIDAD' and b.aaa=$aaa and b.mes=$mes)
+then (select sum(piezas*costo) from oficinas.inv_mes_suc_det b where b.suc=100  and b.tipo='ALM ESPECIALIDAD' and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='fbo'
-then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=1600 and b.aaa=$aaa and b.mes=$mes)
+then (select sum(importe) from oficinas.inv_mes_suc b where b.suc=1600 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='met'
-then (select sum(piezas*costo) from oficinas.inv_mes_suc_det_his b where b.suc=100 and b.tipo='ALM METRO' and b.aaa=$aaa and b.mes=$mes)
+then (select sum(piezas*costo) from oficinas.inv_mes_suc_det b where b.suc=100 and b.tipo='ALM METRO' and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='seg'
-then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=90002 and b.aaa=$aaa and b.mes=$mes)
+then (select sum(importe) from oficinas.inv_mes_suc b where b.suc=90002 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='tra'
-then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=6050 and b.aaa=$aaa and b.mes=$mes)
+then (select sum(importe) from oficinas.inv_mes_suc b where b.suc=6050 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='zac'
-then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=17000 and b.aaa=$aaa and b.mes=$mes)
-else 0 end as fi_importe
+then (select sum(importe) from oficinas.inv_mes_suc b where b.suc=17000 and b.aaa=$aaa and b.mes=$mes)
+else 0 end as fi_importe,
+$aaa as aaa, $mes as mes
 
 FROM catalogo.cat_almacenes a
 where a.tipo in('agu','alm','cht','con','esp','fbo','met','tra','zac','seg')";
@@ -264,7 +341,62 @@ where a.tipo in('agu','alm','cht','con','esp','fbo','met','tra','zac','seg')";
     }
  
  
- 
+  public function div_alm_uno($aaa,$mes,$tipo)
+{
+ if($tipo=='tra'){
+ $s="select a.*,
+ifnull((select costo from catalogo.costos_gobierno b where b.clave=a.clave),0)as costo_base,
+ifnull((select paquete from catalogo.costos_gobierno b where b.clave=a.clave),0)as paquetes
+from trasimeno140.inventario_d a";
+ $q=$this->db->query($s);   
+ }elseif($tipo=='seg'){
+  $s="select a.*,
+ifnull((select costo from catalogo.costos_gobierno b where b.clave=a.clave),0)as costo_base,
+ifnull((select paquete from catalogo.costos_gobierno b where b.clave=a.clave),0)as paquetes
+from segpop.inventario_d a";
+ $q=$this->db->query($s);   
+ }
+ elseif($tipo=='alm'){
+  $s="select a.sec as clave, b.susa1 as descri, a.lote,a.cadu as caducidad, a.inv1 as cantidad,
+  a.costo as costo_base, 1 as paquetes
+from desarrollo.inv_cedis a
+left join catalogo.sec_generica b on b.sec=a.sec
+where inv1>0 
+";
+ $q=$this->db->query($s);   
+ } 
+ elseif($tipo=='fbo'){
+  $s="select a.clave as clave, b.susa1 as descri, a.lote,a.caducidad as caducidad, a.cantidad as cantidad,
+  a.costo as costo_base, 1 as paquetes
+from farmabodega.inventario_d a
+left join catalogo.catalogo_bodega b on b.clabo=a.clave
+where cantidad>0 
+";
+ $q=$this->db->query($s);   
+ }
+  elseif($tipo=='con'){
+  $s="select a.clave as clave, b.susa1 as descri, a.lote,a.caducidad as caducidad, a.invf as cantidad,
+  a.costo as costo_base, 1 as paquetes
+from almacen.control_invd a
+left join catalogo.segpop b on b.claves=a.clave
+where invf>0 
+group by a.clave,a.lote
+";
+ $q=$this->db->query($s);   
+ }
+   elseif($tipo=='met'){
+  $s="select a.clave as clave, a.susa as descri, a.lote,a.caducidad as caducidad, a.cantidad as cantidad,
+  a.costo as costo_base, 1 as paquetes
+from metro.inventario_d a
+left join catalogo.almacen b on b.sec=a.clave
+where cantidad>0 
+group by a.clave,a.lote
+";
+ $q=$this->db->query($s);   
+ }   
+
+return $q;
+}
   
   public function sdsdsd()
     { $aaa=date('Y'); 
@@ -602,5 +734,28 @@ where mov=7 and a.sec=$sec and a.suc>100 and a.cantidad>0";
 $q=$this->db->query($s);
 return $q;
 }
+
+public function inv_gral()
+    {
+
+$s="select a.*,
+ifnull((select m11 from almacen.max_cedis x where x.sec=a.sec),0)as farmacia,
+ifnull((select inv1 from desarrollo.inv_cedis_sec1 x where x.sec=a.sec),0)as cedis,
+ifnull((select sum(cantidad)  From farmabodega.inventario_d where left(clave,(LENGTH(clave)-1))=a.sec group by left(clave,(LENGTH(clave)-1))),0)as fbo,
+ifnull((select sum(piezas) from oficinas.inv_seguros x where x.suc=16000 and x.clave=a.clagob group by clave),0)as cht,
+ifnull((select sum(piezas) from oficinas.inv_seguros x where x.suc=17000 and x.clave=a.clagob group by clave),0)as zac,
+ifnull((select sum(piezas) from oficinas.inv_seguros x where x.suc=14000 and x.clave=a.clagob group by clave),0)as agu,
+ifnull((select sum(cantidad) from trasimeno140.inventario_d x where  x.clave=a.clagob group by clave),0)as tra,
+ifnull((select sum(cantidad) from segpop.inventario_d x where x.clave=a.clagob group by clave),0)as seg,
+ifnull((select sum(cantidad) from especialidad.inventario_d x where x.clave=a.clagob group by clave),0)as esp,
+ifnull((select sum(invf) from almacen.control_invd x where x.clave=a.clagob group by clave),0)as con,
+ifnull((select sum(cantidad) from desarrollo.inv x where x.sec=a.sec and x.suc in(176,177,178,179,180,187) and mov=7 group by sec),0)as modu
+from catalogo.cat_nuevo_general_cla a
+
+order by sec";
+$q=$this->db->query($s);
+return $q;
+}
+
 
 }
