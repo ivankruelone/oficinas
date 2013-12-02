@@ -55,5 +55,16 @@
                            <li id="menu_inv_inventario_tod"><?php echo anchor('inventario/mes_tod','TODOS'); ?></li>
                       </ul>
                   </li>
+                  <li class="sub-menu" id="menu_inv">
+                      <a href="javascript:;" class="">
+                          <i class="icon-book"></i>
+                          <span>Reportes</span>
+                          <span class="arrow"></span>
+                      </a>
+                      <ul class="sub">
+                          <li id="menu_reportes"><?php echo anchor('reportes/ventas_imp', 'Ventas Imperial'); ?></li>
+                           <li id="menu_reportes"><?php echo anchor('reportes/ventas_gon','Ventas Gontor'); ?></li>
+                      </ul>
+                  </li>
                   
               </ul>

@@ -34,6 +34,7 @@ class Inventario extends CI_Controller
     {
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
+        
         $data['a'] = $this->inventario_model->compa($aaa,$mes);
         //$data['js'] = 'inventario/inventario_js';
         $this->load->view('main', $data);
@@ -43,11 +44,22 @@ class Inventario extends CI_Controller
     {
         $data['titulo'] = "Reporte de inventario";
         $data['tit']='Reporte de inventario';
+        $data['aaa']=$aaa;
+        $data['mesx']=$this->Catalogos_model->busca_mes_uno($mes);
+        $data['dia']=$this->inventario_model->busca_inv();
         $data['a'] = $this->inventario_model->compa_cia($aaa,$mes,$cia);
-        //$data['js'] = 'inventario/inventario_js';
+        $data['js'] = 'inventario/compa_cia_js';
         $this->load->view('main', $data);
     }
-    
+     function sumit_imprimir($aaa,$mes,$cia)
+    {
+        $data['a'] = $this->inventario_model->compa_cia($aaa,$mes,$cia);
+        $data['aaa'] =$aaa;
+        $data['mes'] =$mes;
+        $data['cia'] =$cia;
+        //$data['js'] = 'orden/imprime_js';
+        $this->load->view('impresion/inv_cia', $data);
+   }
     function mes_tod()
     {
         $data['titulo'] = "Reporte de inventario General";

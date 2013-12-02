@@ -16,7 +16,7 @@
                                  <th colspan="2" style="color:gray;text-align: center">INVENTARIO INICIAL</th>
                                  <th colspan="1" style="color:black; text-align: center">ENTRADAS</th>
                                  <th colspan="3" style="color:blue; text-align: center">VENTA</th>
-                                 <th colspan="2" style="color:green; text-align: center">INVENTARIO FINAL</th>
+                                 <th colspan="3" style="color:green; text-align: center">INVENTARIO FINAL <?php echo $dia.' DE '.$mesx.' DEL '.$aaa?></th>
                                  
                                  </tr>
                                  <tr>
@@ -28,6 +28,7 @@
                                      <th style="color:blue; text-align: right">Recargas</th>
                                      <th style="color:blue; text-align: right">Credito</th>
                                      <th style="color:blue; text-align: right">contado</th>
+                                     <th style="color:black; text-align: right">Dias_vta</th>
                                      <th style="color:green; text-align: right">Piezas</th>
                                      <th style="color:green; text-align: right">Importe</th>
                                  </tr>
@@ -48,6 +49,7 @@
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($r->recarga,2)?></td>
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($r->credito,2)?></td>
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($r->contado,2)?></td>
+                                <td style="color: <?php echo $color1?>; text-align: right"><?php echo $r->num_dias?></td>
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($r->fin_piezas,0)?></td>
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($r->fin_importe,2)?></td>
                                 
@@ -72,6 +74,7 @@
                               <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($trec_impo,2)?></td>
                               <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($tcre_impo,2)?></td>
                               <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($tcon_impo,2)?></td>
+                              <td></td>
                               <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($tinvf,0)?></td>
                               <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($tinvf_impo,2)?></td>
                               

@@ -8,40 +8,7 @@
                            </span>
                          </div>
                          <div class="widget-body">
-<?php
-	$atributos = array('id' => 'com_generar_det_sumit');
-    echo form_open('pedido/com_generar_det_sumit', $atributos);
-    $data_sec = array(
-              'name'        => 'sec',
-              'id'          => 'sec',
-              'value'       => '',
-              'maxlength'   => '13',
-              'size'        => '13'
-            );
-    $data_can = array(
-              'name'        => 'can',
-              'id'          => 'can',
-              'value'       => '',
-              'maxlength'   => '7',
-              'size'        => '7'
-            );
-  
-  ?>
 
-  <table>
-<tr>
-	<td align="left" ><font size="+1">Sec: </font></td>
-    <td><?php echo form_input($data_sec, "", 'required');?></td>
-    <td align="left" ><font size="+1">Cantidad: </font></td>
-    <td><?php echo form_input($data_can, "", 'required');?></td>	
- 	<td colspan="2"align="center"><?php echo form_submit('envio', 'ACEPTAR');?></td>
-</tr>
-</table>
-<input type="hidden" value="<?php echo $id_cc?>" name="id_cc" id="id_cc" />
-  <?php
- 
-	echo form_close();
-  ?>
 <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                  <tr>
@@ -54,6 +21,8 @@
                                      <th>Piezas</th>
                                      <th>Costo</th>
                                      <th>Importe</th>
+                                     <th>Descuento</th>
+                                     <th>Total</th>
                                      <th>Prv</th>
                                      <th>Provedor</th>
                                      
@@ -64,7 +33,12 @@
                                   $tcan=0;$timp=0;
                                 $num=0;
                                 foreach ($q->result() as $r) {
+                                if($r->prv <> $r->prvbase){$color='blue';}else{$color='black';}
                                 $num=$num+1;
+                                if($r->descu>0){
+                                    $descu=($r->costo*$r->ped)-(($r->costo*$r->ped)*($r->descu/100));
+                                    }else{
+                                    $descu=($r->costo*$r->ped);}
                                 $tot=0; $n=0; 
                                 $l0 = anchor('pedido/com_pedido_det_b/'.$r->id_cc.'/'.$r->id,'<img src="'.base_url().'img/error.png" border="0" width="20px" /></a>', array('title' => 'Haz Click aqui para borrar!', 'class' => 'encabezado'));
                                         $atributos = array('id' => 'com_ped_cambia');
@@ -72,25 +46,39 @@
                                         $data_ped = array(
                                        'name'        => 'pedi',
                                        'id'          => 'pedi',
+                                       'size'        => '5',
+                                       'maxlength'   => '5',
                                        'value'       => $r->ped
+                                        );$data_regalo = array(
+                                       'name'        => 'regalo',
+                                       'id'          => 'regalo',
+                                       'value'       => $r->regalo
+                                        );$data_descu = array(
+                                       'name'        => 'descu',
+                                       'id'          => 'descu',
+                                       'value'       => $r->descu
                                         );?> 
                                         <tr>
                                         <td><?php echo $num?></td>
-                                        <td style="text-align: right; "><?php echo $r->sec.' '.$l0?></td>
-                                        <td style="text-align: left; "><?php echo $r->clagob?></td>
-                                        <td style="text-align: left; "><?php echo $r->susa?></td>
-                                        <td style="text-align: right; "><?php echo $r->costobase?></td>
-                                        <td style="text-align: left; "><?php echo $r->prvbasex?></td>
-                                        <td style="text-align: right; "><?php echo $r->ped?>
-                                        <?php echo form_input($data_ped, "", 'required');?>	
+                                        <td style="text-align: right; color: <?php echo $color ?>;"><?php echo $r->sec.' '.$l0?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->clagob?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->susa.'<br />'.$r->descri?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->costobase?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->prvbasex?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->ped?>
+                                        <?php echo form_input($data_ped, "", 'required');?>
+                                        <?php echo 'Regalo'.form_input($data_regalo, "", 'required');?>
+                                        <?php echo'<br />Desc.'.form_input($data_descu, "", 'required');?>	
                                         <?php echo form_submit('envio', 'acepta');?></td>
                                         <input type="hidden" value="<?php echo $id_cc?>" name="id_cc" id="id_cc" />
                                        <input type="hidden" value="<?php echo $r->id?>" name="id" id="id" /> 
                                         <?php echo form_close();?>
-                                       <td style="text-align: right; "><?php echo number_format($r->costo,2)?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->costo*$r->ped,2)?></td>
-                                        <td style="text-align: right; "><?php echo $r->prv?></td>
-                                        <td style="text-align: left; "><?php echo $r->prvx?></td>
+                                       <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($r->costo,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($r->costo*$r->ped,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format(($r->costo*$r->ped)-$descu,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($descu,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo $r->prv?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?> "><?php echo $r->prvx?></td>
                                         
                                         
                                       </tr>
@@ -116,39 +104,6 @@
                          </table>                        
 
 <!---->
-<script language=\"javascript\" type=\"text/javascript\">
-
-$('input:text[name^=\"cansur_\"]').change(function() {
-    
-    var nombre = $(this).attr('name');
-    var valor = $(this).attr('value');
-    //var pedido = $('#pedido').html();
-    
-
-    var id = nombre.split('_');
-    id = id[1];
-    //alert(id + \" \" + valor);
-    actualiza_surtido(id, valor);
-
-});
-
-function actualiza_surtido(id, valor){
-    $.ajax({type: \"POST\",
-        url: \"".site_url()."/a_surtido/actualiza_cansur/\", data: ({ id: id, valor: valor }),
-            success: function(data){
-                
-                
-
-        },
-        beforeSend: function(data){
-
-        }
-        });
-}
-
-</script>
- 
-                          
                          </div>
                      </div>
                      <!-- END BLANK PAGE PORTLET-->

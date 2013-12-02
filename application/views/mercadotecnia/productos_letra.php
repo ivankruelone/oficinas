@@ -60,12 +60,12 @@
               'size'        => '20'
               
             );
-            $data_registro_fec = array(
-              'name'        => 'registro_fec',
-              'id'          => 'registro_fec',
+            $data_aaa_registro = array(
+              'name'        => 'aaa_registro',
+              'id'          => 'aaa_registro',
               'value'       => '',
-              'maxlength'   => '20',
-              'size'        => '20'
+              'maxlength'   => '4',
+              'size'        => '4'
               
             );
             $data_clave = array(
@@ -149,8 +149,8 @@
 	<td><?php echo form_input($data_registro, "");?></td>
  </tr>
  <tr>
-    <td align="left" ><font size="+1"><strong>Fecha_Reg: </strong></font></td>
-	<td><?php echo form_input($data_registro_fec, "");?></td>
+     <td align="left" ><font size="+1"><strong>A&ntilde;o del registro: </strong></font></td>
+	<td><?php echo form_input($data_aaa_registro, "");?></td>
     <td align="left" ><font size="+1"><strong>Clave: </strong></font></td>
 	<td><?php echo form_input($data_clave, "");?></td>
     <td align="left" ><font size="+1"><strong>Sustancia: </strong></font></td>
@@ -207,7 +207,7 @@
                                  ?> 
                                  <tr>
                                    <td style="text-align: left;"><?php echo $l0?></td>
-                                   <td style="text-align: left;"><?php echo $r['descripcion']?></td>
+                                   <td style="text-align: left;"><?php echo $r['descripcion'].'-'.$r['susa']?></td>
                                    <td style="text-align: left;"><?php echo $r['labor']?></td> 
                                    <td style="text-align: left;"><?php echo number_format($r['farmacia'],2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r['pub'],2)?></td>

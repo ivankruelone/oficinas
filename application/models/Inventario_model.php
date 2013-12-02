@@ -6,6 +6,15 @@ class Inventario_model extends CI_Model
     {
         parent::__construct();
     }
+ public function busca_inv()
+ {
+ $s="select *from oficinas.inv_mes_suc group by aaa";
+ $q=$this->db->query($s);
+ $r=$q->row();
+ return $r->dia;
+ }
+ 
+ 
  public function mes()
  {
  $aaa=date('Y');$mes=10; $mesa=$mes-1;
@@ -127,23 +136,28 @@ end,0) as fin_importe,
 
 
 (select (importe_prvocosto) from vtadc.gc_factura_suc aa 
-where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes)
  as facturas,
 (select (contado) from  vtadc.gc_venta_mes aa 
-where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes)
 as contado,
 (select (credito) from  vtadc.gc_venta_mes aa 
-where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes)
 as credito ,
 (select (recarga) from  vtadc.gc_venta_mes aa 
-where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes and aa.cia=a.cia)
-as recarga
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes)
+as recarga,
+
+(select num_dias from  vtadc.gc_venta_mes aa 
+where aa.suc=a.suc and aa.aaa=$aaa and aa.mes=$mes)
+as num_dias
 from catalogo.sucursal a
 where a.cia=$cia and a.suc>100 and a.suc<=2000 and a.suc<>900 and a.suc<>1600 and tlid=1 ";  
 $q=$this->db->query($s);
  return $q;
  }  
-  
+
+ 
 public function mes_alm()
  {
  $aaa=date('Y'); $mesa=date('m')-1;

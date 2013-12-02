@@ -30,8 +30,18 @@
     <td><?php echo form_input($data_pass, "", 'required');?></td>
 	<td align="left" ><font size="+1"><strong>ALMACEN: </strong></font></td>
 	<td align="left"><?php echo form_dropdown('alm', $alm, '', 'id="alm"') ;?> </td>
+ </tr>
+ <tr>   
     <td align="left" ><font size="+1"><strong>Provedor: </strong></font></td>
 	<td align="left"><?php echo form_dropdown('prv', $prv, '', 'id="prv"') ;?> </td>
+    <td align="left" ><font size="+1"><strong>Compa&ntilde;ia: </strong></font></td>
+    <td align="left"> 
+    <select name="cia" id="cia">
+    <option value="13"><?php if($cia=='13')?>Farmacia de Genericos</option>
+    <option value="1"><?php if($cia=='1')?><strong>Farmacias el Fenix</strong></option>
+    </select>
+    </td>
+
  </tr>
  
 
@@ -47,8 +57,10 @@
                              <thead>
                                  <tr>
                                      <th>Id</th>
+                                     <th>Folio</th>
                                      <th>Fecha</th>
                                      <th>Almacen</th>
+                                     <th>Provedor</th>
                                      <th>Importe</th>
                                      <th></th>
                                    </tr>
@@ -59,17 +71,25 @@
                                   $u1=0;$u2=0;$u3=0;$u4=0;
                                 $num=0;$final=0;$final1=0;
                                 foreach ($q->result() as $r) {
+                                
                                 $num=$num+1;
                                 $tot=0; $n=0; 
-                                  $l0 = anchor('pedido/com_pedido_det/'.$r->id,'Detalle</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
+                                  $l0 = anchor('pedido/com_pedido_det/'.$r->id,$r->id.'</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
+                                  if($r->valida==0 and $r->importe>0){
+                                  $l1 = anchor('pedido/com_pedido_cer/'.$r->id,'Cerrar folio</a>', array('title' => 'Haz Click aqui para cerrar!', 'class' => 'encabezado'));  
+                                  }else{
+                                  $l1='Autorizacion';  
+                                  }
+                                  
                                 ?>
                                         <tr>
                                         <td><?php echo $num?></td>
+                                        <td><?php echo $l0?></td>
                                         <td style="text-align: right; "><?php echo $r->fecha?></td>
                                         <td style="text-align: left; "><?php echo $r->almacenx?></td>
                                         <td style="text-align: left; "><?php echo $r->prvx?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->importe,2)?></td>
-                                        <td style="text-align: right; "><?php echo $l0?></td>
+                                        <td style="text-align: right; "><?php echo $l1?></td>
                                         </tr>
                                         <?php 
                                         }?>

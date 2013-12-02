@@ -39,6 +39,7 @@
                                 $num=0;$tinv=0;$tinv_impo=0;$tinvf=0;$tinvf_impo=0;$tfac_impo=0;$trec_impo=0;$tcon_impo=0;$tcre_impo=0;
                                 foreach ($a->result()as $r){
                                $l0 = anchor('inventario/compa_cia/'.$r->aaa.'/'.$r->mes.'/'.$r->cia,$r->cia.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                               $l1 = anchor('inventario/sumit_imprimir/'.$r->aaa.'/'.$r->mes.'/'.$r->cia,'Imp</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                 ?>
                                 <tr>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $l0?></td>
@@ -51,6 +52,7 @@
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($r->contado,2)?></td>
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($r->fin_piezas,0)?></td>
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo number_format($r->fin_importe,2)?></td>
+                                <td style="color: <?php echo $color3?>; text-align: right"><?php echo $l1?></td>
                                 </tr>
                                <?php 
                                $tinv=$tinv+$r->ini_piezas;

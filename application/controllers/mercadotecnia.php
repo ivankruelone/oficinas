@@ -158,9 +158,71 @@ class Mercadotecnia extends CI_Controller
     redirect('mercadotecnia/mer_inv'); 
     }
     
-    /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////catalogo de productos
-    function productos()
+      function solo_busqueda()
+    {
+        $data['titulo'] = "Catalogo de Productos";
+       
+        $data['q'] = $this->mercadotecnia_model->solo_busqueda();
+        $data['js'] = 'mercadotecnia/productos_js';
+        $this->load->view('main', $data); 
+    }
+    function productos_modifica_codigo($cod)
+    {
+        if($cod==0){$cod=$this->input->post('codigo');}else{$cod=$cod;}
+        $data['titulo'] = "Catalogo de Productos";
+        $query=$this->mercadotecnia_model->busca_producto_cod($cod);
+        $r=$query->row();
+        $data['codigo']=$r->codigo;
+        $data['descripcion']=$r->descripcion;
+        $data['lab']=$this->mercadotecnia_model->busca_lab_uno($r->lab);
+        $data['lin']=$this->mercadotecnia_model->busca_lin_uno($r->lin);
+        $data['sublin']=$this->mercadotecnia_model->busca_sublin_uno($r->lin,$r->sublin);
+        $data['iva']=$r->iva;
+        $data['farmacia']=$r->farmacia;
+        $data['pub']=$r->pub;
+        $data['venta']=$r->venta;
+        $data['tipo']=$this->mercadotecnia_model->busca_activo_uno($r->tipo);
+        $data['registro']=$r->registro;
+        $data['aaa_registro']=$r->aaa_registro;
+        $data['tipo_p']=$this->mercadotecnia_model->busca_pro_uno($r->producto);
+        $data['clave']=$r->clave;
+        $data['max']=$r->max;
+        $data['min']=$r->min;
+        $data['susa']=$r->susa;
+        $data['antibio']=$r->antibiotico;
+        $data['id']=$r->id;
+        
+        $this->load->view('main', $data); 
+    }
+  
+    public function cambia_productos_sumit_c()
+    {
+    $this->mercadotecnia_model->cambia_producto(
+    $this->input->post('id'),
+    $this->input->post('descripcion'),
+    $this->input->post('registro'),
+    $this->input->post('aaa_registro'),
+    $this->input->post('clave'),
+    $this->input->post('susa'),
+    $this->input->post('tipo_p'),
+    $this->input->post('iva'),
+    $this->input->post('lab'),
+    $this->input->post('farmacia'),
+    $this->input->post('venta'),
+    $this->input->post('publico'),
+    $this->input->post('tipo'),
+    $this->input->post('lin'),
+    $this->input->post('sublin'),
+    $this->input->post('max'),
+    $this->input->post('min'),
+    $this->input->post('antibio')
+    );
+    $lab=$this->input->post('lab');
+    redirect('mercadotecnia/solo_busqueda'); 
+    }
+        function productos()
     {
         $data['titulo'] = "Catalogo de Productos";
         $data['lab']=$this->mercadotecnia_model->busca_lab();
@@ -178,7 +240,7 @@ class Mercadotecnia extends CI_Controller
     $this->input->post('codigo'),
     $this->input->post('descri'),
     $this->input->post('registro'),
-    $this->input->post('registro_fec'),
+    $this->input->post('aaa_registro'),
     $this->input->post('clave'),
     $this->input->post('susa'),
     $this->input->post('tipo_p'),
@@ -237,7 +299,7 @@ class Mercadotecnia extends CI_Controller
         $data['venta']=$r->venta;
         $data['tipo']=$this->mercadotecnia_model->busca_activo_uno($r->tipo);
         $data['registro']=$r->registro;
-        $data['fecha_registro']=$r->fecha_registro;
+        $data['aaa_registro']=$r->aaa_registro;
         $data['tipo_p']=$this->mercadotecnia_model->busca_pro_uno($r->producto);
         $data['clave']=$r->clave;
         $data['max']=$r->max;
@@ -254,7 +316,7 @@ class Mercadotecnia extends CI_Controller
     $this->input->post('id'),
     $this->input->post('descripcion'),
     $this->input->post('registro'),
-    $this->input->post('registro_fec'),
+    $this->input->post('aaa_registro'),
     $this->input->post('clave'),
     $this->input->post('susa'),
     $this->input->post('tipo_p'),
@@ -402,11 +464,42 @@ class Mercadotecnia extends CI_Controller
         $this->mercadotecnia_model->cerrar_surtido($id);
         redirect('mercadotecnia/pedido');
     }
+///////////////////////////////////////////////////////////////////////////////////////////LICITACIONES
 
+    function mer_genera_lic_a()
+    {
+        $data['titulo'] = "Licitacion";
+        $data['q'] = $this->mercadotecnia_model->mer_genera_lic_a();
+        $this->load->view('main', $data);
+    }
 
+    function agrega_lic()
+    {
+     $a=array('nombre'=>$this->input->post('nombre'),'fecha'=>date('Y-m-d H:i:s'),'id_user'=>$this->session->userdata('id'));
+          $this->db->insert('compras.licita_g',$a);  
+    redirect('mercadotecnia/mer_genera_lic_a');       
+    }
 
-
-
+    function mer_genera_lic_b($id)
+    {
+        $data['titulo'] = "Licitacion";
+        $data['q'] = $this->mercadotecnia_model->mer_genera_lic_b($id);
+         $data['js'] = 'mercadotecnia/mer_genera_lic_b_js';
+        $this->load->view('main', $data);
+    }
+    function agrega_det($t,$id)
+    {
+     if($t==2){
+     $s="insert ignore into licita_c (id_g, codigo, susa, marca, lab, registro, clave, sec, tipo, id_user,aaa_reg)
+        (select $id,codigo,susa,descripcion,labprv,registro,clave,0,0,4,aaa_registro from catalogo.cat_mercadotecnia where clave<>' ')";
+     $this->db->query($s);   
+     }elseif($t==1){
+     $s="insert ignore into licita_c (id_g, codigo, susa, marca, lab, registro, clave, sec, tipo, id_user,,aaa_reg)
+        (select $id,codigo,susa,descripcion,labprv,registro,clave,0,0,4,aaa_registro from catalogo.cat_mercadotecnia where susa<>' ')";   
+     $this->db->query($s);
+     }
+    redirect('mercadotecnia/mer_genera_lic_b/'.$id);
+    }
 
 
 

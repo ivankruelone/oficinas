@@ -16,6 +16,7 @@ class Procesos extends CI_Controller
         $this->load->model('enlaces_model');
         $this->load->model('Catalogos_model');
         $this->load->model('archivos_externos_model');
+        $this->load->model('Envio_model_as400_fin');
 
     }
 
@@ -35,6 +36,7 @@ class Procesos extends CI_Controller
     set_time_limit(0);
     $this->archivos_externos_model->genera_ims_e($this->input->post('fec1'),$this->input->post('fec2'));
     }
+    
     
     function facturas_oficinas()
     {
@@ -83,6 +85,39 @@ class Procesos extends CI_Controller
     $clave=908;
     $this->procesos_model->max_por($clave);
     }
-       
+    
+    function pro_ent_sal()
+    {
+    $data['titulo'] = "Entradas y salidas";
+    $data['q'] = $this->procesos_model->ver_ent_sal();
+    $data['js'] = 'procesos/pro_inv_js';
+    $this->load->view('main', $data);
+    }
+    function ent_sal()
+    {
+    $fec1=$this->input->post('fec1');
+    $fec2=$this->input->post('fec2');
+    $sem=$this->input->post('sem');
+    $this->procesos_model->ent_sal($fec1,$fec2,$sem);
+    redirect('procesos/pro_ent_sal');
+    }
+    function borrar_ent_sal($sem,$fec1)
+    {
+    $this->db->delete('oficinas.sem_ent_sal', array('sem' => $sem,'fec1'=>$fec1));
+    redirect('procesos/pro_ent_sal');
+    }
+    function p_ent_sal($sem,$fec1)
+    {
+    $data['titulo'] = "Entradas y salidas";
+    $data['q'] = $this->procesos_model->p_ent_sal($sem,$fec1);
+    $data['js'] = 'procesos/pro_inv_js';
+    $this->load->view('main', $data);
+    }
+    
+    function desplaza_segpop()
+    {
+    $this->procesos_model->desplazamientos();
+        
+    }
     
 }

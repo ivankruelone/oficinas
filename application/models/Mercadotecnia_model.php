@@ -315,6 +315,17 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
         return $a;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////inventario
+     public function solo_busqueda()
+    {
+        
+        $s = "select a.*,b.labor as labx from catalogo.cat_mercadotecnia a left join catalogo.laboratorios b on b.num=a.lab
+        where fecha_archivo >=date(now()) order by fecha_archivo desc
+        ";
+        $q = $this->db->query($s);
+        
+        return $q;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////inventario
      public function cat_productos_lab()
     {
         
@@ -343,7 +354,7 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
             $a[$r->codigo]['farmacia'] = $r->farmacia;
             $a[$r->codigo]['venta'] = $r->venta;
             $a[$r->codigo]['registro'] = $r->registro;
-            $a[$r->codigo]['fecha_registro'] = $r->fecha_registro;
+            $a[$r->codigo]['aaa_registro'] = $r->aaa_registro;
             $a[$r->codigo]['producto'] = $r->producto;
             $a[$r->codigo]['clave'] = $r->clave;
             $a[$r->codigo]['ivax'] = $r->ivax;
@@ -370,7 +381,7 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
             $a[$r->codigo]['farmacia'] = $r->farmacia;
             $a[$r->codigo]['venta'] = $r->venta;
             $a[$r->codigo]['registro'] = $r->registro;
-            $a[$r->codigo]['fecha_registro'] = $r->fecha_registro;
+            $a[$r->codigo]['aaa_registro'] = $r->aaa_registro;
             $a[$r->codigo]['producto'] = $r->producto;
             $a[$r->codigo]['clave'] = $r->clave;
             $a[$r->codigo]['ivax'] = $r->ivax;
@@ -401,7 +412,7 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
     'tipo'=>'A',
     'registro'=>strtoupper(trim($registro)),
     'id_user'=>$this->session->userdata('id'),
-    'fecha_registro'=>$registro_fec,
+    'aaa_registro'=>$registro_fec,
     'fecha_archivo'=>date('Y-m-d H:i:s'),
     'producto'=>$tipo_p,
     'clave'=>$clave,
@@ -429,7 +440,7 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
     'tipo'=>$tipo,
     'registro'=>strtoupper(trim($registro)),
     'id_user'=>$this->session->userdata('id'),
-    'fecha_registro'=>$registro_fec,
+    'aaa_registro'=>$registro_fec,
     'fecha_archivo'=>date('Y-m-d H:i:s'),
     'producto'=>$tipo_p,
     'clave'=>$clave,
@@ -706,6 +717,15 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
         $q=$this->db->query($s);
         return $q;
     }
+   /////////////////////////////////////////////////////
+  public function busca_producto_cod($cod)
+    {
+    $s="select a.*,b.labor,case when iva=0 then 'Sin Iva' else 'Con Iva' end as ivax from catalogo.cat_mercadotecnia a
+        left join catalogo.laboratorios b on b.num=a.lab
+        where codigo=$cod ";
+        $q=$this->db->query($s);
+        return $q;
+    }
     /////////////////////////////////////////////////////
   public function busca_prv_unico($prv)
     {
@@ -716,6 +736,26 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
     }
 
 
+
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+public function mer_genera_lic_a()
+    {
+    $s="select *from compras.licita_g order by id desc
+        ";
+        $q=$this->db->query($s);
+        return $q;
+    }
+public function mer_genera_lic_b($id)
+    {
+    $s="select *from compras.licita_c where id_g=$id order by id desc
+        ";
+        $q=$this->db->query($s);
+        return $q;
+    }
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 
 
 

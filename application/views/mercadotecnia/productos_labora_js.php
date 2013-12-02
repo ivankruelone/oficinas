@@ -46,6 +46,7 @@ $(document).ready(function() {
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text" },
                 { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text" },
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},

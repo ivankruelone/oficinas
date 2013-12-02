@@ -17,9 +17,10 @@
                                 $l0 = anchor('mercadotecnia/productos_letra/'.$r['letra'],$r['letra'].'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                  ?> 
                                    <td style="text-align: left;"><?php echo $l0?></td>                                  
-                               <?php } ?>
-                               </table>
-                               
+                               <?php }?>
+                             </table>
+                             
+                         
                                 <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                <tr>
