@@ -13,6 +13,7 @@ class Procesos extends CI_Controller
         }
         
         $this->load->model('procesos_model');
+        $this->load->model('Procesos_model_pedido_f');
         $this->load->model('enlaces_model');
         $this->load->model('Catalogos_model');
         $this->load->model('archivos_externos_model');
@@ -119,5 +120,72 @@ class Procesos extends CI_Controller
     $this->procesos_model->desplazamientos();
         
     }
+    
+    function subir_inv()
+    {
+        $data['titulo'] = "Inventario";
+        $data['sucx'] = $this->Catalogos_model->busca_suc();
+        $data['js'] = 'procesos/subir_inv_js';
+        $this->load->view('main', $data);
+    }
+    
+    function subir_inv_suc()
+    {
+        $sucx=$this->input->post('sucx');
+        $data['titulo'] = " Subir Inventario";
+        $this->procesos_model->elimina_suc($sucx);
+        $data['js'] = 'procesos/subir_inv_suc_js';
+        $this->load->view('main', $data);
+    }
+    
+    function subir_inv_sucx()
+    {
+        $data['titulo'] = "Resultado";
+        $this->procesos_model->sube_suc();
+        $data['js'] = 'procesos/subir_inv_suc_js';
+        $this->load->view('main', $data);
+    }
+    
+    ///////////***********************************************///////////// 
+ ///////////***********************************************///////////// 
+  function tabla_pedidos_formulados()
+    {
+       
+        ini_set('memory_limit','5000M');
+        set_time_limit(0);
+        $data['titulo'] = "Generar pedidos formulados";
+		$data['por1'] = $this->Catalogos_model->busca_ord_dias();
+        $data['por2'] = $this->Catalogos_model->busca_ord_dias();
+        $data['por3'] = $this->Catalogos_model->busca_ord_dias();
+        $data['por4'] = $this->Catalogos_model->busca_ord_dias();
+        $data['por5'] = $this->Catalogos_model->busca_ord_dias();
+        $data['q'] = $this->Procesos_model_pedido_f->transmision();
+        $this->load->view('main', $data);
+    }
+  ///////////***********************************************/////////////   
+   public function sumit_pedidos_formulados()
+  {
+    
+     ini_set('memory_limit','5000M');
+     set_time_limit(0);
+     $this->Procesos_model_pedido_f->inserta_pedido_for(
+     $this->input->post('por1'),
+     $this->input->post('por2'),
+     $this->input->post('por3'),
+     $this->input->post('por4'),
+     $this->input->post('por5'));
+    redirect('procesos/tabla_pedidos_formulados');
+  }   
+///////////***********************************************///////////// 
+
+///////////***********************************************///////////// 
+
+
+    
+    
+    
+    
+    
+    
     
 }

@@ -1,67 +1,95 @@
 <script>
 var Script = function () {
-
-
-
-  jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-      "formatted-num-pre": function ( a ) {
-        a = (a === "-" || a === "") ? 0 : a.replace( /[^\d\-\.]/g, "" );
-        return parseFloat( a );
-    },
- 
-    "formatted-num-asc": function ( a, b ) {
-        return a - b;
-    },
- 
-    "formatted-num-desc": function ( a, b ) {
-        return b - a;
-    }
-} );
-
-jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "num-html-pre": function ( a ) {
-        var x = String(a).replace( /<[\s\S]*?>/g, "" );
-        return parseFloat( x );
-    },
- 
-    "num-html-asc": function ( a, b ) {
-        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-    },
- 
-    "num-html-desc": function ( a, b ) {
-        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
-    }
-} );
-
-$(document).ready(function() {
     
- var oTable = $('#tabla1').dataTable( {
-            "aoColumns": [
-                { "sSortDataType": "dom-text", "sType": "num-html" },
-                { "sSortDataType": "dom-text", "sType": "num-html" },
-                { "sSortDataType": "dom-text" },
-                { "sSortDataType": "dom-text" },
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                { "sSortDataType": "dom-text" },
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                { "sSortDataType": "dom-text", "sType": "formatted-num"},
-                
-               
-            ],
-            "bJQueryUI": true,
-            "bPaginate": false
-        });
-                
+    //////////////////////////////////
+$( "input[name^='pedi_']" ).on("change", pedido);
+$( "input[name^='regalo_']" ).on("change", regalo);
+$( "input[name^='descu_']" ).on("change", descuento);
+
+function pedido(event){
+    
+    
+    var $pedido = event.currentTarget.value;
+    var $id = event.currentTarget.attributes.id.value;
+    var $url = '<?php echo site_url('pedido/actualiza_detalle_pedido');?>';
+    
+    var $variables = {
+        pedido: $pedido,
+        id: $id
+    }
+
+    var posting = $.post( $url, $variables );
+        
+         posting.done(function( data ) {
             
+            var $a = data.split("|");
 
-                
-} );
+            $('#pedidoact_' + $id).html($a[0]);
+            $('#importe_' + $id).html($a[1]);
+            $('#descuento_' + $id).html($a[2]);
+            $('#total_' + $id).html($a[3]);
+            
+         });    
+}
+
+function descuento(event){
+    
+    
+    var $descuento = event.currentTarget.value;
+    var $id = event.currentTarget.attributes.id.value;
+    var $url = '<?php echo site_url('pedido/actualiza_detalle_descuento');?>';
+    
+    var $variables = {
+        descuento: $descuento,
+        id: $id
+    }
+
+    var posting = $.post( $url, $variables );
+        
+         posting.done(function( data ) {
+            
+            var $a = data.split("|");
+
+            $('#pedidoact_' + $id).html($a[0]);
+            $('#importe_' + $id).html($a[1]);
+            $('#descuento_' + $id).html($a[2]);
+            $('#total_' + $id).html($a[3]);
+            
+         });    
+}
+
+function regalo(event){
+    
+    
+    var $regalo = event.currentTarget.value;
+    var $id = event.currentTarget.attributes.id.value;
+    var $url = '<?php echo site_url('pedido/actualiza_detalle_regalo');?>';
+    
+    var $variables = {
+        regalo: $regalo,
+        id: $id
+    }
+
+    var posting = $.post( $url, $variables );
+        
+         posting.done(function( data ) {
+            
+            var $a = data.split("|");
+
+            $('#pedidoact_' + $id).html($a[0]);
+            $('#importe_' + $id).html($a[1]);
+            $('#descuento_' + $id).html($a[2]);
+            $('#total_' + $id).html($a[3]);
+            
+         });    
+}
+//////////////////////////////////
+
+var oTable = $('#tabla1').dataTable( {
+		
+	} );
+
 }();
-
 
 
 

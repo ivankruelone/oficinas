@@ -44,6 +44,17 @@
                           
                       </ul>
                   </li>
+                  
+                  <li class="sub-menu" id="menu_mer_reporte">
+                      <a href="javascript:;" class="">
+                          <i class="icon-book"></i>
+                          <span>Reportes</span>
+                          <span class="arrow"></span>
+                      </a>
+                      <ul class="sub">
+                          <li id="menu_mer_reporte_prom_ger"><?php echo anchor('reportes/mer_reporte_prom_ger', 'Claves en promocion'); ?></li>
+                      </ul>
+                  </li>
                
                   
               </ul>

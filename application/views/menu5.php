@@ -18,8 +18,8 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_pedido_far"><?php echo anchor('pedido/pedido_far', 'Generar un pedido a Farmacia'); ?></li>
-                          <li id="menu_pedido_far_his"><?php echo anchor('pedido/pedido_far_his', 'Historico pedido a Farmacia'); ?></li>
+                          <li id="menu_pedido_far_pedido_far"><?php echo anchor('pedido/pedido_far', 'Generar un pedido a Farmacia'); ?></li>
+                          <li id="menu_pedido_far_pedido_far_his"><?php echo anchor('pedido/pedido_far_his', 'Historico pedido a Farmacia'); ?></li>
                           
                       </ul>
                   </li>

@@ -13,6 +13,7 @@
                              <thead>
                                  <tr>
                                      <th>Id</th>
+                                     <th>Tipo</th>
                                      <th>Codigo</th>
                                      <th>Clave</th>
                                      <th>Sustancia Activa</th>
@@ -30,6 +31,7 @@
                                 ?> 
                                         <tr>
                                         <td><?php echo $num?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->tipox?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->codigo?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->clave?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->susa?></td>

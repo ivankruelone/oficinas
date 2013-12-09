@@ -25,7 +25,15 @@
               'maxlength'   => '7',
               'size'        => '7'
             );
-  
+  $data_receta = array(
+              'name'        => 'receta',
+              'id'          => 'receta',
+              'value'       => '',
+              'maxlength'   => '15',
+              'size'        => '15'
+              
+              
+            );
   ?>
 
   <table>
@@ -33,7 +41,12 @@
 	<td align="left" ><font size="+1">Codigo: </font></td>
     <td align="left"><?php echo form_dropdown('codigo', $codigo, '', 'id="codigo"') ;?> </td>
     <td align="left" ><font size="+1">Cantidad: </font></td>
-    <td><?php echo form_input($data_can, "", 'required');?></td>	
+    <td><?php echo form_input($data_can, "", 'required');?></td>
+    
+</tr>
+<tr>
+    <td align="left" ><font size="+1">Receta: </font></td>
+    <td><?php echo form_input($data_receta, "", 'required');?></td>	
  	<td colspan="2"align="center"><?php echo form_submit('envio', 'ACEPTAR');?></td>
 </tr>
 </table>
@@ -52,6 +65,7 @@
                                      <th>Sustancia Activa</th>
                                      <th>Descripcion</th>
                                      <th>Cantidad</th>
+                                     <th>Receta</th>
                                      
                                    </tr>
                              </thead>
@@ -71,7 +85,8 @@
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->clave?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->susa?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->descri?></td>
-                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->ped?>
+                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->ped?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->receta?></td>
                                       </tr>
                                        <?php 
                                         $tcan=$tcan+$r->ped;

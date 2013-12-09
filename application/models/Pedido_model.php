@@ -9,7 +9,7 @@ class Pedido_model extends CI_Model
 
     public function generar_sumit($por1, $por2, $por3, $por4, $por5, $alm)
     {
-       $aa=date('m');
+        $aa = date('m');
         if ($aa < 10) {
             $m = 'm' . substr($aa, 1, 1);
             $mm = 'm' . (substr(($aa), 1, 1) - 1);
@@ -108,8 +108,10 @@ where ped>0 and a.tipo='A' group by a.fechag, a.almacen,a.clasi";
                 $a[$r->fechag]['xtipo'] = $r->xtipo;
                 $a[$r->fechag]['segundo'][$r->almacen]['almacen'] = $r->almacen;
                 $a[$r->fechag]['segundo'][$r->almacen]['almacenx'] = $r->almacenx;
-                $a[$r->fechag]['segundo'][$r->almacen]['tercero'][$r->clasi]['clasi'] = $r->clasi;
-                $a[$r->fechag]['segundo'][$r->almacen]['tercero'][$r->clasi]['clasi'] = $r->clasi;
+                $a[$r->fechag]['segundo'][$r->almacen]['tercero'][$r->clasi]['clasi'] = $r->
+                    clasi;
+                $a[$r->fechag]['segundo'][$r->almacen]['tercero'][$r->clasi]['clasi'] = $r->
+                    clasi;
                 $a[$r->fechag]['segundo'][$r->almacen]['tercero'][$r->clasi]['impo'] = $r->impo;
             }
         } else {
@@ -170,18 +172,19 @@ group by a.id_ped,a.prv,a.almacen";
                 //fechag, clasi, almacen, almacenx, impo
                 $a[$r->id_ped]['segundo'][$r->prv]['id_ped'] = $r->id_ped;
                 $a[$r->id_ped]['segundo'][$r->prv]['fecha_ped'] = $r->fecha_ped;
-                
+
                 $a[$r->id_ped]['segundo'][$r->prv]['prv'] = $r->prv;
                 $a[$r->id_ped]['segundo'][$r->prv]['prvx'] = $r->prvx;
-                $a[$r->id_ped]['segundo'][$r->prv]['tercero'] [$r->almacen]['almacen']= $r->almacen;
-                $a[$r->id_ped]['segundo'][$r->prv]['tercero'] [$r->almacen]['impo']= $r->impo;
+                $a[$r->id_ped]['segundo'][$r->prv]['tercero'][$r->almacen]['almacen'] = $r->
+                    almacen;
+                $a[$r->id_ped]['segundo'][$r->prv]['tercero'][$r->almacen]['impo'] = $r->impo;
             }
         } else {
             $a = 0;
         }
         return $a;
     }
-  public function pedido_compra_detalle($prv,$id_ped)
+    public function pedido_compra_detalle($prv, $id_ped)
     {
         $s = "select a.*, b.sec,b.clagob,b.cans,b.susa,(b.cans*b.costo)as impo,b.costo from orden_c a
 left join orden_d b on b.id_cc=a.id
@@ -205,7 +208,7 @@ where a.tipo='A' and a.id_ped=$id_ped and a.prv=$prv
         }
         return $a;
     }
-  public function precios()
+    public function precios()
     {
         $s = "select b.prvbase, b.costobase,a.*, b.sec,b.clagob,b.cans,b.susa,(b.cans*b.costo)as impo,b.costo,
         c.corto, d.corto as prvbasex 
@@ -231,74 +234,80 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
                 $a[$r->prv]['uno'][$r->sec]['segundo'][$r->almacen]['prvbasex'] = $r->prvbasex;
                 $a[$r->prv]['uno'][$r->sec]['segundo'][$r->almacen]['cans'] = $r->cans;
                 $a[$r->prv]['uno'][$r->sec]['segundo'][$r->almacen]['costo'] = $r->costo;
-                $a[$r->prv]['uno'][$r->sec]['segundo'][$r->almacen]['costobase'] = $r->costobase;
+                $a[$r->prv]['uno'][$r->sec]['segundo'][$r->almacen]['costobase'] = $r->
+                    costobase;
                 $a[$r->prv]['uno'][$r->sec]['segundo'][$r->almacen]['impo'] = $r->impo;
             }
         } else {
             $a = 0;
         }
         return $a;
-    }   
-    
- ////////////////////////////////////////////////////compra_pedidos
-public function com_pedido()
+    }
+
+    ////////////////////////////////////////////////////compra_pedidos
+    public function com_pedido()
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.*, b.nombre as almacenx,c.razo as prvx,
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*, b.nombre as almacenx,c.razo as prvx,
     (select sum(ped*costo) from compras.pedido_d where id_cc=a.id)as importe,
     ifnull((SELECT count(*) FROM compras.pedido_d x where id_cc=a.id and ped>0 and costo>(costobase*1.07) and val=0 group by id_cc),0)as valida 
     From compras.pedido_c a 
     left join catalogo.cat_almacenes b on b.tipo=a.almacen
     left join catalogo.provedor c on c.prov=a.prv
     where a.tipo='A' and id_user=$id_user order by id desc ";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
     }
-public function com_pedido_det($id)
+    public function com_pedido_det($id)
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
     left join catalogo.provedor b on b.prov=a.prv
     left join catalogo.provedor c on c.prov=a.prvbase
     where id_cc=$id order by fecha desc";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
     }
 
-public function agrega_pedido_det($id_cc,$sec,$can,$regalo,$descu)
+    public function agrega_pedido_det($id_cc, $sec, $can, $regalo, $descu)
     {
-    $s="select a.*,b.almacen from catalogo.cat_nuevo_general_sec a,compras.pedido_c b where sec=$sec and b.id=$id_cc ";
-    $q=$this->db->query($s);
-    if($q->num_rows()>0){
-    $ss="select *from compras.pedido_d where id_cc=$id_cc and sec=$sec";
-    $qq=$this->db->query($ss);
-    if($qq->num_rows()==0){    
-    $r=$q->row();    
-$data=array( //id, id_cc, almacen, sec, clagob, codigo, susa, inv, ped, prv, costo
-    'id_cc'=>$id_cc,
-    'almacen'=>$r->almacen,
-    'sec'=>$sec,
-    'clagob'=>$r->clave,
-    'codigo'=>0,
-    'susa'=>$r->susa,
-    'inv'=>0,
-    'ped'=>$can,
-    'prv'=>$r->prv,
-    'regalo'=>$regalo,
-    'descu'=>$descu,
-    'costo'=>$r->cos);
-     $this->db->insert('compras.pedido_d',$data);
-     }}
-}
+        $s = "select a.*,b.almacen from catalogo.cat_nuevo_general_sec a,compras.pedido_c b where sec=$sec and b.id=$id_cc ";
+        $q = $this->db->query($s);
+        if ($q->num_rows() > 0) {
+            $ss = "select *from compras.pedido_d where id_cc=$id_cc and sec=$sec";
+            $qq = $this->db->query($ss);
+            if ($qq->num_rows() == 0) {
+                $r = $q->row();
+                $data = array( //id, id_cc, almacen, sec, clagob, codigo, susa, inv, ped, prv, costo
+                    'id_cc' => $id_cc,
+                    'almacen' => $r->almacen,
+                    'sec' => $sec,
+                    'clagob' => $r->clave,
+                    'codigo' => 0,
+                    'susa' => $r->susa,
+                    'inv' => 0,
+                    'ped' => $can,
+                    'prv' => $r->prv,
+                    'regalo' => $regalo,
+                    'descu' => $descu,
+                    'costo' => $r->cos);
+                $this->db->insert('compras.pedido_d', $data);
+            }
+        }
+    }
 
-public function agrega_pedido_det_prv_sec($alm,$prv,$cia)
-{
-     
-     $data=array('fecha'=>date('Y-m-d'),'id_user'=>$this->session->userdata('id'),
-     'almacen'=>$alm,'prv'=>$prv,'cia'=>$cia);   
-     $this->db->insert('compras.pedido_c',$data);
-     $id_cc= $this->db->insert_id();
-     $s="insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa, descri,inv, ped, prv,
+    public function agrega_pedido_det_prv_sec($alm, $prv, $cia)
+    {
+
+        $data = array(
+            'fecha' => date('Y-m-d'),
+            'id_user' => $this->session->userdata('id'),
+            'almacen' => $alm,
+            'prv' => $prv,
+            'cia' => $cia);
+        $this->db->insert('compras.pedido_c', $data);
+        $id_cc = $this->db->insert_id();
+        $s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa, descri,inv, ped, prv,
       costo,costobase,prvbase)
      (select $id_cc,'$alm',a.sec,a.clagob,a.codigo,concat(trim(b.susa),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
      concat(trim(b.marca_comercial),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
@@ -306,76 +315,80 @@ public function agrega_pedido_det_prv_sec($alm,$prv,$cia)
      left join catalogo.cat_nuevo_general b on a.codigo=b.codigo
      left join catalogo.cat_nuevo_general_sec c on c.sec=a.sec 
      where a.prv=$prv and a.sec>0 and b.susa is not null group by a.clagob,a.sec,a.codigo)";
-     $this->db->query($s);
-}
+        $this->db->query($s);
+    }
 
-public function agrega_pedido_det_prv_cla($alm,$prv,$cia)
-{
-     
-     $data=array('fecha'=>date('Y-m-d'),'id_user'=>$this->session->userdata('id'),
-     'almacen'=>$alm,'prv'=>$prv,'cia'=>$cia);   
-     $this->db->insert('compras.pedido_c',$data);
-     $id_cc= $this->db->insert_id();
-     $s="insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa,descri, inv, ped, prv, costo,costobase,prvbase)
+    public function agrega_pedido_det_prv_cla($alm, $prv, $cia)
+    {
+
+        $data = array(
+            'fecha' => date('Y-m-d'),
+            'id_user' => $this->session->userdata('id'),
+            'almacen' => $alm,
+            'prv' => $prv,
+            'cia' => $cia);
+        $this->db->insert('compras.pedido_c', $data);
+        $id_cc = $this->db->insert_id();
+        $s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa,descri, inv, ped, prv, costo,costobase,prvbase)
      (select $id_cc,'$alm',a.sec,a.clagob,a.codigo,concat(trim(b.susa),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
      concat(trim(b.marca_comercial),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
      0,0,a.prv,a.costo,c.cos,c.prv from catalogo.cat_nuevo_general_prv a
      left join catalogo.cat_nuevo_general b on a.codigo=b.codigo
      left join catalogo.cat_nuevo_general_cla c on c.clagob=a.clagob 
      where a.prv=$prv and a.clagob>' ' and b.susa is not null group by a.clagob,a.sec,a.codigo)";
-     
-     $this->db->query($s);
-}
-public function com_cerrar_pedido($id)
-{
-$s="delete from compras.pedido_d where ped=0 and id_cc=$id";
-$this->db->query($s);
-$s1="select a.*from catalogo.foliador1 a,compras.pedido_c b where a.clav='osi' and b.tipo='A' and b.folprv=0";
-$q1 = $this->db->query($s1);
-if($q1->num_rows()>0){
-$r1=$q1->row();
-$ac0=array(
-'folprv'=>$r1->num,'fecha'=>date('Y-m-d H:i:s'));
-$this->db->where('id_cc', $id); 
-$this->db->update('compras.pedido_d',$ac0);
-$ac1=array(
-'tipo'=>'C','folprv'=>$r1->num,'fecha'=>date('Y-m-d'));
-$this->db->where('id', $id); 
-$this->db->update('compras.pedido_c',$ac1); 
-$ac2=array(
-'num'=>$r1->num+1);
-$this->db->where('clav', 'osi'); 
-$this->db->update('catalogo.foliador1',$ac2);   
-}
-}
 
-public function com_pedido_his()
+        $this->db->query($s);
+    }
+    public function com_cerrar_pedido($id)
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.*, b.nombre as almacenx,c.razo as prvx,
+        $s = "delete from compras.pedido_d where ped=0 and id_cc=$id";
+        $this->db->query($s);
+        $s1 = "select a.*from catalogo.foliador1 a,compras.pedido_c b where a.clav='osi' and b.tipo='A' and b.folprv=0";
+        $q1 = $this->db->query($s1);
+        if ($q1->num_rows() > 0) {
+            $r1 = $q1->row();
+            $ac0 = array('folprv' => $r1->num, 'fecha' => date('Y-m-d H:i:s'));
+            $this->db->where('id_cc', $id);
+            $this->db->update('compras.pedido_d', $ac0);
+            $ac1 = array(
+                'tipo' => 'C',
+                'folprv' => $r1->num,
+                'fecha' => date('Y-m-d'));
+            $this->db->where('id', $id);
+            $this->db->update('compras.pedido_c', $ac1);
+            $ac2 = array('num' => $r1->num + 1);
+            $this->db->where('clav', 'osi');
+            $this->db->update('catalogo.foliador1', $ac2);
+        }
+    }
+
+    public function com_pedido_his()
+    {
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*, b.nombre as almacenx,c.razo as prvx,
     (select sum(ped*costo) from compras.pedido_d where id_cc=a.id)as importe,
     ifnull((SELECT count(*) FROM compras.pedido_d x where id_cc=a.id and ped>0 and costo>(costobase*1.07) and val=0 group by id_cc),0)as valida 
     From compras.pedido_c a 
     left join catalogo.cat_almacenes b on b.tipo=a.almacen
     left join catalogo.provedor c on c.prov=a.prv
     where a.tipo='C' and id_user=$id_user order by id desc ";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
     }
-public function com_pedido_det_his($id)
+    public function com_pedido_det_his($id)
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
     left join catalogo.provedor b on b.prov=a.prv
     left join catalogo.provedor c on c.prov=a.prvbase
     where id_cc=$id order by fecha desc";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
     }
-public function precios_mal()
+    public function precios_mal()
     {
-    $id_user=$this->session->userdata('id');
-    $s="SELECT f.codigo,f.costo as costo_alterno,f.prv as prv_alterno,
+        $id_user = $this->session->userdata('id');
+        $s = "SELECT f.codigo,f.costo as costo_alterno,f.prv as prv_alterno,
 concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),' ',trim(presenta))as descri,
 e.nombre as id_userx,a.*,b.razo as prvbasex,c.razo as prvx,
 h.razo as prvx_alterno,f.prv as prv_alterno
@@ -388,7 +401,7 @@ left join catalogo.cat_nuevo_general_prv f on f.clagob=a.clagob and f.prv<>a.prv
 left join catalogo.cat_nuevo_general g on g.codigo=f.codigo
 left join catalogo.provedor h on h.prov=f.prv
 where a.costo>a.costobase and a.ped>0 and a.val=0";
-$q=$this->db->query($s);
+        $q = $this->db->query($s);
         if ($q->num_rows() > 0) {
             $b = 0;
             foreach ($q->result() as $r) {
@@ -407,22 +420,23 @@ $q=$this->db->query($s);
                 $a[$r->clagob]['descu'] = $r->descu;
                 $a[$r->clagob]['prv'] = $r->prv;
                 $a[$r->clagob]['prvx'] = $r->prvx;
-                 $a[$r->clagob]['uno'][$r->prv_alterno]['prv_alterno'] = $r->prv_alterno;
+                $a[$r->clagob]['uno'][$r->prv_alterno]['prv_alterno'] = $r->prv_alterno;
                 $a[$r->clagob]['uno'][$r->prv_alterno]['prvx_alterno'] = $r->prvx_alterno;
                 $a[$r->clagob]['uno'][$r->prv_alterno]['costo_alterno'] = $r->costo_alterno;
-                
+
             }
         } else {
             $a = 0;
         }
         return $a;
 
-}public function precios_mal_r($fec1,$fec2)
+    }
+    public function precios_mal_r($fec1, $fec2)
     {
-    $fec1=$fec1.' 00:00:00';
-    $fec2=$fec2.' 23:59:59';    
-    $id_user=$this->session->userdata('id');
-    $s="SELECT f.codigo,f.costo as costo_alterno,f.prv as prv_alterno,
+        $fec1 = $fec1 . ' 00:00:00';
+        $fec2 = $fec2 . ' 23:59:59';
+        $id_user = $this->session->userdata('id');
+        $s = "SELECT f.codigo,f.costo as costo_alterno,f.prv as prv_alterno,
 concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),' ',trim(presenta))as descri,
 e.nombre as id_userx,a.*,b.razo as prvbasex,c.razo as prvx,
 h.razo as prvx_alterno,f.prv as prv_alterno
@@ -436,7 +450,7 @@ left join catalogo.cat_nuevo_general g on g.codigo=f.codigo
 left join catalogo.provedor h on h.prov=f.prv
 where a.costo>a.costobase and a.ped>0 and a.val=1 and a.fecha_val between '$fec1' and '$fec2'";
 
-$q=$this->db->query($s);
+        $q = $this->db->query($s);
         if ($q->num_rows() > 0) {
             $b = 0;
             foreach ($q->result() as $r) {
@@ -456,102 +470,131 @@ $q=$this->db->query($s);
                 $a[$r->clagob]['descu'] = $r->descu;
                 $a[$r->clagob]['prv'] = $r->prv;
                 $a[$r->clagob]['prvx'] = $r->prvx;
-                 $a[$r->clagob]['uno'][$r->prv_alterno]['prv_alterno'] = $r->prv_alterno;
+                $a[$r->clagob]['uno'][$r->prv_alterno]['prv_alterno'] = $r->prv_alterno;
                 $a[$r->clagob]['uno'][$r->prv_alterno]['prvx_alterno'] = $r->prvx_alterno;
                 $a[$r->clagob]['uno'][$r->prv_alterno]['costo_alterno'] = $r->costo_alterno;
-                
+
             }
         } else {
             $a = 0;
         }
         return $a;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public function far_pedido()
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function far_pedido()
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.*,b.nombre as sucx From almacen.salidas_ped a
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*,b.nombre as sucx From almacen.salidas_ped a
     left join catalogo.sucursal b on b.suc=a.suc
     where a.tipo='A'";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
     }
-public function far_pedido_det($id)
+    public function far_pedido_det($id)
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.* From almacen.salidas_ped_det a
-    where a.tipo='A'";
-    $q=$this->db->query($s);
-    return $q;
+        $id_user = $this->session->userdata('id');
+        $s = "select a.* From almacen.salidas_ped_det a
+    where a.tipo='A' and id_cc=$id";
+        $q = $this->db->query($s);
+        return $q;
     }
-public function graba_far_pedido_det($id_cc,$codigo,$can)
+    public function graba_far_pedido_det($id_cc, $codigo, $can,$receta)
     {
-$s="insert into almacen.salidas_ped_det(id_cc, fecha, clave, codigo, susa, descri, ped, costo, tipo, sec)
+        $s = "insert into almacen.salidas_ped_det(id_cc, fecha, clave, codigo, susa, descri, ped, costo, tipo, sec,receta)
 (select $id_cc,date(now()),clagob,$codigo,concat(trim(b.susa),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
-concat(trim(b.marca_comercial),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),$can,0,'A',0 from catalogo.cat_nuevo_general b
+concat(trim(b.marca_comercial),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),$can,0,'A',0,'$receta' from catalogo.cat_nuevo_general b
 where codigo=$codigo)";
-$this->db->query($s);
-}
+        $this->db->query($s);
+    }
 
 
-public function far_pedido_det_cer($id_cc)
+    public function far_pedido_det_cer($id_cc)
     {
-$id_user=$this->session->userdata('id');
-$s="select a.num from  catalogo.foliador a,almacen.salidas_ped b  where clav='ccc' and b.id=$id_cc and folio=0";
-$q=$this->db->query($s);
-if($q->num_rows()==1){
-$r=$q->row();
- $s1="insert into almacen.salidas_c
+        $id_user = $this->session->userdata('id');
+        $s = "select a.num from  catalogo.foliador a,almacen.salidas_ped b  where clav='ccc' and b.id=$id_cc and folio=0";
+        $q = $this->db->query($s);
+        if ($q->num_rows() == 1) {
+            $r = $q->row();
+            $s1 = "insert into almacen.salidas_c
 (folio, stat, sucursal, aaap, mesp, diap, aaas, mess, dias, clavep, claves,
 cantidadp, cantidads, edo,  sec, folret, codigo)
-(select $r->num,'A',suc,year(now()),month(now()),day(now()),0,0,0,clave,clave,ped,ped,'con',sec,id_cc,codigo
- from almacen.salidas_ped_det a left join almacen.salidas_ped b on b.id=a.id_cc where id_cc=$id_cc)";   
-$this->db->query($s1);
-$s2="insert into almacen.salidas_cc (folio, stat, sucursal, aaap, mesp, diap, aaas, mess, dias, userid)
-(select $r->num,'A',suc,year(now()),month(now()),day(now()),0,0,0,$id_user from almacen.salidas_ped where id=$id_cc and folio=0)";    
-$this->db->query($s2);
-$a=array('tipo'=>'C');
-$this->db->where('id_cc',$id_cc);
-$this->db->update('almacen.salidas_ped_det',$a);
+(select $r->num,'A',suc,year(now()),month(now()),day(now()),0,0,0,clave,clave,sum(ped),sum(ped),'con',sec,id_cc,codigo
+ from almacen.salidas_ped_det a left join almacen.salidas_ped b on b.id=a.id_cc where id_cc=$id_cc group by a.clave)";
+            $this->db->query($s1);
+            $s2 = "insert into almacen.salidas_cc (folio, stat, sucursal, aaap, mesp, diap, aaas, mess, dias, userid)
+(select $r->num,'A',suc,year(now()),month(now()),day(now()),0,0,0,$id_user from almacen.salidas_ped where id=$id_cc and folio=0)";
+            $this->db->query($s2);
+            $a = array('tipo' => 'C');
+            $this->db->where('id_cc', $id_cc);
+            $this->db->update('almacen.salidas_ped_det', $a);
 
-$b=array('tipo'=>'C','folio'=>$r->num);
-$this->db->where('id',$id_cc);
-$this->db->update('almacen.salidas_ped',$b);
+            $b = array('tipo' => 'C', 'folio' => $r->num);
+            $this->db->where('id', $id_cc);
+            $this->db->update('almacen.salidas_ped', $b);
 
-$c=array('num'=>$r->num+1);
-$this->db->where('clav','ccc');
-$this->db->update('catalogo.foliador',$c);
-}
-}
+            $c = array('num' => $r->num + 1);
+            $this->db->where('clav', 'ccc');
+            $this->db->update('catalogo.foliador', $c);
+        }
+    }
 
-public function far_pedido_his()
+    public function far_pedido_his()
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.*,b.nombre as sucx From almacen.salidas_ped a
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*,b.nombre as sucx From almacen.salidas_ped a
     left join catalogo.sucursal b on b.suc=a.suc
     where a.tipo='C' order by folio desc";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
     }
-public function far_pedido_det_his($id)
+    public function far_pedido_det_his($id)
     {
-    $id_user=$this->session->userdata('id');
-    $s="select a.* From almacen.salidas_ped_det a
+        $id_user = $this->session->userdata('id');
+        $s = "select a.* From almacen.salidas_ped_det a
     where a.tipo='C' and a.id_cc=$id";
-    $q=$this->db->query($s);
-    return $q;
+        $q = $this->db->query($s);
+        return $q;
+    }
+    
+    public function actualiza_detalle_pedido($id, $pedido)
+    {
+        $this->db->where('id', $id);
+        $this->db->set('ped', $pedido);
+        $this->db->update('compras.pedido_d');
+        return $this->calcula_importe($id);
+    }
+    
+    public function actualiza_detalle_descuento($id, $descuento)
+    {
+        $this->db->where('id', $id);
+        $this->db->set('descu', $descuento);
+        $this->db->update('compras.pedido_d');
+        return $this->calcula_importe($id);
     }
 
+    public function actualiza_detalle_regalo($id, $regalo)
+    {
+        $this->db->where('id', $id);
+        $this->db->set('regalo', $regalo);
+        $this->db->update('compras.pedido_d');
+        return $this->calcula_importe($id);
+    }
 
-
-
-
-
-
+    function calcula_importe($id)
+    {
+        $this->db->select('ped, (ped*costo) as importe, (ped * (costo * (descu/100))) as descuento, (ped*costo) - (ped * (costo * (descu/100))) as total', FALSE);
+        $this->db->where('id', $id);
+        $query = $this->db->get('compras.pedido_d');
+        
+        $row = $query->row();
+        
+        return number_format($row->ped, 2)."|".number_format($row->importe, 2)."|".number_format($row->descuento, 2)."|".number_format($row->total, 2);
+        
+    }
 
 
 }

@@ -8,6 +8,7 @@
                            </span>
                          </div>
                          <div class="widget-body">
+                                       <input type="hidden" value="<?php echo $id_cc?>" name="id_cc" id="id_cc" />
 
 <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
@@ -36,26 +37,24 @@
                                 if($r->prv <> $r->prvbase){$color='blue';}else{$color='black';}
                                 $num=$num+1;
                                 if($r->descu>0){
-                                    $descu=($r->costo*$r->ped)-(($r->costo*$r->ped)*($r->descu/100));
+                                    $tolal=($r->costo*$r->ped)-(($r->costo*$r->ped)*($r->descu/100));
                                     }else{
-                                    $descu=($r->costo*$r->ped);}
+                                    $tolal=($r->costo*$r->ped);}
                                 $tot=0; $n=0; 
                                 $l0 = anchor('pedido/com_pedido_det_b/'.$r->id_cc.'/'.$r->id,'<img src="'.base_url().'img/error.png" border="0" width="20px" /></a>', array('title' => 'Haz Click aqui para borrar!', 'class' => 'encabezado'));
-                                        $atributos = array('id' => 'com_ped_cambia');
-                                        echo form_open('pedido/com_ped_cambia', $atributos);
                                         $data_ped = array(
-                                       'name'        => 'pedi',
-                                       'id'          => 'pedi',
+                                       'name'        => 'pedi_'.$r->id,
+                                       'id'          => $r->id,
                                        'size'        => '5',
                                        'maxlength'   => '5',
                                        'value'       => $r->ped
                                         );$data_regalo = array(
-                                       'name'        => 'regalo',
-                                       'id'          => 'regalo',
+                                       'name'        => 'regalo_'.$r->id,
+                                       'id'          => $r->id,
                                        'value'       => $r->regalo
                                         );$data_descu = array(
-                                       'name'        => 'descu',
-                                       'id'          => 'descu',
+                                       'name'        => 'descu_'.$r->id,
+                                       'id'          => $r->id,
                                        'value'       => $r->descu
                                         );?> 
                                         <tr>
@@ -65,27 +64,23 @@
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->susa.'<br />'.$r->descri?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->costobase?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->prvbasex?></td>
-                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->ped?>
+                                        <td style="text-align: right; color: <?php echo $color ?>">
+                                        <span id="pedidoact_<?php echo $r->id; ?>"><?php echo $r->ped?></span>
                                         <?php echo form_input($data_ped, "", 'required');?>
-                                        <?php echo 'Regalo'.form_input($data_regalo, "", 'required');?>
+                                        <?php echo '<br />Regalo'.form_input($data_regalo, "", 'required');?>
                                         <?php echo'<br />Desc.'.form_input($data_descu, "", 'required');?>	
-                                        <?php echo form_submit('envio', 'acepta');?></td>
-                                        <input type="hidden" value="<?php echo $id_cc?>" name="id_cc" id="id_cc" />
-                                       <input type="hidden" value="<?php echo $r->id?>" name="id" id="id" /> 
-                                        <?php echo form_close();?>
+                                        </td>
+
                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($r->costo,2)?></td>
-                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($r->costo*$r->ped,2)?></td>
-                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format(($r->costo*$r->ped)-$descu,2)?></td>
-                                        <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($descu,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> " id="importe_<?php echo $r->id; ?>"><?php echo number_format($r->costo*$r->ped,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> " id="descuento_<?php echo $r->id; ?>"><?php echo number_format(($r->costo*$r->ped)-$tolal,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> " id="total_<?php echo $r->id; ?>"><?php echo number_format($tolal,2)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?> "><?php echo $r->prv?></td>
                                         <td style="text-align: left; color: <?php echo $color ?> "><?php echo $r->prvx?></td>
                                         
                                         
                                       </tr>
-                                       <input type="hidden" value="<?php echo $id_cc?>" name="id_cc" id="id_cc" />
-                                       <input type="hidden" value="<?php echo $r->id?>" name="id" id="id" /> 
                                         <?php 
-                                         echo form_close();
                                         $tcan=$tcan+$r->ped;
                                         $timp=$timp+$r->ped*$r->costo;
                                         }?>
@@ -102,6 +97,8 @@
                              </tr>
                              </tfoot>
                          </table>                        
+
+<!---->
 
 <!---->
                          </div>

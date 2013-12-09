@@ -122,7 +122,7 @@ function claves_promocion()
          $s="SELECT codigo, descri, sum(can) as cantidad
 FROM vtadc.venta_detalle
 where codigo in (7502248230599, 7502248230575, 7503001467375)
-and fecha between '2013-11-22' and '2013-12-31' group by codigo;"; 
+and fecha between '2013-11-23' and '2013-12-31' group by codigo;"; 
         $q = $this->db->query($s);
         //echo $this->db->last_query();
         //echo die;
@@ -136,12 +136,97 @@ function claves_promocion_x_sucursal($codigo)
 FROM vtadc.venta_detalle a
 left join catalogo.sucursal b on a.suc=b.suc
 where codigo = $codigo
-and fecha between '2013-11-22' and '2013-12-31' group by suc;"; 
+and fecha between '2013-11-23' and '2013-12-31' group by suc;"; 
         $q = $this->db->query($s);
         //echo $this->db->last_query();
         //echo die;
 return $q;        
 }
 
+
+//////////////////////////////////////////////////////supervisor///////////////////////////////
+
+function claves_promocion_sup($reg)
+    {
+        
+         $s="SELECT a.codigo, a.descri, a.nomina, c.completo, sum(a.can) as cantidad, b.regional
+FROM vtadc.venta_detalle a
+left join catalogo.sucursal b on b.suc=a.suc
+left join catalogo.cat_empleado c on c.nomina=a.nomina
+where codigo in (7502248230599, 7502248230575, 7503001467375)
+and fecha between '2013-11-23' and '2013-12-31' 
+and b.superv=$reg and b.tipo2<>'F'
+group by nomina;"; 
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //echo die;
+return $q;        
+}
+
+function claves_promocion_x_sucursal_sup($codigo, $reg)
+    {
+        
+         $s="SELECT a.suc, b.nombre, a.codigo, a.descri, a.tiket, a.fecha, a.nomina,  a.can
+FROM vtadc.venta_detalle a
+left join catalogo.sucursal b on a.suc=b.suc
+left join catalogo.cat_empleado c on c.nomina=a.nomina
+where codigo in (7502248230599, 7502248230575, 7503001467375) and a.nomina=$codigo
+and fecha between '2013-11-23' and '2013-12-31' 
+and b.superv=$reg and b.tipo2<>'F'
+"; 
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //echo die;
+return $q;        
+}
+
+//////////////////////////////////////////////////////gerente///////////////////////////////
+
+function claves_promocion_ger($reg)
+    {
+        
+         $s="SELECT a.codigo, a.descri, a.nomina, c.completo, sum(a.can) as cantidad, b.regional
+FROM vtadc.venta_detalle a
+left join catalogo.sucursal b on b.suc=a.suc
+left join catalogo.cat_empleado c on c.nomina=a.nomina
+where codigo in (7502248230599, 7502248230575, 7503001467375)
+and fecha between '2013-11-23' and '2013-12-31' 
+and b.regional=$reg and b.tipo2<>'F'
+group by nomina;"; 
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //echo die;
+return $q;        
+}
+
+function claves_promocion_general()
+    {
+        
+         $s="SELECT sum(a.can) as cantidad
+FROM vtadc.venta_detalle a
+where codigo in (7502248230599, 7502248230575, 7503001467375)
+and fecha between '2013-11-23' and '2013-12-31'"; 
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //echo die;
+return $q;        
+}
+
+function claves_promocion_x_sucursal_ger($codigo, $reg)
+    {
+        
+         $s="SELECT a.suc, b.nombre, a.codigo, a.descri, a.tiket, a.fecha, a.nomina,  a.can
+FROM vtadc.venta_detalle a
+left join catalogo.sucursal b on a.suc=b.suc
+left join catalogo.cat_empleado c on c.nomina=a.nomina
+where codigo in (7502248230599, 7502248230575, 7503001467375) and a.nomina=$codigo
+and fecha between '2013-11-23' and '2013-12-31' 
+and b.regional=$reg and b.tipo2<>'F'
+"; 
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //echo die;
+return $q;        
+}
 
 }

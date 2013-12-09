@@ -261,7 +261,10 @@ FROM desarrollo.inv a
 left join catalogo.almacen b on b.clabo=a.sec
 where tsuc<>'F' and a.mov=07 and a.cantidad>0 and a.suc in(1601,1602,1603) group by a.suc,a.sec)";
 $this->db->query($s);
-
+$s="update desarrollo.inv_cedis a, catalogo.almacen b
+set a.costo=b.costo
+where a.inv1>0 and a.costo=0 and a.sec=b.sec and b.tsec='G'";
+$this->db->query($s);
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
 (select $aaa,$mes,13,900,aa.sec,' ',aa.codigo,bb.susa1,sum(inv1),aa.costo,bb.lin,'ALM CEDIS',$dia
 from desarrollo.inv_cedis aa left join catalogo.sec_generica bb on bb.sec=aa.sec where aa.inv1>0 group by aa.sec)
@@ -288,28 +291,34 @@ $s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, pie
 ";
 $this->db->query($s);
 $s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
-(select $aaa,$mes,$dia,6050,clave,descri,sum(cantidad), 0,5,sum(cantidad),clave from trasimeno140.inventario_d  where cantidad>0 group by clave)
+(select $aaa,$mes,$dia,6050,clave,descri,sum(cantidad/contable_div), 0,5,sum(cantidad/contable_div),clave from trasimeno140.inventario_d  where cantidad>0 group by clave)
 ";
 $this->db->query($s);
 
   
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
-(select $aaa,$mes,1,100,0,aa.clave,ifnull(codigo,0),bb.susa1,sum(invf),aa.costo,bb.lin,'ALM CONTROLADOS',$dia
+(select $aaa,$mes,1,100,0,aa.clave,ifnull(bb.codigo,0),bb.susa1,sum(invf),aa.costo,bb.lin,'ALM CONTROLADOS',$dia
 from almacen.control_invd aa left join catalogo.segpop bb on bb.claves=aa.clave where aa.invf>0 and lin is not null group by aa.clave)";
 $this->db->query($s);
 
 //////////////seguros populares
+$ss="delete from oficinas.inv_seguros where suc=16000";
+$this->db->query($ss);
+$ss="insert into oficinas.inv_seguros (aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
+(select $aaa,$mes,$dia,16000,clave,descri,sum(cantidad),costo,lin,
+SUM(case when div_conta>0 then cantidad/div_conta else cantidad end),clave from oficinas.inv_seguros_lote group by clave)";
+$this->db->query($ss);
 $s = "update  oficinas.inv_seguros a set piezas_paquete=piezas, clave_sin_punto=clave where  a.aaa=$aaa and a.mes=$mes";
 $q = $this->db->query($s);
  
 $s = "update  oficinas.inv_seguros a,oficinas.convertir_claves b
 set clave_sin_punto=b.clave
-where a.clave=b.clave_punto and a.aaa=$aaa and a.mes=$mes";
+where a.clave=b.clave_punto and a.aaa=$aaa and a.mes=$mes and suc<>16000";
 $q = $this->db->query($s);
 
 $s = "update oficinas.inv_seguros a, catalogo.costos_gobierno b
 set a.costo=b.costo,piezas_paquete= case when paquete>1 then (a.piezas/b.paquete) else a.piezas end
-where a.clave_sin_punto=b.clave and  a.aaa=$aaa and a.mes=$mes";
+where a.clave_sin_punto=b.clave and  a.aaa=$aaa and a.mes=$mes and suc <> 16000";
 $q = $this->db->query($s);
 
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo,dia)
@@ -317,8 +326,8 @@ $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo,
 from oficinas.inv_seguros a where a.aaa=$aaa and a.mes=$mes and suc in(17000,14000,16000,6050,90002) and piezas_paquete>0)";
 $this->db->query($s);
  
-$s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia)
-(select aaa,mes,cia,suc,sum(piezas),sum(piezas*costo),dia from oficinas.inv_mes_suc_det where  aaa=$aaa and mes=$mes group by aaa,mes,suc)";
+$s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia,sem)
+(select aaa,mes,cia,suc,sum(piezas),sum(piezas*costo),dia,$sem from oficinas.inv_mes_suc_det where  aaa=$aaa and mes=$mes group by aaa,mes,suc)";
 $this->db->query($s);
 die();
 $s="insert into desarrollo.inv_cosvta(cia, suc, sem, aaaa, mes, lin, plaza, succ, importe,piezas)
@@ -339,7 +348,7 @@ public function respalda_inv()
 $s="insert into oficinas.inv_mes_suc_det_his (aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia)
 (select aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia from  oficinas.inv_mes_suc_det)";
 $this->db->query($s);
-$s1="insert into oficinas.inv_mes_suc_his(aaa, mes, cia, suc, piezas, importe, dia)
+$s1="insert into oficinas.inv_mes_suc_his(aaa, mes, cia, suc, piezas, importe, dia,sem)
 (select aaa, mes, cia, suc, piezas, importe, dia from oficinas.inv_mes_suc)";
 $this->db->query($s1);    
 }
@@ -384,6 +393,20 @@ and suc>100
 group by suc
 )
 on duplicate key update ent=values(ent)";
+$this->db->query($s);
+$s="update oficinas.sem_ent_sal a
+set
+ent_back=ifnull((SELECT sum(piezas)
+frOM vtadc.gc_compra_det_back b where b.suc=a.suc and fecha between fec1 and fec2 group by suc)-
+(SELECT sum(piezas)
+frOM vtadc.gc_compra_dev_back b where b.suc=a.suc and fecha between fec1 and fec2 group by suc),0),
+
+imp_ent_back=ifnull((SELECT sum(importe)
+frOM vtadc.gc_compra_det_back b where b.suc=a.suc and fecha between fec1 and fec2 group by suc)-
+(SELECT sum(importe)
+frOM vtadc.gc_compra_dev_back b where b.suc=a.suc and fecha between fec1 and fec2 group by suc),0)
+where a.fecha between '$fec1' and '$fec2'
+";
 $this->db->query($s);
 //////////////////////////////////////////////////////////////// entradas y salidas almacen cedis 900
 $s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
@@ -652,7 +675,29 @@ $this->db->query($s);
 
 }
 
+public function elimina_suc($sucx)
+{
+$s="delete from desarrollo.inv where suc=$sucx"; 
 
+
+$this->db->query($s); 
+//echo $this->db->last_query();
+//echo die;
+
+}
+
+public function sube_suc()
+{
+$s="load data infile 'c:/wamp/www/subir10/inventarios.prn'
+replace into table desarrollo.inv FIELDS TERMINATED BY '||'
+LINES TERMINATED BY '\r\n' (suc, codigo, cantidad, fechai, cia)
+set tsuc='F', mov=3, sec=0"; 
+
+$this->db->query($s); 
+//echo $this->db->last_query();
+//echo die;
+
+}
 
 
 

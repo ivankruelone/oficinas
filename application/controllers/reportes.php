@@ -163,4 +163,57 @@ class Reportes extends CI_Controller
         $data['js'] = 'reportes/mer_reporte_prom_cod_js';
         $this->load->view('main', $data);
     }
+    
+//////////////////////////////////////////////////////supervisor/////////////////////////////////////////////////////    
+    
+    public function mer_reporte_prom_sup()
+    {
+       
+        $id_plaza=$this->session->userdata('id_plaza');
+        $supx=$this->Catalogos_model->busca_sup_uno($id_plaza);
+        $data['titulo']= 'Empleados que vendieron productos en promoci&oacute;n';
+        $data['a'] = $this->reportes_model->claves_promocion_sup($this->session->userdata('id_plaza'));
+        $data['b'] = $this->reportes_model->claves_promocion_general();
+        $data['tit']='PRODUCTOS EN PROMOCI&Oacute;N, '. 'PLAZA '.$id_plaza.', '.trim($supx);
+        $data['js'] = 'reportes/mer_reporte_prom_sup_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function mer_reporte_prom_cod_sup($codigo)
+    {
+        
+        $id_plaza=$this->session->userdata('id_plaza');
+        $data['codigo']= $codigo;
+        $data['titulo']= 'Piezas x codigo x sucursal ';
+        $data['a'] = $this->reportes_model->claves_promocion_x_sucursal_sup($codigo,$this->session->userdata('id_plaza'));
+        $data['js'] = 'reportes/mer_reporte_prom_cod_sup_js';
+        $this->load->view('main', $data);
+    }
+    
+///////////////////////////////////////////////////////gerente/////////////////////////////////////////////////////////////
+
+    public function mer_reporte_prom_ger()
+    {
+       
+        $id_plaza=$this->session->userdata('id_plaza');
+        $gerx=$this->Catalogos_model->busca_ger_uno($id_plaza);
+        $data['titulo']= 'Empleados que vendieron productos en promoci&oacute;n';
+        $data['a'] = $this->reportes_model->claves_promocion_ger($this->session->userdata('id_plaza'));
+        $data['b'] = $this->reportes_model->claves_promocion_general();
+        $data['tit']='PRODUCTOS EN PROMOCI&Oacute;N, '. 'PLAZA '.$id_plaza.', '.trim($gerx);
+        $data['js'] = 'reportes/mer_reporte_prom_ger_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function mer_reporte_prom_cod_ger($codigo)
+    {
+        
+        $id_plaza=$this->session->userdata('id_plaza');
+        $data['codigo']= $codigo;
+        $data['titulo']= 'Piezas x codigo x sucursal ';
+        $data['a'] = $this->reportes_model->claves_promocion_x_sucursal_ger($codigo,$this->session->userdata('id_plaza'));
+        $data['js'] = 'reportes/mer_reporte_prom_cod_ger_js';
+        $this->load->view('main', $data);
+    }
+
 }

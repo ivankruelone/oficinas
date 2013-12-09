@@ -30,6 +30,7 @@ class inv_control_espe extends CI_Controller
         $data['js'] = 'inv_control_espe/esp_control_inv_js';
         $this->load->view('main', $data);
     }
+   
        
     
     

@@ -106,12 +106,25 @@ class Catalogos extends CI_Controller
         $this->load->view('main', $data);
 
     }
-    
+     function control_especial()
+    {
+        $data['titulo'] = "Catalogo de Controlados y especialidad";
+        $data['q'] = $this->catalogos_model->especial_control();
+        $data['js'] = 'catalogos/control_especial_js';
+        $this->load->view('main', $data);
+    }
     
      function genericos_venta()
     {
         $data['titulo'] = "Catalogo de Genericos";
         $data['a'] = $this->catalogos_model->genericos();
+        $data['js'] = 'catalogos/genericos_venta_js';
+        $this->load->view('main', $data);
+    }
+     function causes()
+    {
+        $data['titulo'] = "Catalogo de causes";
+        $data['q'] = $this->catalogos_model->causes();
         $data['js'] = 'catalogos/genericos_venta_js';
         $this->load->view('main', $data);
     }

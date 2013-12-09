@@ -25,6 +25,8 @@
                           <li id="menu_procesos_pro_inv"><?php echo anchor('procesos/pro_inv', 'Inventario'); ?></li>
                           <li id="menu_procesos_pro_ent_sal"><?php echo anchor('procesos/pro_ent_sal', 'Entra-sal'); ?></li>
                           <li id="menu_procesos_desplaza_segpop"><?php echo anchor('procesos/desplaza_segpop', 'Desplazamientos segpop'); ?></li>
+                          <li id="menu_procesos_subir_inv"><?php echo anchor('procesos/subir_inv', 'SUBIR INVENTARIO'); ?></li>
+                          <li id="menu_procesos_tabla_pedidos_formulados"><?php echo anchor('procesos/tabla_pedidos_formulados', 'Pedidos Formulados'); ?></li>
                       </ul>
                   </li>   
                   

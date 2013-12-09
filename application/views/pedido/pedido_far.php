@@ -11,6 +11,7 @@
 <?php
 	$atributos = array('id' => 'far_generar_sumit');
     echo form_open('pedido/far_generar_sumit', $atributos);
+    
      ?>
  
   <table>

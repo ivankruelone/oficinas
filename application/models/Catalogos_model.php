@@ -121,6 +121,18 @@ order by b.clagob asc,b.costo";
         return $a;
     }
 
+public function especial_control()
+    {
+    $id_user=$this->session->userdata('id');
+    $s="select a.*,case when persona='ES' then 'E' else 'C' end as tipox,
+    ifnull((select sum(invf) from almacen.control_invd b where b.clave=a.clave),0)as inv,
+    ifnull((select (costo) from almacen.control_invd b where b.clave=a.clave and b.costo>0 group by b.clave),0)as costo 
+    From catalogo.cat_con a";
+    $q=$this->db->query($s);
+    return $q;
+    }
+
+
     public function especialidad()
     {
         $s = "select b.sec, a.*, b.codigo,b.costo,b.prv,b.preferencia,b.prvxx,b.marca,
@@ -147,6 +159,15 @@ order by b.clagob asc,b.costo";
 
         return $a;
     }
+
+    function causes()
+    {
+        $s = "SELECT a.*,b.razo as prvx from catalogo.cat_nuevo_general_cla a
+        left join catalogo.provedor b on b.prov=a.prv  where a.cause>0";
+        $q= $this->db->query($s);
+        return $q;
+    }
+
 
     function busca_ord_dias()
     {
@@ -399,10 +420,10 @@ order by b.clagob asc,b.costo";
         $query = $this->db->query($sql);
 
         $suc = array();
-        $suc[0] = "Seleccione Sucursal";
+        $suc[0] = "Seleccione una Sucursal";
 
         foreach ($query->result() as $row) {
-            $suc[$row->suc] = $row->nombre;
+            $suc[$row->suc] = $row->suc.' - '.$row->nombre;
         }
 
         return $suc;
@@ -505,5 +526,6 @@ function busca_codigo_especialidad()
         }
      return $aaa;
     }
-
+    /////////////////////////////////////////////////////
+    
 }

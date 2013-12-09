@@ -217,8 +217,6 @@ when a.tipo='cht'
 then (select sum(piezas) from oficinas.inv_mes_suc_his b where b.suc=16000 and b.aaa=$aaa and b.mes=$mesa)
 when a.tipo='con'
 then (select sum(piezas) from oficinas.inv_mes_suc_det_his b where b.suc=100 and b.tipo='ALM CONTROLADOS' and b.aaa=$aaa and b.mes=$mesa)
-when a.tipo='esp'
-then (select sum(piezas) from oficinas.inv_mes_suc_det_his b where b.suc=100 and b.tipo='ALM ESPECIALIDAD'  and b.aaa=$aaa and b.mes=$mesa)
 when a.tipo='fbo'
 then (select sum(piezas) from oficinas.inv_mes_suc_his b where b.suc=1600 and b.aaa=$aaa and b.mes=$mesa)
 when a.tipo='met'
@@ -240,8 +238,6 @@ when a.tipo='cht'
 then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=16000 and b.aaa=$aaa and b.mes=$mesa)
 when a.tipo='con'
 then (select sum(piezas*costo) from oficinas.inv_mes_suc_det_his b where b.suc=100 and b.tipo='ALM CONTROLADOS' and b.aaa=$aaa and b.mes=$mesa)
-when a.tipo='esp'
-then (select sum(piezas*costo) from oficinas.inv_mes_suc_det_his b where b.suc=100  and b.tipo='ALM ESPECIALIDAD' and b.aaa=$aaa and b.mes=$mesa)
 when a.tipo='fbo'
 then (select sum(importe) from oficinas.inv_mes_suc_his b where b.suc=1600 and b.aaa=$aaa and b.mes=$mesa)
 when a.tipo='met'
@@ -262,8 +258,6 @@ then (select sum(importe_prvcosto) from vtadc.gc_factura b where  b.suc=900 and 
 when a.tipo='cht'
 then (select sum(importe_prvcosto) from vtadc.gc_factura b where suc>=16000 and suc<=16999 and b.aaa=$aaa and b.mes=$mes)
 when a.tipo='con'
-then 0
-when a.tipo='esp'
 then 0
 when a.tipo='fbo'
 then (select sum(importe_prvcosto) from vtadc.gc_factura b where b.suc=1600 and b.aaa=$aaa and b.mes=$mes)
@@ -348,7 +342,7 @@ else 0 end as fi_importe,
 $aaa as aaa, $mes as mes
 
 FROM catalogo.cat_almacenes a
-where a.tipo in('agu','alm','cht','con','esp','fbo','met','tra','zac','seg')";
+where a.tipo in('agu','alm','cht','con','fbo','met','tra','zac','seg')";
     $q=$this->db->query($s);
     
     return $q;
@@ -616,7 +610,7 @@ end as modulos_importe
 FROM catalogo.cat_almacenes a
 
 where a.tipo='alm'
-or a.tipo='cht' or a.tipo='esp' or a.tipo='fbo' or a.tipo='agu' or a.tipo='zac' or a.tipo='con'";
+or a.tipo='cht' or a.tipo='fbo' or a.tipo='agu' or a.tipo='zac' or a.tipo='con'";
     $q=$this->db->query($s);
     
     return $q;

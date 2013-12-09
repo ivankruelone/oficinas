@@ -110,7 +110,8 @@ $f='';
         <tr>
         <th colspan=\"1\" align=\"left\"><strong>CLAGOB</strong></th>
         <th colspan=\"1\" align=\"left\"><strong>CODIGO</strong></th>
-        <th colspan=\"4\" align=\"left\"><strong>SUSTANCIA ACTIVA</strong></th>
+        <th colspan=\"1\" align=\"left\"><strong>RECETA</strong></th>
+        <th colspan=\"3\" align=\"left\"><strong>SUSTANCIA ACTIVA</strong></th>
         <th colspan=\"4\" align=\"left\"><strong>DESCRIPCION</strong></th>
         <th colspan=\"1\" align=\"right\"><strong>PIEZAS</strong></th>
         </tr>
@@ -128,7 +129,8 @@ $f='';
                                         <tr>
                                         <td>".$r->clave."</td>
                                         <td>".$r->codigo."</td>
-                                        <td style=\"text-align: left;\" colspan=\"4\">".$r->susa."</td>
+                                        <td style=\"text-align: left;\" colspan=\"1\">".$r->receta."</td>
+                                        <td style=\"text-align: left;\" colspan=\"3\">".$r->susa."</td>
                                         <td style=\"text-align: left;\" colspan=\"4\">".$r->descri."</td>
                                         <td style=\"text-align: right;\">".number_format($r->ped,0)."</td>
                                         </tr>";
