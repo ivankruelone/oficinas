@@ -11,6 +11,7 @@
                           <li id="menu_catalogo_productos"><?php echo anchor('mercadotecnia/productos', 'Catalogo de Productos'); ?></li>
                           <li id="menu_catalogo_provedor"><?php echo anchor('mercadotecnia/provedor', 'Catalogo de Provedor'); ?></li>
                           <li id="menu_catalogo_laboratorios"><?php echo anchor('mercadotecnia/laboratorios', 'Catalogo de Laboratorios'); ?></li>
+                          <li id="menu_catalogo_catalogos_costos_mayoristas"><?php echo anchor('catalogos/costos_mayoristas', 'Costos Mayoristas'); ?></li>
                       </ul>
                   </li>
                   

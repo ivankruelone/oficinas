@@ -34,6 +34,7 @@
                       <ul class="sub">
                           <li id="menu_catalogo_catalogos_control_espe"><?php echo anchor('catalogos/control_especial', 'Controlados y Especialidad'); ?></li>
                           <li id="menu_catalogo_catalogos_causes"><?php echo anchor('catalogos/causes', 'Causes'); ?></li>
+                          <li id="menu_catalogo_catalogos_costos_mayoristas"><?php echo anchor('catalogos/costos_mayoristas', 'Costos Mayoristas'); ?></li>
                           
                       </ul>
                   </li> 

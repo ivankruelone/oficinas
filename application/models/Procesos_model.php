@@ -9,7 +9,136 @@ class Procesos_model extends CI_Model
  
 public function facturas_oficinas()
 {
+$cat="update metro.surtido_d a,catalogo.almacen b
+set a.costo=b.costo
+where a.clave=b.sec and b.costo>0";
+$this->db->query($cat);
+$cat="update almacen.salidas_c a,catalogo.cat_nuevo_general_prv b
+set a.costo=b.costo
+where a.codigo=b.codigo and a.claves=b.clagob and aaap>=2013 and a.costo=0 and b.costo>0";
+$this->db->query($cat);
+
+
 $fec=date('Y-m-d')-15;
+/////////////////////////////////////////////////////////////////////////////////////////surtido de farmabodega
+$f="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(SELECT a.suc,concat('FBO',a.id),sum(cans*vta),0,date_format(fechasur,'%Y-%m-%d'),'0000-00-00',
+date_format(fechasur,'%Y'),date_format(fechasur,'%m'),1600,sum(cans*(costo*1.1)),13
+FROM farmabodega.pedido_c a left join farmabodega.surtido_d b on b.id_ped=a.id
+where fechasur>=subdate(date(now()),15) and cans>0
+group by a.id)
+on duplicate key update importe_prvcosto=values(importe_prvcosto),importe_prv=values(importe_prv)";
+$this->db->query($f);
+/////////////////////////////////////////////////////////////////////////////////////////surtido de especialidad
+$ff="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(SELECT a.suc,concat('ESP',a.id),sum(cans*costo),0,date_format(fechasur,'%Y-%m-%d'),'0000-00-00',
+date_format(fechasur,'%Y'),date_format(fechasur,'%m'),1600,sum(cans*(costo)),13
+FROM especialidad.pedido_c a left join especialidad.surtido_d b on b.id_ped=a.id
+where fechasur>=subdate(date(now()),15) and cans>0
+group by a.id)
+on duplicate key update importe_prvcosto=values(importe_prvcosto),importe_prv=values(importe_prv)
+";
+$this->db->query($ff);
+/////////////////////////////////////////////////////////////////////////////////////////surtido de controlados_espe
+$f1="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select sucursal,folio,
+sum(cantidads*costo),0,concat(aaas,'-',mess,'-',dias),'0000-00-00',aaas,mess,100,sum(cantidads*costo),0
+from almacen.salidas_c where
+aaas>=year(now())
+group by folio)
+on duplicate key update importe_prvcosto=values(importe_prvcosto),importe_prv=values(importe_prv)";
+$this->db->query($f1);
+/////////////////////////////////////////////////////////////////////////////////////////surtido de metro
+$f2="insert into vtadc.gc_factura
+(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(SELECT a.suc,concat('METRO',a.id),sum(cans*costo),0, date_format(fechasur,'%Y-%m-%d'),'0000-00-00',
+date_format(fechasur,'%Y'),date_format(fechasur,'%m'),100,sum(cans*costo),0
+ FROM metro.pedido_c a
+left join metro.surtido_d b on b.id_ped=a.id
+where fechasur>=subdate(date(now()),15) and cans>0
+group by a.id)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f2);
+/////////////////////////////////////////////////////////////////////////////////////////traspaso de farmabodega
+$f3="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select 1600,concat('TRA',x.id,'_',sale,entra),sum(cans*costo),
+0, date(x.fecha),'0000-00-00', year(x.fecha), month(x.fecha),0,sum(cans*costo),13 from farmabodega.traspaso_c x
+left join farmabodega.traspaso_d b on b.id_cc=x.id
+where year(x.fecha)>=year(now())
+ and cans>0
+and x.entra=1600
+group by x.id
+)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f3);
+/////////////////////////////////////////////////////////////////////////////////////////devolucion de farmabodega
+$f4="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select 1600,concat('DEV',x.id,'_',sale,entra),sum(cans*costo),
+0, date(x.fecha),'0000-00-00', year(x.fecha), month(x.fecha),0,sum(cans*costo),13 from farmabodega.devolucion_c x
+left join farmabodega.devolucion_d b on b.id_cc=x.id
+where year(x.fecha)>=year(now())
+ and cans>0
+and x.entra=1600
+group by x.id
+)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f4);
+/////////////////////////////////////////////////////////////////////////////////////////devolucion de metro
+$f5="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select 100,concat('DEV',x.id,'_',sale,entra),sum(cans*costo),
+0, date(x.fecha),'0000-00-00', year(x.fecha), month(x.fecha),0,sum(cans*costo),1 from metro.devolucion_c x
+left join metro.devolucion_d b on b.id_cc=x.id
+where year(x.fecha)>=year(now()) and cans>0
+and x.entra=100
+group by x.id
+)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f5);
+/////////////////////////////////////////////////////////////////////////////////////////traspaso de metro
+$f5="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select 100,concat('TRA',x.id,'_',sale,entra),sum(cans*costo),
+0, date(x.fecha),'0000-00-00', year(x.fecha), month(x.fecha),0,sum(cans*costo),1 from metro.traspaso_c x
+left join metro.traspaso_d b on b.id_cc=x.id
+where year(x.fecha)>=year(now()) and cans>0
+and x.entra=100
+group by x.id
+)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f5);
+/////////////////////////////////////////////////////////////////////////////////////////traspaso de cedis
+$f6="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select 900,concat('TCEDIS',x.id,'_',suc), sum(can*costo),0,fecha,'0000-00-00',year(fecha),month(fecha),0,sum(can*costo),1 from desarrollo.traspaso_c x
+left join desarrollo.traspaso_d b on b.id_cc=x.id
+where x.fechai>=subdate(date(now()),200)   and x.tipo='E' and tipo2='C'
+group by x.id
+)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f6);
+/////////////////////////////////////////////////////////////////////////////////////////devolucion de cedis
+$f7="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc, aaa, mes, prv, importe_prvcosto, cia)
+(select 900,concat('DCEDIS',x.id,'_',suc), sum(can*costo),0,fecha,'0000-00-00',year(fecha),month(fecha),0,sum(can*costo),1
+from desarrollo.devolucion_c x
+left join desarrollo.devolucion_d b on b.id_cc=x.id
+where x.tipo='E' and x.fechai>=subdate(date(now()),15)  and tipo2='C'
+group by x.id
+)
+on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
+$this->db->query($f7);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $s="insert into vtadc.gc_factura
 (suc, factura, importe_prv, importe_suc, fecha_prv, fecha_suc,aaa,mes,prv,importe_prvcosto,cia)
 (
@@ -297,8 +426,10 @@ $this->db->query($s);
 
   
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
-(select $aaa,$mes,1,100,0,aa.clave,ifnull(bb.codigo,0),bb.susa1,sum(invf),aa.costo,bb.lin,'ALM CONTROLADOS',$dia
-from almacen.control_invd aa left join catalogo.segpop bb on bb.claves=aa.clave where aa.invf>0 and lin is not null group by aa.clave)";
+(select $aaa,$mes,1,100,0,aa.clave,aa.codigo,ifnull(trim(susa),' '),sum(invf)as invf,aa.costo,1,'ALM CONTROLADOS',$dia
+from almacen.control_invd aa
+left join catalogo.cat_con bb on bb.clave=aa.clave
+where aa.invf>0  group by aa.clave)";
 $this->db->query($s);
 
 //////////////seguros populares
@@ -308,7 +439,8 @@ $ss="insert into oficinas.inv_seguros (aaa, mes, dia, suc, clave, descripcion, p
 (select $aaa,$mes,$dia,16000,clave,descri,sum(cantidad),costo,lin,
 SUM(case when div_conta>0 then cantidad/div_conta else cantidad end),clave from oficinas.inv_seguros_lote group by clave)";
 $this->db->query($ss);
-$s = "update  oficinas.inv_seguros a set piezas_paquete=piezas, clave_sin_punto=clave where  a.aaa=$aaa and a.mes=$mes";
+$s = "update  oficinas.inv_seguros a set piezas_paquete=piezas, clave_sin_punto=clave 
+where  a.aaa=$aaa and a.mes=$mes and suc<>16000";
 $q = $this->db->query($s);
  
 $s = "update  oficinas.inv_seguros a,oficinas.convertir_claves b
@@ -405,13 +537,15 @@ imp_ent_back=ifnull((SELECT sum(importe)
 frOM vtadc.gc_compra_det_back b where b.suc=a.suc and fecha between fec1 and fec2 group by suc)-
 (SELECT sum(importe)
 frOM vtadc.gc_compra_dev_back b where b.suc=a.suc and fecha between fec1 and fec2 group by suc),0)
-where a.fecha between '$fec1' and '$fec2'
+where a.fec1='$fec1' and a.fec2='$fec2'
 ";
 $this->db->query($s);
 //////////////////////////////////////////////////////////////// entradas y salidas almacen cedis 900
-$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
+$s="insert into oficinas.sem_ent_sal (suc, ent,sal,imp_sal,fec1, fec2, sem)
 (
 select 900,
+
+
 sum(ifnull((select sum(can) from desarrollo.compra_d b where b.sec=a.sec and fechai>='$fec1' and date_format(fechai,'%Y-%m-%d')<='$fec2'
 group by a.sec),0)
 +
@@ -438,6 +572,22 @@ ifnull((select sum(can) from desarrollo.devolucion_c x
 left join desarrollo.devolucion_d b on b.id_cc=x.id
 where x.tipo='S' and x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and suc=100
 and tipo2='C' and b.sec=a.sec group by b.sec),0))as salidas,
+
+
+sum(ifnull((select sum(can*(costo*1.2)) from desarrollo.surtido x where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sec=a.sec group by x.sec ),0)
++
+ifnull((select sum(can*costo) from desarrollo.traspaso_c x
+left join desarrollo.traspaso_d b on b.id_cc=x.id
+where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='S' and tipo2='C' and b.sec=a.sec
+group by b.sec),0)
++
+ifnull((select sum(can*(costo*1.2)) from desarrollo.devolucion_c x
+left join desarrollo.devolucion_d b on b.id_cc=x.id
+where x.tipo='S' and x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and suc=100
+and tipo2='C' and b.sec=a.sec group by b.sec),0))as imp_sal,
+
+
 '$fec1','$fec2',$sem
 from catalogo.sec_generica a
 where sec>0 and sec<=2000
@@ -445,101 +595,197 @@ where sec>0 and sec<=2000
 on duplicate key update ent=values(ent),sal=values(sal)";
 $this->db->query($s);
 //////////////////////////////////////////////////////////////// entradas y salidas controlados 1 equivale a la 100
-$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
+$s="insert into oficinas.sem_ent_sal (suc, ent, sal,imp_sal, fec1, fec2, sem)
 (
 SELECT 1,
 sum(ifnull((SELECT sum(cans) FROM almacen.control_comprac x
 left join almacen.control_comprad b on b.folio=x.folio
-where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 and b.claves=a.clave
-group by b.claves),0)
+where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 
+),0)
 +
 ifnull((SELECT sum(can) FROM almacen.control_dev x
 left join almacen.control_devd b on b.folio=x.folio
-where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 and b.claves=a.clave
+where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
 group by b.claves and suc<>100),0))as entrada,
 
-sum(ifnull((SELECT sum(cantidads) FROM almacen.salidas_c x where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
- and x.claves=a.clave),0)
+sum(ifnull((SELECT sum(cantidads) FROM almacen.salidas_c x 
+where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
+ ),0)
 +
 ifnull((SELECT sum(can) FROM almacen.control_dev x
 left join almacen.control_devd b on b.folio=x.folio
-where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 and b.claves=a.clave
+where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 
 group by b.claves and suc=100),0))as salida,
+
+sum(ifnull((SELECT sum(cantidads*costo) FROM almacen.salidas_c x 
+where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
+ ),0)
++
+ifnull((SELECT sum(can*costo) FROM almacen.control_dev x
+left join almacen.control_devd b on b.folio=x.folio
+where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 
+group by b.claves and suc=100),0))as imp_sal,
 '$fec1','$fec2',$sem
 
-FROM catalogo.cat_con a
 )
-on duplicate key update ent=values(ent),sal=values(sal)";
+on duplicate key update ent=values(ent),sal=values(sal),imp_sal=values(imp_sal)";
 $this->db->query($s);
 //////////////////////////////////////////////////////////////// entradas y salidas especialidad 2 equivale a la 100
-$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
+$s="insert into oficinas.sem_ent_sal (suc, ent, sal,imp_sal, fec1, fec2, sem)
 (
 SELECT 2,
 
 sum(ifnull((select sum(can) from especialidad.compra_c x
 left join especialidad.compra_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clagob
-group by b.clave),0)
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+),0)
 +
 ifnull((select sum(cans) from especialidad.devolucion_c x
 left join especialidad.devolucion_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clagob
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
 and x.entra=100 and concepto<=2
-group by b.clave),0))as entrada,
+),0))as entrada,
 
 sum(ifnull((select sum(cans) from especialidad.surtido_d x
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and x.clave=a.clagob),0)
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
 +
 ifnull((select sum(cans) from especialidad.devolucion_c x
 left join especialidad.devolucion_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clagob
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' 
 and x.sale=100
-group by b.clave),0))as salida,
+),0))as salida,
+
+sum(ifnull((select sum(cans*costo) from especialidad.surtido_d x
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
++
+ifnull((select sum(cans*costo) from especialidad.devolucion_c x
+left join especialidad.devolucion_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' 
+and x.sale=100
+),0))as imp_sal,
+
 '$fec1','$fec2',$sem
-FROM catalogo.cat_nuevo_general_cla a
+)
+on duplicate key update ent=values(ent),sal=values(sal),imp_sal=values(imp_sal)";
+$this->db->query($s);
+//////////////////////////////////////////////////////////////// 3 metroo
+$s="insert into oficinas.sem_ent_sal (suc, ent, sal,imp_sal, fec1, fec2, sem)
+(
+select 3,
+sum(ifnull((select sum(can) from metro.compra_c x
+left join metro.compra_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+),0)
++
+ifnull((select sum(cans) from metro.traspaso_c x
+left join metro.traspaso_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.entra=100
+),0)
++
+ifnull((select sum(cans) from metro.devolucion_c x
+left join metro.devolucion_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.entra=100 and concepto<=2
+),0))as entrada,
+
+sum(ifnull((select sum(cans) from metro.surtido_d x
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
++
+ifnull((select sum(cans) from metro.traspaso_c x
+left join metro.traspaso_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sale=100
+),0)
++
+ifnull((select sum(cans) from metro.devolucion_c x
+left join metro.devolucion_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sale=100
+),0))as salida,
+
+sum(ifnull((select sum(cans*costo) from metro.surtido_d x
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
++
+ifnull((select sum(cans*costo) from metro.traspaso_c x
+left join metro.traspaso_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sale=100
+),0)
++
+ifnull((select sum(cans*costo) from metro.devolucion_c x
+left join metro.devolucion_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sale=100
+),0))as imp_sal,
+
+'$fec1','$fec2',$sem
+
+
 )
 on duplicate key update ent=values(ent),sal=values(sal)";
 $this->db->query($s);
+//////////////////////////////////////////////////////////////// agrupa 100
+
+$sa="INSERT INTO oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem,imp_sal)
+(SELECT 100, sum(ent), sum(sal), fec1, fec2, sem, sum(imp_sal) FROM oficinas.sem_ent_sal 
+where suc<100 and fec1='$fec1' and fec2='$fec2' group by sem,fec1)
+on duplicate key update sal=values(sal),ent=values(ent),imp_sal=values(imp_sal)";
+$this->db->query($sa); 
 //////////////////////////////////////////////////////////////// entradas y salidas farmabodega
-$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
+$s="insert into oficinas.sem_ent_sal (suc, ent, sal, imp_sal, fec1, fec2, sem)
 (
 select 1600,
 sum(ifnull((select sum(can) from farmabodega.compra_c x
 left join farmabodega.compra_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clabo
-group by b.clave),0)
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+),0)
 +
 ifnull((select sum(cans) from farmabodega.traspaso_c x
 left join farmabodega.traspaso_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clabo
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
 and x.entra=1600
-group by b.clave),0)
+),0)
 +
 ifnull((select sum(cans) from farmabodega.devolucion_c x
 left join farmabodega.devolucion_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clabo
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
 and x.entra=1600 and concepto<=2
-group by b.clave),0))as entrada,
+),0))as entrada,
 
 sum(ifnull((select sum(cans) from farmabodega.surtido_d x
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and x.clave=a.clabo),0)
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
 +
 ifnull((select sum(cans) from farmabodega.traspaso_c x
 left join farmabodega.traspaso_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clabo
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
 and x.sale=1600
-group by b.clave),0)
+),0)
 +
 ifnull((select sum(cans) from farmabodega.devolucion_c x
 left join farmabodega.devolucion_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' and b.clave=a.clabo
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
 and x.sale=1600
-group by b.clave),0))as salida,
+),0))as salida,
+sum(ifnull((select sum(cans*costo) from farmabodega.surtido_d x
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
++
+ifnull((select sum(cans*costo) from farmabodega.traspaso_c x
+left join farmabodega.traspaso_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sale=1600
+),0)
++
+ifnull((select sum(cans*costo) from farmabodega.devolucion_c x
+left join farmabodega.devolucion_d b on b.id_cc=x.id
+where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
+and x.sale=1600
+),0))as imp_sal,
 '$fec1','$fec2',$sem
-from  catalogo.catalogo_bodega a
+
 
 )
-on duplicate key update ent=values(ent),sal=values(sal)";
+on duplicate key update ent=values(ent),sal=values(sal),imp_sal=values(imp_sal)";
 $this->db->query($s);
 //////////////////////////////////////////////////////////////// entradas y salidas segpop 90002
 $s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
@@ -648,11 +894,21 @@ and (tipo <> 3 and subtipo <> 300) and tipo = 2
 )
 on duplicate key update sal=values(sal)";
 $this->db->query($s);
-
-$s="INSERT INTO oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem)
-(SELECT 100, sum(ent), sum(sal), fec1, fec2, sem FROM oficinas.sem_ent_sal where suc<100 group by sem,fec1)
-on duplicate key update sal=values(sal),ent=values(ent)";
-$this->db->query($s);   
+//////////////////////////////////////7////////////////////////////////////////////////////////importe de entradas
+$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem, imp_ent)
+(select case
+when suc=14000 or suc=14900 then 14000
+when suc=17000 or suc=17900 then 17000
+when suc=16000 or suc=16900 then 16000
+else suc end as suca,
+0,0,'$fec1','$fec2',0,
+sum(importe_prvcosto) from vtadc.gc_factura
+where fecha_prv>='$fec1' and fecha_prv<='$fec2'
+and suc>=100
+group by suc)
+on duplicate key update imp_ent=values(imp_ent);";
+$this->db->query($s);
+  
 }
 
 public function desplazamientos()

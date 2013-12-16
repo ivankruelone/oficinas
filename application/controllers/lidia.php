@@ -178,11 +178,11 @@ publico=SUBSTR(@var1, 100,9)";
 $this->db->query($s);
 
 $ss1="update catalogo.cat_mercadotecnia a, catalogo.cat_fanasa b
-set a.cos_fanasa=b.costo,a.pub=b.publico,a.farmacia=b.farmacia,a.labprv=b.lab
+set a.cos_fanasa=b.costo,a.pub=b.publico,a.farmacia=b.farmacia,a.labprv=b.lab,ofe_fanasa=oferta,fin_fanasa=financiero
 where a.codigo=b.codigo";
 $this->db->query($ss1);
 $ss1="update catalogo.cat_mercadotecnia a, catalogo.cat_sabap b
-set a.cos_saba=b.costo,a.pub=b.publico,a.farmacia=b.farmacia,a.labprv=b.lab
+set a.cos_saba=b.costo,a.pub=b.publico,a.farmacia=b.farmacia,a.labprv=b.lab,ofe_saba=oferta,fin_saba=financiero
 where a.codigo=b.codigo";
 $this->db->query($ss1);
 $this->ftp->close();
@@ -195,12 +195,13 @@ function enlace_nad()
 {
 $this->load->library('ftp');
 $fec=date('dmY');
-$config['hostname'] = 'fenixcentral.homeip.net';
+$config['hostname'] = '201.151.238.53';
 $config['username'] = 'nadro';
-$config['password'] = 'N4dr08';
+$config['password'] = 'f3n1x';
 $config['debug']    = TRUE;
-$li=$this->ftp->download('CONOFE.TXT', './transfer/nadroconofe'.$fec.'.txt');
-$li=$this->ftp->download('/SINOFE.TXT', './transfer/nadrosinofe'.$fec.'.txt');
+$li=$this->ftp->download('.CONOFE.TXT', './transfer/nadroconofe'.$fec.'.txt');
+$li=$this->ftp->download('.SINOFE.TXT', './transfer/nadrosinofe'.$fec.'.txt');
+print_r($li);
 //$this->ftp->close();
 }
 

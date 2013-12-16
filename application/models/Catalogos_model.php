@@ -167,6 +167,19 @@ order by b.clagob asc,b.costo";
         $q= $this->db->query($s);
         return $q;
     }
+    function mayoristas()
+    {
+        $s = "select codigo,descripcion,farmacia,pub,
+cos_saba,ofe_saba,fin_saba,
+cos_nadro,ofe_nadro,fin_nadro,
+cos_fanasa,ofe_fanasa,fin_fanasa
+from catalogo.cat_mercadotecnia
+where cos_saba>0 and cos_nadro<>cos_saba and cos_nadro<>cos_fanasa and cos_saba<>cos_fanasa
+ or cos_nadro>0 and cos_nadro<>cos_saba and cos_nadro<>cos_fanasa and cos_saba<>cos_fanasa
+ or cos_fanasa>0 and cos_nadro<>cos_saba and cos_nadro<>cos_fanasa and cos_saba<>cos_fanasa";
+        $q= $this->db->query($s);
+        return $q;
+    }
 
 
     function busca_ord_dias()
@@ -416,7 +429,7 @@ order by b.clagob asc,b.costo";
     function busca_suc()
     {
 
-        $sql = "SELECT *from catalogo.sucursal where suc>100 and suc<=2000 and tlid=1";
+        $sql = "SELECT *from catalogo.sucursal where suc>=100 and suc<=2000 and tlid=1";
         $query = $this->db->query($sql);
 
         $suc = array();

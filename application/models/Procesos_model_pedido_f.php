@@ -78,7 +78,7 @@ from catalogo.sucursal a
 left join desarrollo.inv b on b.suc=a.suc and mov=07
 where a.tlid=1 and a.dia='$dia' and
 (select count(*) from catalogo.folio_pedidos_cedis where fechas=date(now()) and suc=a.suc)=0
-and fechai>subdate(date(now()),2)
+and fechai>=subdate(date(now()),2)
 group by a.suc order by pedido";
         $q1=$this->db->query($x1);
  foreach($q1->result() as $r1)
@@ -295,7 +295,10 @@ if($row->tipo2=='D'){$vta=$row2->vtaddr;}else{$vta=$row2->vtagen;}
  //die();
         return $a;
     
-}    
+}  
+
+
+
     
   
     

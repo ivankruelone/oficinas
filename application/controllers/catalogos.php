@@ -128,6 +128,13 @@ class Catalogos extends CI_Controller
         $data['js'] = 'catalogos/genericos_venta_js';
         $this->load->view('main', $data);
     }
+       function costos_mayoristas()
+    {
+        $data['titulo'] = "Comparativo de costos Mayoristas";
+        $data['q'] = $this->catalogos_model->mayoristas();
+        $data['js'] = 'catalogos/costos_mayoristas_js';
+        $this->load->view('main', $data);
+    }
     
     
     
