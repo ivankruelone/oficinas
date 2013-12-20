@@ -118,6 +118,16 @@ class Pedido extends CI_Controller
         $data['cia'] = 13;
         $this->load->view('main', $data);
     }
+    function com_pedido_borrado($id)
+    {
+        $data = array('tipo' => 'X');
+        $this->db->where('id', $id);
+        $this->db->where('tipo', 'A');
+        $this->db->update('compras.pedido_c', $data);
+        $this->db->delete('compras.pedido_d', array('id_cc' => $id));
+        
+        redirect('pedido/com_pedido');
+    }
     function com_generar_sumit()
     {
         if ($this->input->post('pass') == 'unico') {

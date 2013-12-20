@@ -321,6 +321,8 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
     public function agrega_pedido_det_prv_cla($alm, $prv, $cia)
     {
 
+    
+
         $data = array(
             'fecha' => date('Y-m-d'),
             'id_user' => $this->session->userdata('id'),
@@ -329,6 +331,7 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
             'cia' => $cia);
         $this->db->insert('compras.pedido_c', $data);
         $id_cc = $this->db->insert_id();
+if($prv<>9998){
         $s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa,descri, inv, ped, prv, costo,costobase,prvbase)
      (select $id_cc,'$alm',a.sec,a.clagob,a.codigo,concat(trim(b.susa),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
      concat(trim(b.marca_comercial),' ',trim(b.gramaje),' ',trim(b.contenido),' ',trim(b.presenta)),
@@ -336,8 +339,17 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
      left join catalogo.cat_nuevo_general b on a.codigo=b.codigo
      left join catalogo.cat_nuevo_general_cla c on c.clagob=a.clagob 
      where a.prv=$prv and a.clagob>' ' and b.susa is not null group by a.clagob,a.sec,a.codigo)";
-
         $this->db->query($s);
+}else{
+$s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa,descri, inv, ped, prv, costo,costobase,prvbase)
+     (select $id_cc,'$alm',a.sec_cedis,a.clagob,a.codigo,concat(trim(a.susa),' ',trim(a.gramaje),' ',trim(a.contenido),' ',trim(a.presenta)),
+     concat(trim(a.marca_comercial),' ',trim(a.gramaje),' ',trim(a.contenido),' ',trim(a.presenta)),
+     0,0,998,0,c.cos,c.prv from catalogo.cat_nuevo_general a
+     left join catalogo.cat_nuevo_general_cla c on c.clagob=a.clagob
+     where a.clagob>' ' and a.susa is not null group by a.clagob,a.codigo)";
+        $this->db->query($s);    
+    
+}
     }
     public function com_cerrar_pedido($id)
     {

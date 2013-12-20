@@ -215,5 +215,34 @@ class Reportes extends CI_Controller
         $data['js'] = 'reportes/mer_reporte_prom_cod_ger_js';
         $this->load->view('main', $data);
     }
+    
+////////////////////////////////////////////////////////////////xochitl/////////////////////////////////////////////////////    
+
+    function ventas_iva()
+    {
+       
+        $data['titulo'] = "Reporte de Venatas sin iva";
+        $data['mesx']=$this->Catalogos_model->busca_mes();
+        $data['aaax']=$this->Catalogos_model->busca_anio();
+        $data['tit']='Selecciona el mes y el a&ntilde;o';
+        $data['js'] = 'reportes/ventas_gon_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function ventas_iva_xmes()
+    {
+        $mes= $this->input->post('mes');
+        $aaa= $this->input->post('aaa');
+        
+        $mesx=$this->Catalogos_model->busca_mes_uno($mes);
+        
+        $data['mes']= $mes;
+        $data['aaa']= $aaa;
+        $data['tit']='Reporte de ventas x mes';
+        $data['titulo']= 'Reporte de ventas del mes '.$mesx;
+        $data['a'] = $this->reportes_model->reporte_siniva($mes, $aaa);
+        $data['js'] = 'reportes/ventas_iva_xmes_js';
+        $this->load->view('main', $data);
+    }
 
 }

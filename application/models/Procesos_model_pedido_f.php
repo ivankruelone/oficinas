@@ -26,7 +26,9 @@ $s="select a.*,b.fechai,subdate(date(now()),2)as limite,sum(cantidad)as inv,
 ifnull((select count(*) from catalogo.folio_pedidos_cedis where fechas=date(now()) and suc=a.suc),0)as pedido
 from catalogo.sucursal a 
 left join desarrollo.inv b on b.suc=a.suc and mov=07
-where a.tlid=1 and a.dia='$dia'
+where 
+a.tlid=1 and a.dia='$dia' or
+a.tlid=1 and a.dia like 'P%' 
 group by a.suc order by pedido,fechai"; 
 $q=$this->db->query($s);
 return $q;   
@@ -47,29 +49,32 @@ if($dianombre=='Tue'){$dia='MAR';}
 if($dianombre=='Wed'){$dia='MIE';}
 if($dianombre=='Thu'){$dia='JUE';}
 if($dianombre=='Fri'){$dia='VIE';}
-$l0="insert ignore into almacen.max_sucursal (sec, suc, susa, m2011, m2012, m2013, m2014, final, paquete)
-(select b.sec,a.suc,b.susa,0,0,0,0,2,0 from catalogo.sucursal a,  catalogo.cat_almacen_clasifica b
-where tipo2<>'F' and suc>100 and suc<=1600 and tlid=1
-and suc<>170
-and suc<>171
-and suc<>172
-and suc<>173
-and suc<>174
-and suc<>175
-and suc<>176
-and suc<>177
-and suc<>178
-and suc<>179
-and suc<>180
-and suc<>181
-and suc<>187)";
-$this->db->query($l0);
-//$n1="update catalogo.sucursal a
-//set dia='PEN'
-//where dia='$dia' and 
-//(select fechai from desarrollo.inv b where a.suc=b.suc group by suc)<
-//subdate(date(now()),2)";
-//$this->db->query($n1);
+
+//$l0="insert ignore into almacen.max_sucursal (sec, suc, susa, m2011, m2012, m2013, m2014, final, paquete)
+//(select b.sec,a.suc,b.susa,0,0,0,0,2,0 from catalogo.sucursal a,  catalogo.cat_almacen_clasifica b
+//where tipo2<>'F' and suc>100 and suc<=1600 and tlid=1
+//and suc<>170
+//and suc<>171
+//and suc<>172
+//and suc<>173
+//and suc<>174
+//and suc<>175
+//and suc<>176
+//and suc<>177
+//and suc<>178
+//and suc<>179
+//and suc<>180
+//and suc<>181
+//and suc<>187
+//)";
+//$this->db->query($l0);
+$n1="update catalogo.sucursal a
+set dia=case when
+ifnull((select sum(cantidad) from desarrollo.inv b where b.suc=a.suc),0)=0
+then concat('P',left(dia,2))
+else dia end
+where dia='$dia'";
+$this->db->query($n1);
 
 
         $x1="select a.suc,b.fechai,subdate(date(now()),2)as limite,sum(cantidad)as inv,
@@ -78,7 +83,7 @@ from catalogo.sucursal a
 left join desarrollo.inv b on b.suc=a.suc and mov=07
 where a.tlid=1 and a.dia='$dia' and
 (select count(*) from catalogo.folio_pedidos_cedis where fechas=date(now()) and suc=a.suc)=0
-and fechai>=subdate(date(now()),2)
+and fechai>=subdate(date(now()),3)
 group by a.suc order by pedido";
         $q1=$this->db->query($x1);
  foreach($q1->result() as $r1)

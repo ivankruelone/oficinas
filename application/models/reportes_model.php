@@ -229,4 +229,20 @@ and b.regional=$reg and b.tipo2<>'F'
 return $q;        
 }
 
+///////////////////////////////////////////////////////////////////////xochitl//////////////////////////////////////////////
+
+function reporte_siniva($mes, $aaa)
+    {
+        
+         $s="select a.suc, c.nombre, sum(siniva)as siniva from desarrollo.cortes_c a
+left join  desarrollo.cortes_d b on b.id_cc=a.id
+left join catalogo.sucursal c on a.suc=c.suc
+where fechacorte>='$aaa-$mes-01' and fechacorte<='$aaa-$mes-31' and clave1 in(10,11,16,24) and a.suc>100
+group by a.suc";
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //echo die;
+return $q;        
+}
+
 }

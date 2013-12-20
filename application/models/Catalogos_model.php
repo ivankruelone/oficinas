@@ -429,7 +429,8 @@ where cos_saba>0 and cos_nadro<>cos_saba and cos_nadro<>cos_fanasa and cos_saba<
     function busca_suc()
     {
 
-        $sql = "SELECT *from catalogo.sucursal where suc>=100 and suc<=2000 and tlid=1";
+        $sql = "SELECT *from catalogo.sucursal 
+        where suc>=100 and suc<=2000 and tlid=1 or suc=17000 or suc=14000 or suc=16000 or suc=90";
         $query = $this->db->query($sql);
 
         $suc = array();

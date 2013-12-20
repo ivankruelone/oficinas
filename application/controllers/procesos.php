@@ -111,7 +111,7 @@ class Procesos extends CI_Controller
     {
     $data['titulo'] = "Entradas y salidas";
     $data['q'] = $this->procesos_model->p_ent_sal($sem,$fec1);
-    $data['js'] = 'procesos/pro_inv_js';
+    $data['js'] = 'procesos/p_ent_sal_js';
     $this->load->view('main', $data);
     }
     

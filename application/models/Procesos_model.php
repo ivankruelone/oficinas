@@ -496,7 +496,7 @@ return $q;
 public function p_ent_sal()
 {
 $s="select a.*,b.nombre as sucx from oficinas.sem_ent_sal a 
-left join catalogo.sucursal b on b.suc=a.suc where a.suc>=100";
+left join catalogo.sucursal b on b.suc=a.suc where a.suc>100 and a.suc<>1045 and a.suc<1603";
 $q=$this->db->query($s);
 return $q;
 }
@@ -504,7 +504,6 @@ return $q;
 public function ent_sal($fec1,$fec2,$sem)
 {
 $aaa=substr($fec1,0,4);$mes=substr($fec1,5,2); $dia1=substr($fec1,8,2); $dia2=substr($fec2,8,2);
-////////////////////////////////////////////////////////////////////entradas y salidas sucursales
 ////////////////////////////////////////////////////////////////////entradas y salidas sucursales
 $s="insert into oficinas.sem_ent_sal(suc, ent, sal, fec1, fec2, sem)
 (
@@ -540,57 +539,99 @@ frOM vtadc.gc_compra_dev_back b where b.suc=a.suc and fecha between fec1 and fec
 where a.fec1='$fec1' and a.fec2='$fec2'
 ";
 $this->db->query($s);
+//////////////////////////////////////7////////////////////////////////////////////////////////importe de entradas
+$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem, imp_ent)
+(select case
+when suc=14000 or suc=14900 then 14000
+when suc=17000 or suc=17900 then 17000
+when suc=16000 or suc=16900 then 16000
+else suc end as suca,
+0,0,'$fec1','$fec2',0,
+sum(importe_prvcosto) from vtadc.gc_factura
+where fecha_prv>='$fec1' and fecha_prv<='$fec2'
+and suc>=100
+group by suc)
+on duplicate key update imp_ent=values(imp_ent);";
+$this->db->query($s);
+if($mes==1){$aaas=$aaa-1;$mes=12;}else{$aaas=$aaa;$mess=$mes-1;}
+$s="insert into sem_ent_sal (suc, ent, sal, fec1, fec2, sem, inv_ini, imp_inv_ini)
+(select suc,0,0,'$fec1','$fec2',$sem,piezas,importe from oficinas.inv_mes_suc_his where aaa=$aaas and mes=$mess)
+on duplicate key update inv_ini=values(inv_ini),imp_inv_ini=values(imp_inv_ini)";
+$this->db->query($s);
+$s="insert into sem_ent_sal (suc, ent, sal, fec1, fec2, sem, inv_fin, imp_inv_fin)
+(select suc,0,0,'$fec1','$fec2',$sem,piezas,importe from oficinas.inv_mes_suc_his where aaa=$aaa and mes=$mes)
+on duplicate key update inv_fin=values(inv_fin),imp_inv_fin=values(imp_inv_fin)";
+$this->db->query($s);
+if($sem==0){
+$s="insert into sem_ent_sal(suc, ent, sal, fec1, fec2, sem, ent_back, imp_ent, imp_sal, imp_ent_back, imp_cred, imp_rec)
+(select suc,0,0,'$fec1','$fec2',0,0,0,contado,0,credito,recarga from vtadc.gc_venta_mes where aaa=$aaa and mes=$mes)
+on duplicate key update imp_sal=values(imp_sal),imp_cred=values(imp_cred),imp_rec=values(imp_rec)";
+$this->db->query($s);
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+die();
 //////////////////////////////////////////////////////////////// entradas y salidas almacen cedis 900
 $s="insert into oficinas.sem_ent_sal (suc, ent,sal,imp_sal,fec1, fec2, sem)
 (
 select 900,
-
-
-sum(ifnull((select sum(can) from desarrollo.compra_d b where b.sec=a.sec and fechai>='$fec1' and date_format(fechai,'%Y-%m-%d')<='$fec2'
-group by a.sec),0)
+sum(ifnull((select sum(can) from desarrollo.compra_d b where fechai>='$fec1' and date_format(fechai,'%Y-%m-%d')<='$fec2'
+),0)
 +
 ifnull((select sum(can) from desarrollo.traspaso_c x
 left join desarrollo.traspaso_d b on b.id_cc=x.id
-where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='E' and tipo2='C' and b.sec=a.sec
-group by b.sec),0)
+where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='E' and tipo2='C'
+),0)
 +
 ifnull((select sum(can) from desarrollo.devolucion_c x
 left join desarrollo.devolucion_d b on b.id_cc=x.id
 where x.tipo='E' and x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and mov in(1,2)
-and tipo2='C' and b.sec=a.sec group by b.sec),0))
+and tipo2='C' ),0))
 as entradas,
 
-sum(ifnull((select sum(can) from desarrollo.surtido x where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
-and x.sec=a.sec group by x.sec ),0)
+sum(ifnull((select sum(sur) from desarrollo.pedidos x 
+where date_format(x.fechasur,'%Y-%m-%d')>='$fec1' and date_format(x.fechasur,'%Y-%m-%d')<='$fec2' and sur>0
+),0)
 +
 ifnull((select sum(can) from desarrollo.traspaso_c x
 left join desarrollo.traspaso_d b on b.id_cc=x.id
-where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='S' and tipo2='C' and b.sec=a.sec
-group by b.sec),0)
+where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='S' and tipo2='C' ),0)
 +
 ifnull((select sum(can) from desarrollo.devolucion_c x
 left join desarrollo.devolucion_d b on b.id_cc=x.id
 where x.tipo='S' and x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and suc=100
-and tipo2='C' and b.sec=a.sec group by b.sec),0))as salidas,
+and tipo2='C' ),0))as salidas,
 
 
-sum(ifnull((select sum(can*(costo*1.2)) from desarrollo.surtido x where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'
-and x.sec=a.sec group by x.sec ),0)
+sum(ifnull((select sum(sur*(costo*1.2)) from desarrollo.pedidos x 
+where date_format(fechasur,'%Y-%m-%d')>='$fec1' and date_format(x.fechasur,'%Y-%m-%d')<='$fec2' and sur>0
+),0)
 +
 ifnull((select sum(can*costo) from desarrollo.traspaso_c x
 left join desarrollo.traspaso_d b on b.id_cc=x.id
-where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='S' and tipo2='C' and b.sec=a.sec
-group by b.sec),0)
+where x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and x.tipo='S' and tipo2='C'
+),0)
 +
 ifnull((select sum(can*(costo*1.2)) from desarrollo.devolucion_c x
 left join desarrollo.devolucion_d b on b.id_cc=x.id
 where x.tipo='S' and x.fechai>='$fec1' and date_format(x.fechai,'%Y-%m-%d')<='$fec2' and suc=100
-and tipo2='C' and b.sec=a.sec group by b.sec),0))as imp_sal,
+and tipo2='C' ),0))as imp_sal,
 
 
 '$fec1','$fec2',$sem
-from catalogo.sec_generica a
-where sec>0 and sec<=2000
 )
 on duplicate key update ent=values(ent),sal=values(sal)";
 $this->db->query($s);
@@ -606,7 +647,7 @@ where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
 ifnull((SELECT sum(can) FROM almacen.control_dev x
 left join almacen.control_devd b on b.folio=x.folio
 where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
-group by b.claves and suc<>100),0))as entrada,
+and suc<>100),0))as entrada,
 
 sum(ifnull((SELECT sum(cantidads) FROM almacen.salidas_c x 
 where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
@@ -615,7 +656,7 @@ where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
 ifnull((SELECT sum(can) FROM almacen.control_dev x
 left join almacen.control_devd b on b.folio=x.folio
 where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 
-group by b.claves and suc=100),0))as salida,
+and suc=100),0))as salida,
 
 sum(ifnull((SELECT sum(cantidads*costo) FROM almacen.salidas_c x 
 where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
@@ -624,7 +665,7 @@ where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2
 ifnull((SELECT sum(can*costo) FROM almacen.control_dev x
 left join almacen.control_devd b on b.folio=x.folio
 where x.aaas=$aaa and x.mess=$mes and x.dias>=$dia1 and x.dias<=$dia2 
-group by b.claves and suc=100),0))as imp_sal,
+and suc=100),0))as imp_sal,
 '$fec1','$fec2',$sem
 
 )
@@ -657,12 +698,7 @@ and x.sale=100
 
 sum(ifnull((select sum(cans*costo) from especialidad.surtido_d x
 where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2'),0)
-+
-ifnull((select sum(cans*costo) from especialidad.devolucion_c x
-left join especialidad.devolucion_d b on b.id_cc=x.id
-where x.fecha>='$fec1' and date_format(x.fecha,'%Y-%m-%d')<='$fec2' 
-and x.sale=100
-),0))as imp_sal,
+)as imp_sal,
 
 '$fec1','$fec2',$sem
 )
@@ -732,6 +768,7 @@ $sa="INSERT INTO oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem,imp_sal)
 where suc<100 and fec1='$fec1' and fec2='$fec2' group by sem,fec1)
 on duplicate key update sal=values(sal),ent=values(ent),imp_sal=values(imp_sal)";
 $this->db->query($sa); 
+
 //////////////////////////////////////////////////////////////// entradas y salidas farmabodega
 $s="insert into oficinas.sem_ent_sal (suc, ent, sal, imp_sal, fec1, fec2, sem)
 (
@@ -894,20 +931,7 @@ and (tipo <> 3 and subtipo <> 300) and tipo = 2
 )
 on duplicate key update sal=values(sal)";
 $this->db->query($s);
-//////////////////////////////////////7////////////////////////////////////////////////////////importe de entradas
-$s="insert into oficinas.sem_ent_sal (suc, ent, sal, fec1, fec2, sem, imp_ent)
-(select case
-when suc=14000 or suc=14900 then 14000
-when suc=17000 or suc=17900 then 17000
-when suc=16000 or suc=16900 then 16000
-else suc end as suca,
-0,0,'$fec1','$fec2',0,
-sum(importe_prvcosto) from vtadc.gc_factura
-where fecha_prv>='$fec1' and fecha_prv<='$fec2'
-and suc>=100
-group by suc)
-on duplicate key update imp_ent=values(imp_ent);";
-$this->db->query($s);
+
   
 }
 

@@ -63,6 +63,7 @@
                                      <th>Provedor</th>
                                      <th>Importe</th>
                                      <th></th>
+                                     <th></th>
                                    </tr>
                              </thead>
                              <tbody>
@@ -71,7 +72,7 @@
                                   $u1=0;$u2=0;$u3=0;$u4=0;
                                 $num=0;$final=0;$final1=0;
                                 foreach ($q->result() as $r) {
-                                
+                                $l2= anchor('pedido/com_pedido_borrado/'.$r->id,'Borrar </a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
                                 $num=$num+1;
                                 $tot=0; $n=0; 
                                   $l0 = anchor('pedido/com_pedido_det/'.$r->id,$r->id.'</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
@@ -90,6 +91,7 @@
                                         <td style="text-align: left; "><?php echo $r->prvx?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->importe,2)?></td>
                                         <td style="text-align: right; "><?php echo $l1?></td>
+                                        <td style="text-align: right; "><?php echo $l2?></td>
                                         </tr>
                                         <?php 
                                         }?>
