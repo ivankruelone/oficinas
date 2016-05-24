@@ -12,9 +12,9 @@
                              <thead>
                              <tr>
                              <th colspan="2" style="text-align: center;"></th>
-                             <th colspan="3" style="text-align: center;">Costos</th>
-                             <th colspan="3" style="text-align: center;">Ofertas</th>
-                             <th colspan="3" style="text-align: center;">Financiero</th>
+                             <th colspan="4" style="text-align: center;">Costos</th>
+                             <th colspan="4" style="text-align: center;">Ofertas</th>
+                             <th colspan="4" style="text-align: center;">Financiero</th>
                              </tr>
                                <tr>
                                <th style="text-align: left;">Codigo</th>
@@ -22,12 +22,15 @@
                                <th style="text-align: left;">Saba</th>
                                <th style="text-align: left;">Nadro</th>
                                <th style="text-align: left;">Fanasa</th>
+                               <th style="text-align: left;">Marzam</th>
                                <th style="text-align: left;">Saba</th>
                                <th style="text-align: left;">Nadro</th>
                                <th style="text-align: left;">Fanasa</th>
+                               <th style="text-align: left;">Marzam</th>
                                <th style="text-align: left;">Saba</th>
                                <th style="text-align: left;">Nadro</th>
                                <th style="text-align: left;">Fanasa</th>
+                               <th style="text-align: left;">Marzam</th>
                                </tr>  
                              </thead>
                              <tbody>
@@ -43,12 +46,15 @@
                                    <td style="text-align: left;"><?php echo number_format($r->cos_saba,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->cos_nadro,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->cos_fanasa,2)?></td>
+                                   <td style="text-align: left;"><?php echo number_format($r->cos_marzam,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->ofe_saba,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->ofe_nadro,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->ofe_fanasa,2)?></td>
+                                   <td style="text-align: left;"><?php echo number_format($r->ofe_marzam,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->fin_saba,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->fin_nadro,2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r->fin_fanasa,2)?></td>
+                                   <td style="text-align: left;"><?php echo number_format($r->fin_marzam,2)?></td>
                                    </tr> 
                            
                              

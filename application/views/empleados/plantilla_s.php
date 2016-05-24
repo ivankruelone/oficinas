@@ -1,5 +1,54 @@
                  <div class="span12">
                      <!-- BEGIN BLANK PAGE PORTLET-->
+                     <div class="widget orange">
+                         <div class="widget-title">
+                             <h4><i class="icon-reorder"></i><?php echo $aviso?></h4>
+                           <span class="tools">
+                               <a href="javascript:;" class="icon-chevron-down"></a>
+                           </span>
+                         </div>
+                         <div class="widget-body">
+                         
+                         <table class="table table-bordered table-condensed table-striped table-hover" id="tabla0">
+                          <caption></caption> 
+                             <thead>
+                                 <tr>
+                                     <th>#</th>
+                                     <th>Nominas</th>
+                                     <th>Empleado</th>
+                                     <th>Nid</th>
+                                     <th>Sucursal</th>
+                                     <th>Posible Nid</th>
+                                     <th>Posible Sucursal</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <?php
+                                $num=0;
+                                foreach ($q->result()as $r0) {
+                                
+                                $num=$num+1;
+                                ?>
+                                <tr>
+                                   <td style="color: orange;"><?php echo $num?></td>
+                                    <td style="text-align: left;"><?php echo $r0->nomina?></td>
+                                    <td style="text-align: left;"><?php echo $r0->empleado?></td>
+                                    <td style="text-align: left;"><?php echo $r0->succ?></td>
+                                    <td style="text-align: left;"><?php echo $r0->nombre?></td>
+                                    <td style="text-align: left;"><?php echo $r0->nueva_suc?></td>
+                                    <td style="text-align: left;"><?php echo $r0->nueva_sucx?></td>
+                                </tr>
+                                <?php
+                                }
+                                ?>
+                             </tbody>
+                         </table>   
+                            
+                            
+                         </div>
+                     </div>
+                     <!-- END BLANK PAGE PORTLET-->
+                     <!-- BEGIN BLANK PAGE PORTLET-->
                      <div class="widget blue">
                          <div class="widget-title">
                              <h4><?php echo $tit?></h4>
@@ -8,9 +57,14 @@
                            </span>
                          </div>
                          <div class="widget-body">
-                         
+<?php 
+$l=anchor('empleados/plantilla_todos/'.$ger,'DETALLE DE EMPLEADOS GLOBAL</a>', array('title' => 'Haz Click aqui para ver Empleados de su zona!', 'class' => 'encabezado'));
+?>
                          <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
+                                 <tr>
+                                 <th colspan="6"><?php echo $l ?></th>
+                                 </tr>
                                  <tr>
                                  <th style="text-align: left">Zonas</th>
                                  <th style="text-align: left">Supervisor</th>

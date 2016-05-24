@@ -9,6 +9,72 @@
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+public function envia_inv_as400($aaa,$sem)
+{
+ 
+$sqlx="select *from inventarios.inv_cosvta where importe>0 and sem=$sem and aaa=$aaa";
+//$sqlx="select *from inv_cosvta where importe>0 and sem>7 and aaaa=$aaa order by sem";
+$queryx = $this->db->query($sqlx);
+if($queryx->num_rows() > 0){//cia, suc, sem, aaaa, mes, lin, plaza, succ, importe
+    
+    $File = "./txt/cosvta.txt";
+    $Handle = fopen($File, 'w');
+
+foreach($queryx->result() as $rowx)  
+{
+    $Data=
+         str_pad($rowx->cia,2,"0",STR_PAD_LEFT)
+        .str_pad($rowx->suc,8,"0",STR_PAD_LEFT)
+        .str_pad($rowx->sem,2,"0",STR_PAD_LEFT)
+        .str_pad($rowx->aaa,4,"0",STR_PAD_LEFT)
+        .str_pad($rowx->mes,2,"0",STR_PAD_LEFT)
+        .str_pad($rowx->lin,5,"0",STR_PAD_LEFT)
+        .str_pad($rowx->plaza,2,"0",STR_PAD_LEFT)
+        .str_pad($rowx->succ,4,"0",STR_PAD_LEFT)
+        .str_pad(round($rowx->importe*100,2),11,"0",STR_PAD_LEFT)
+        ."\r\n";
+    //echo $linea;
+    fwrite($Handle, $Data);
+}
+fclose($Handle); 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$servidor_ftp    = '192.168.1.3';
+$ftp_nombre_usuario = "lidia";
+$ftp_contrasenya = "puepue19";
+
+$archivo = './txt/cosvta.txt';
+$da = fopen($archivo, 'r');
+$archivo_remoto = 'candado/invliw';
+
+
+$id_con = ftp_connect($servidor_ftp);
+$resultado_login = ftp_login($id_con, $ftp_nombre_usuario, $ftp_contrasenya);
+
+
+if (ftp_put($id_con, $archivo_remoto, $archivo, FTP_ASCII)) {
+    $mensaje='Ya fue enviado el archivo de la poliza de inventario semanal de la semana '.$sem.' al as400; por favor continua con tu proceso en el sistema';
+} else {
+    $mensaje='Hay problemas al enviar el archivo';
+}
+
+ftp_close($id_con);
+fclose($da);
+}
+  
+    return $mensaje; 
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 public function poliza_almacen($fecha)
 {
 

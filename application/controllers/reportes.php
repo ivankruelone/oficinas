@@ -73,7 +73,7 @@ class Reportes extends CI_Controller
    function ventas_imp()
     {
        
-        $data['titulo'] = "Reporte de Venatas Imperial";
+        $data['titulo'] = "Reporte de Ventas Imperial";
         $data['tit']='Selecciona el mes y el a&ntilde;o';
         $data['mesx']=$this->Catalogos_model->busca_mes();
         $data['aaax']=$this->Catalogos_model->busca_anio();
@@ -244,5 +244,134 @@ class Reportes extends CI_Controller
         $data['js'] = 'reportes/ventas_iva_xmes_js';
         $this->load->view('main', $data);
     }
+//////////////////////////////////////////////////////////////jessica////////////////////////////////////////////////////////
 
+function equipo()
+    {
+       
+        $data['titulo'] = "REPORTE: COMPRA DE EQUIPO";
+        $data['tit']='Selecciona el mes y el a&ntilde;o';
+        $data['js'] = 'reportes/equipo_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function reporte_equipo()
+    {
+        $mes= $this->input->post('mes');
+        $aaa= $this->input->post('anio');
+        
+        $data['aaa']= $aaa;
+        $data['mes']= $mes;
+        $data['titulo']= 'Compra de Equipo del mes '.$mes.'del'.$aaa;
+        $data['a'] = $this->reportes_model->compra_equipo($mes, $aaa);
+        $data['js'] = 'reportes/reporte_equipo_js';
+        $this->load->view('main', $data);
+    }
+
+////////////////////////////////////////////victor/////////////////////////////////////////////////////////////////////////////    
+    
+    function salidas_equipos()
+    {
+       
+        $data['titulo'] = "Reporte de Salidas";
+        $data['tit']='Selecciona el mes y el a&ntilde;o';
+        $data['mesx']=$this->Catalogos_model->busca_mes();
+        $data['aaax']=$this->Catalogos_model->busca_anio();
+        $data['tecx']=$this->Catalogos_model->busca_tecnico();
+        $data['js'] = 'reportes/salidas_equipos_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function salidas_equipos_submit()
+    {
+        $mes= $this->input->post('mes');
+        $aaa= $this->input->post('aaa');
+        $tecnico= $this->input->post('tecx');
+        $mesx=$this->Catalogos_model->busca_mes_uno($mes);
+        $data['mes']= $mes;
+        $data['aaa']= $aaa;
+        $data['tit']='Reporte de Salida de Equipo del mes de'.$mesx;
+        $data['a'] = $this->reportes_model->reporte_salidas($mes, $aaa, $tecnico);
+        $data['js'] = 'reportes/salidas_equipos_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+    
+    function salidas_equipos1()
+    {
+       
+        $data['titulo'] = "Reporte de Salidas";
+        $data['tit']='Selecciona el mes y el a&ntilde;o';
+        $data['mesx']=$this->Catalogos_model->busca_mes();
+        $data['aaax']=$this->Catalogos_model->busca_anio();
+        $data['js'] = 'reportes/salidas_equipos_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function salidas_equipos_submit1()
+    {
+        $mes= $this->input->post('mes');
+        $aaa= $this->input->post('aaa');
+        $mesx=$this->Catalogos_model->busca_mes_uno($mes);
+        $data['mes']= $mes;
+        $data['aaa']= $aaa;
+        $data['tit']='Reporte de Salida de Accesorios del mes de'.$mesx;
+        $data['a'] = $this->reportes_model->reporte_salidas1($mes, $aaa);
+        $data['js'] = 'reportes/salidas_equipos_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+    function entradas_equipos()
+    {
+       
+        $data['titulo'] = "Reporte de Entradas";
+        $data['tit']='Selecciona el mes, a&ntilde;o y tecnico';
+        $data['mesx']=$this->Catalogos_model->busca_mes();
+        $data['aaax']=$this->Catalogos_model->busca_anio();
+        $data['tecx']=$this->Catalogos_model->busca_tecnico();
+        $data['js'] = 'reportes/entradas_equipos_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function entradas_equipos_submit()
+    {
+        $mes= $this->input->post('mes');
+        $aaa= $this->input->post('aaa');
+        $tecnico= $this->input->post('tecx');
+        $mesx=$this->Catalogos_model->busca_mes_uno($mes);
+        $data['mes']= $mes;
+        $data['aaa']= $aaa;
+        $data['tit']='Reporte de Entrada de Equipo del mes de'.$mesx;
+        $data['a'] = $this->reportes_model->reporte_entradas($mes, $aaa, $tecnico);
+        $data['js'] = 'reportes/entradas_equipos_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+    function bitacora()
+    {
+       
+        $data['titulo'] = "Reporte de Bitacora";
+        $data['tit']='Selecciona el mes y el a&ntilde;o';
+        $data['tecx']=$this->Catalogos_model->busca_tecnico();
+        $data['js'] = 'reportes/bitacora_js';
+        $this->load->view('main', $data);
+    }
+    
+    public function bitacora_submit()
+    {
+        $inicio= $this->input->post('perini');
+        $fin= $this->input->post('perfin');
+        $tecnico= $this->input->post('tecx');
+        //$mesx=$this->Catalogos_model->busca_mes_uno($mes);
+        $data['perini']= $inicio;
+        $data['perfin']= $fin;
+        $data['tit']='Reporte de Bitacora del'.$inicio.' al '.$fin;
+        $data['q'] = $this->reportes_model->reporte_bitacora($inicio, $fin, $tecnico);
+        $data['js'] = 'reportes/bitacora_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+    
+    
+    
 }

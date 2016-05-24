@@ -209,6 +209,7 @@
                                 $tipo=$r['tipo'];
                                 if($tipo=='I'){$color='red';}else{$color='gray';}
                                 $l0 = anchor('mercadotecnia/productos_modifica/'.$r['id'],$r['codigo'].'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                                
                                  ?> 
                                  <tr>
                                    <td style="text-align: left; color:<?php echo $color?>;"><?php echo $l0?></td>

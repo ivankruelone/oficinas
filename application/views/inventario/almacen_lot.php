@@ -17,7 +17,7 @@
                                  
                                  </tr>
                                  <tr>
-                                     <th style="text-align: left">Sec</th> 
+                                     <th style="text-align: left">Sec o Clave</th> 
                                      <th style="color:gray; text-align: left">Sustancia Activa</th>
                                      <th style="color:gray; text-align: left">Lote</th>
                                      <th style="color:gray; text-align: right">Caducidad</th>

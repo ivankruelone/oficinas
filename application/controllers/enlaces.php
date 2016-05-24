@@ -19,8 +19,8 @@ class Enlaces extends CI_Controller
     function index()
     {
         $this->enlaces_model->getInventarioAguascalientes();
-        $this->enlaces_model->getInventarioFresnillo();
-        $this->enlaces_model->getInventarioSucursalesZacatecas();
+        //$this->enlaces_model->getInventarioFresnillo();
+        //$this->enlaces_model->getInventarioSucursalesZacatecas();
         $this->enlaces_model->getInventarioSucursalesAguascalientes();
         $this->enlaces_model->getCostos();
     }

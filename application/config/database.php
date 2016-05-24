@@ -48,9 +48,9 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = '192.168.1.221';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'garigol';
+$db['default']['password'] = 'hachi1417#';
 $db['default']['database'] = 'compras';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
@@ -64,6 +64,176 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+//
+$db['li']['hostname'] = '192.168.1.221';
+$db['li']['username'] = 'root';
+$db['li']['password'] = 'garigol';
+$db['li']['database'] = 'oficinas';
+$db['li']['dbdriver'] = 'mysqli';
+$db['li']['dbprefix'] = '';
+$db['li']['pconnect'] = FALSE;
+$db['li']['db_debug'] = TRUE;
+$db['li']['cache_on'] = FALSE;
+$db['li']['cachedir'] = '';
+$db['li']['char_set'] = 'utf8';
+$db['li']['dbcollat'] = 'utf8_general_ci';
+$db['li']['swap_pre'] = '';
+$db['li']['autoinit'] = TRUE;
+$db['li']['stricton'] = FALSE;
+
+//Facturacion
+$db['facturacion']['hostname'] = '192.168.1.200';
+$db['facturacion']['username'] = 'desarrolloDB';
+$db['facturacion']['password'] = 'desarrollo';
+$db['facturacion']['database'] = 'facturacion';
+$db['facturacion']['dbdriver'] = 'mysql';
+$db['facturacion']['dbprefix'] = '';
+$db['facturacion']['pconnect'] = FALSE;
+$db['facturacion']['db_debug'] = TRUE;
+$db['facturacion']['cache_on'] = FALSE;
+$db['facturacion']['cachedir'] = '';
+$db['facturacion']['char_set'] = 'utf8';
+$db['facturacion']['dbcollat'] = 'utf8_general_ci';
+$db['facturacion']['swap_pre'] = '';
+$db['facturacion']['autoinit'] = TRUE;
+$db['facturacion']['stricton'] = FALSE;
+
+//Aguascalientes
+$db['aguascalientes']['hostname'] = '192.168.0.15';
+$db['aguascalientes']['username'] = 'izuniga';
+$db['aguascalientes']['password'] = 'ivan2';
+$db['aguascalientes']['database'] = 'aguascalientes';
+$db['aguascalientes']['dbdriver'] = 'postgre';
+$db['aguascalientes']['dbprefix'] = '';
+$db['aguascalientes']['pconnect'] = FALSE;
+$db['aguascalientes']['db_debug'] = TRUE;
+$db['aguascalientes']['cache_on'] = FALSE;
+$db['aguascalientes']['cachedir'] = '';
+$db['aguascalientes']['char_set'] = 'utf8';
+$db['aguascalientes']['dbcollat'] = 'utf8_general_ci';
+$db['aguascalientes']['swap_pre'] = '';
+$db['aguascalientes']['autoinit'] = TRUE;
+$db['aguascalientes']['stricton'] = FALSE;
+
+//Zacatecas
+$db['zacatecas']['hostname'] = '192.168.0.7';
+$db['zacatecas']['username'] = 'izuniga';
+$db['zacatecas']['password'] = 'ivan2';
+$db['zacatecas']['database'] = 'zacatecas';
+$db['zacatecas']['dbdriver'] = 'postgre';
+$db['zacatecas']['dbprefix'] = '';
+$db['zacatecas']['pconnect'] = FALSE;
+$db['zacatecas']['db_debug'] = TRUE;
+$db['zacatecas']['cache_on'] = FALSE;
+$db['zacatecas']['cachedir'] = '';
+$db['zacatecas']['char_set'] = 'utf8';
+$db['zacatecas']['dbcollat'] = 'utf8_general_ci';
+$db['zacatecas']['swap_pre'] = '';
+$db['zacatecas']['autoinit'] = TRUE;
+$db['zacatecas']['stricton'] = FALSE;
+
+//Estado de mexico
+$db['edomex']['hostname'] = '192.168.0.6';
+$db['edomex']['username'] = 'izuniga';
+$db['edomex']['password'] = 'ivan2';
+$db['edomex']['database'] = 'edomex';
+$db['edomex']['dbdriver'] = 'postgre';
+$db['edomex']['dbprefix'] = '';
+$db['edomex']['pconnect'] = FALSE;
+$db['edomex']['db_debug'] = TRUE;
+$db['edomex']['cache_on'] = FALSE;
+$db['edomex']['cachedir'] = '';
+$db['edomex']['char_set'] = 'utf8';
+$db['edomex']['dbcollat'] = 'utf8_general_ci';
+$db['edomex']['swap_pre'] = '';
+$db['edomex']['autoinit'] = TRUE;
+$db['edomex']['stricton'] = FALSE;
+
+//Quintanaa Roo
+$db['quintana']['hostname'] = '192.168.0.8';
+$db['quintana']['username'] = 'izuniga';
+$db['quintana']['password'] = 'ivan2';
+$db['quintana']['database'] = 'quintanaroo';
+$db['quintana']['dbdriver'] = 'postgre';
+$db['quintana']['dbprefix'] = '';
+$db['quintana']['pconnect'] = FALSE;
+$db['quintana']['db_debug'] = TRUE;
+$db['quintana']['cache_on'] = FALSE;
+$db['quintana']['cachedir'] = '';
+$db['quintana']['char_set'] = 'utf8';
+$db['quintana']['dbcollat'] = 'utf8_general_ci';
+$db['quintana']['swap_pre'] = '';
+$db['quintana']['autoinit'] = TRUE;
+$db['quintana']['stricton'] = FALSE;
+
+//Bansefi
+$db['bansefi']['hostname'] = '192.168.0.40';
+$db['bansefi']['username'] = 'izuniga';
+$db['bansefi']['password'] = 'ivan2';
+$db['bansefi']['database'] = 'bansefi';
+$db['bansefi']['dbdriver'] = 'postgre';
+$db['bansefi']['dbprefix'] = '';
+$db['bansefi']['pconnect'] = FALSE;
+$db['bansefi']['db_debug'] = TRUE;
+$db['bansefi']['cache_on'] = FALSE;
+$db['bansefi']['cachedir'] = '';
+$db['bansefi']['char_set'] = 'utf8';
+$db['bansefi']['dbcollat'] = 'utf8_general_ci';
+$db['bansefi']['swap_pre'] = '';
+$db['bansefi']['autoinit'] = TRUE;
+$db['bansefi']['stricton'] = FALSE;
+
+//metro
+$db['metro']['hostname'] = '192.168.0.10';
+$db['metro']['username'] = 'izuniga';
+$db['metro']['password'] = 'ivan2';
+$db['metro']['database'] = 'metro';
+$db['metro']['dbdriver'] = 'postgre';
+$db['metro']['dbprefix'] = '';
+$db['metro']['pconnect'] = FALSE;
+$db['metro']['db_debug'] = TRUE;
+$db['metro']['cache_on'] = FALSE;
+$db['metro']['cachedir'] = '';
+$db['metro']['char_set'] = 'utf8';
+$db['metro']['dbcollat'] = 'utf8_general_ci';
+$db['metro']['swap_pre'] = '';
+$db['metro']['autoinit'] = TRUE;
+$db['metro']['stricton'] = FALSE;
+
+//michoacan
+$db['michoacan']['hostname'] = '192.168.0.5';
+$db['michoacan']['username'] = 'postgres';
+$db['michoacan']['password'] = 'Nazgul';
+$db['michoacan']['database'] = 'michoacan4f';
+$db['michoacan']['dbdriver'] = 'postgre';
+$db['michoacan']['dbprefix'] = '';
+$db['michoacan']['pconnect'] = FALSE;
+$db['michoacan']['db_debug'] = TRUE;
+$db['michoacan']['cache_on'] = FALSE;
+$db['michoacan']['cachedir'] = '';
+$db['michoacan']['char_set'] = 'utf8';
+$db['michoacan']['dbcollat'] = 'utf8_general_ci';
+$db['michoacan']['swap_pre'] = '';
+$db['michoacan']['autoinit'] = TRUE;
+$db['michoacan']['stricton'] = FALSE;
+
+
+//Polanco
+$db['polanco']['hostname'] = 'fenixpolanco.homeip.net\\SVR-FenixPolanc';
+$db['polanco']['username'] = 'Pruebas1';
+$db['polanco']['password'] = 'Prueb@s1';
+$db['polanco']['database'] = 'FenixPharmacyPtoVtaPolanco';
+$db['polanco']['dbdriver'] = 'mssql';
+$db['polanco']['dbprefix'] = '';
+$db['polanco']['pconnect'] = FALSE;
+$db['polanco']['db_debug'] = TRUE;
+$db['polanco']['cache_on'] = FALSE;
+$db['polanco']['cachedir'] = '';
+$db['polanco']['char_set'] = 'utf8';
+$db['polanco']['dbcollat'] = 'utf8_general_ci';
+$db['polanco']['swap_pre'] = '';
+$db['polanco']['autoinit'] = TRUE;
+$db['polanco']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

@@ -68,38 +68,6 @@
                          </table>                        
 
 <!---->
-<script language=\"javascript\" type=\"text/javascript\">
-
-$('input:text[name^=\"cansur_\"]').change(function() {
-    
-    var nombre = $(this).attr('name');
-    var valor = $(this).attr('value');
-    //var pedido = $('#pedido').html();
-    
-
-    var id = nombre.split('_');
-    id = id[1];
-    //alert(id + \" \" + valor);
-    actualiza_surtido(id, valor);
-
-});
-
-function actualiza_surtido(id, valor){
-    $.ajax({type: \"POST\",
-        url: \"".site_url()."/a_surtido/actualiza_cansur/\", data: ({ id: id, valor: valor }),
-            success: function(data){
-                
-                
-
-        },
-        beforeSend: function(data){
-
-        }
-        });
-}
-
-</script>
- 
                           
                          </div>
                      </div>

@@ -19,4 +19,28 @@ class Ivan_model extends CI_Model
         $this->db->query($sql, $file);
     }
 
+    function countDB($database)
+    {
+        $LI = $this->load->database('li', TRUE);
+        $sql_borra = "delete from oficinas.registros_reales where base = ?";
+        $LI->query($sql_borra, $database);
+        
+        $sql = "CALL oficinas.all_tables_rowcount(?);";
+        $LI->query($sql, $database, FALSE);
+        
+        $sql2 = "insert into oficinas.registros_reales (SELECT ?, TableName, RowCount FROM oficinas.tablecounts t);";
+        $this->db->query($sql2, $database);
+    }
+    
+    function getAllDB()
+    {
+        $this->load->dbutil();
+        $dbs = $this->dbutil->list_databases();
+
+        foreach ($dbs as $db)
+        {
+            $this->countDB($db);
+        }
+    }
+
 }

@@ -1,16 +1,15 @@
               <ul class="sidebar-menu">
               
-              <li class="sub-menu" id="menu_inventario">
+              <li class="sub-menu" id="menu_devolucion">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
-                          <span>Inventario</span>
+                          <span>Devolucion</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_inventario_almacen"><?php echo anchor('inventario/almacen', 'Almacen'); ?></li>
-                          <li id="menu_inv_inventario_alm"><?php echo anchor('inventario/mes_alm','Hist.Mensual'); ?></li>
-                          <li id="menu_inventario_gral"><?php echo anchor('inventario/inv_gral','Inv General'); ?></li>
+                          <li id="menu_devolucion_s_devolucion_ctl"><?php echo anchor('devolucion/s_devolucion_ctl', 'Devolucion'); ?></li>
                       </ul>
-                  </li>
+                  </li> 
                   
               </ul>
+                          

@@ -17,13 +17,16 @@
                                  
                                  </tr>
                                  <tr>
-                                    <td></td>
+                                     <th></th>
                                      <th style="text-align: left">Almacen</th> 
                                      <th style="color:gray; text-align: right">Piezas</th>
                                      <th style="color:gray; text-align: right">Importe</th>
+                                    <!--
                                      <th style="color:gray; text-align: right">Imp.Paquete</th>
+                                    -->
                                      <th style="color:gray; text-align: right">Piezas Modulos</th>
                                      <th style="color:gray; text-align: right">Importe Modulos</th>
+                                     
                                      
                                  </tr>
                              </thead>
@@ -35,10 +38,15 @@
                                 foreach ($a->result()as $r){
                                if($this->session->userdata('nivel')==4){
                                $l0 = anchor('inventario/almacen_lot/'.$r->tipo,'Lote</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado')); 
-                               $l1 = anchor('inventario/almacen_det/'.$r->tipo,$r->almacen.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                               if($r->tipo=='alm' || $r->tipo=='fbo'){
+                               $l1 = anchor('inventario/almacen_det/'.$r->tipo,$r->almacen.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado')); 
+                               }elseif($r->tipo=='agu' || $r->tipo=='con' || $r->tipo=='cht'){
+                               $l1 = anchor('inventario/almacen_det_seg/'.$r->tipo,$r->almacen.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado')); 
+                               }
+                               
                                }else{ 
                                $l0 = anchor('inventario/almacen_lot_s/'.$r->tipo,'Lote</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
-                               $l1 = anchor('inventario/almacen_det/'.$r->tipo,$r->almacen.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                               $l1 = anchor('inventario/almacen_det1/'.$r->tipo,$r->almacen.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                }
                                 ?>
                                 <tr>
@@ -46,23 +54,24 @@
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $l1?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->piezas,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->importe,2)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->importe_paq,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->modulos,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->modulos_importe,2)?></td>
                                 </tr>
                                <?php 
                                $tinv=$tinv+$r->piezas;
                                $tinv_impo=$tinv_impo+$r->importe;
-                               $tinv_impop=$tinv_impop+$r->importe_paq;
+                               
                                
                                 } ?>
                               </tbody>
                               <tfoot>
                               <tr>
-                              <td colspan="2">TOTAL</td>
+                              <td colspan="2" style="text-align: right;">TOTAL</td>
                               <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv,0)?></td>
                               <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv_impo,2)?></td>
-                              <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($tinv_impop,2)?></td>
+                              <td></td>
+                              <td></td>
+                              
                               </tr>
                              </tfoot>
                          </table>   

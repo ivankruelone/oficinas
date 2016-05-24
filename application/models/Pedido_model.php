@@ -268,6 +268,16 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
         $q = $this->db->query($s);
         return $q;
     }
+       public function com_pedido_det_clave($id)
+    {
+        $id_user = $this->session->userdata('id');
+        $s = "select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
+    left join catalogo.provedor b on b.prov=a.prv
+    left join catalogo.provedor c on c.prov=a.prvbase
+    where id_cc=$id order by fecha desc";
+        $q = $this->db->query($s);
+        return $q;
+    }
 
     public function agrega_pedido_det($id_cc, $sec, $can, $regalo, $descu)
     {
@@ -295,14 +305,49 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
             }
         }
     }
-
-    public function agrega_pedido_det_prv_sec($alm, $prv, $cia)
+public function agrega_pedido_det_cla($id_cc, $codigo, $can, $regalo, $costo)
+    {
+        $s = "select a.*,b.almacen,b.prv from catalogo.cat_nuevo_general a,compras.pedido_c b where codigo=$codigo and b.id=$id_cc ";
+        $q = $this->db->query($s);
+        if ($q->num_rows() > 0) {
+            $ss = "select *from compras.pedido_d where id_cc=$id_cc and codigo=$codigo";
+            $qq = $this->db->query($ss);
+            if ($qq->num_rows() == 0) {
+                $r = $q->row();
+            $ff="select *From catalogo.cat_nuevo_general_prv where clagob='$r->clagob' and preferencia='S'";
+            $fq=$this->db->query($ff);
+            if ($fq->num_rows() > 0){$fr=$fq->row();$cosb=$fr->costo;$prvb=$fr->prv;}else{$cosb=0;$prvb=0;}
+                
+                $data = array( //id, id_cc, almacen, sec, clagob, codigo, susa, inv, ped, prv, costo
+                    'id_cc' => $id_cc,
+                    'folprv' => 0,
+                    'almacen' => $r->almacen,
+                    'sec' => $r->sec_cedis,
+                    'clagob' => $r->clagob,
+                    'codigo' => $codigo,
+                    'susa' => trim($r->susa).' '.trim($r->gramaje).' '.trim($r->contenido).' '.trim($r->presenta),
+                    'descri' => trim($r->marca_comercial).' '.trim($r->gramaje).' '.trim($r->contenido).' '.trim($r->presenta),
+                    'inv' => 0,
+                    'ped' => $can,
+                    'prv' => $r->prv,
+                    'regalo' => $regalo,
+                    'descu' => 0,
+                    'costo' => $costo,
+                    'costobase' => $cosb,
+                    'prvbase' => $prvb,
+                    'fecha'=>date('Y-m-d H:i:s'));
+                $this->db->insert('compras.pedido_d', $data);
+            }
+        }
+    }
+    public function agrega_pedido_det_prv_sec($alm, $prv, $cia,$lic)
     {
 
         $data = array(
             'fecha' => date('Y-m-d'),
             'id_user' => $this->session->userdata('id'),
             'almacen' => $alm,
+            'licita' => $lic,
             'prv' => $prv,
             'cia' => $cia);
         $this->db->insert('compras.pedido_c', $data);
@@ -318,7 +363,7 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
         $this->db->query($s);
     }
 
-    public function agrega_pedido_det_prv_cla($alm, $prv, $cia)
+    public function agrega_pedido_det_prv_cla($alm, $prv, $cia,$lic)
     {
 
     
@@ -328,6 +373,7 @@ where a.tipo='A' and (costobase*1.05)<costo and autoriza='0000-00-00'
             'id_user' => $this->session->userdata('id'),
             'almacen' => $alm,
             'prv' => $prv,
+            'licita' => $lic,
             'cia' => $cia);
         $this->db->insert('compras.pedido_c', $data);
         $id_cc = $this->db->insert_id();
@@ -340,15 +386,6 @@ if($prv<>9998){
      left join catalogo.cat_nuevo_general_cla c on c.clagob=a.clagob 
      where a.prv=$prv and a.clagob>' ' and b.susa is not null group by a.clagob,a.sec,a.codigo)";
         $this->db->query($s);
-}else{
-$s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, susa,descri, inv, ped, prv, costo,costobase,prvbase)
-     (select $id_cc,'$alm',a.sec_cedis,a.clagob,a.codigo,concat(trim(a.susa),' ',trim(a.gramaje),' ',trim(a.contenido),' ',trim(a.presenta)),
-     concat(trim(a.marca_comercial),' ',trim(a.gramaje),' ',trim(a.contenido),' ',trim(a.presenta)),
-     0,0,998,0,c.cos,c.prv from catalogo.cat_nuevo_general a
-     left join catalogo.cat_nuevo_general_cla c on c.clagob=a.clagob
-     where a.clagob>' ' and a.susa is not null group by a.clagob,a.codigo)";
-        $this->db->query($s);    
-    
 }
     }
     public function com_cerrar_pedido($id)
@@ -371,7 +408,28 @@ $s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, s
             $ac2 = array('num' => $r1->num + 1);
             $this->db->where('clav', 'osi');
             $this->db->update('catalogo.foliador1', $ac2);
+            $folprv=$r1->num;
         }
+        $sq = "select * from compras.orden_c where folprv=$folprv";
+        $qm= $this->db->query($sq);
+        if ($qm->num_rows() == 0) {
+      $gra1="insert into compras.orden_c
+(id_estado, prv, fecha_captura, fecha_envio, fecha_limite, tipo, id_responsable, id_captura, folprv, cia,base)
+(SELECT b.id, a.prv, a.fecha,a.fecha, date_add(a.fecha,interval 10 day), 1,
+ifnull(c.responsable,0), a.id_user, a.folprv, a.cia,2
+FROM compras.pedido_c a
+left join compras.numero_de_licitaciones b on b.edo=a.almacen
+left join compras.usuarios c on c.id=a.id_user
+where a.tipo='C' and a.folprv=$folprv)";
+$this->db->query($gra1);
+      $gra2="insert ignore into orden_d(id_orden, codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr)
+(SELECT b.id_orden,codigo, sec, clagob, susa, descri, costo, 0, descu, ped, ped, 0 FROM pedido_d a
+left join compras.orden_c b on b.folprv=a.folprv
+where b.id_orden is not null and a.folprv=$folprv and b.base=2)
+";
+$this->db->query($gra2);
+            
+    }
     }
 
     public function com_pedido_his()
@@ -383,26 +441,41 @@ $s = "insert ignore into compras.pedido_d(id_cc, almacen, sec, clagob, codigo, s
     From compras.pedido_c a 
     left join catalogo.cat_almacenes b on b.tipo=a.almacen
     left join catalogo.provedor c on c.prov=a.prv
-    where a.tipo='C' and id_user=$id_user order by id desc ";
+    where a.tipo='C'  order by id desc ";
         $q = $this->db->query($s);
         return $q;
+        //echo $this->db->last_query();
+        //die();
     }
     public function com_pedido_det_his($id)
     {
         $id_user = $this->session->userdata('id');
-        $s = "select a.*,b.razo as prvx,c.corto as prvbasex From compras.pedido_d a
+        $s = "select a.*,b.razo as prvx,c.corto as prvbasex, 0 as iva From compras.pedido_d a
     left join catalogo.provedor b on b.prov=a.prv
     left join catalogo.provedor c on c.prov=a.prvbase
-    where id_cc=$id order by fecha desc";
+    where id_cc=$id and (ped+regalo)>0 order by fecha desc";
+        $q = $this->db->query($s);
+        return $q;
+        //echo $this->db->last_query();
+        //die();
+    }
+    public function pedido_far_pend()
+    {
+        $id_user = $this->session->userdata('id');
+        $s = "SELECT folio,a.*,
+ifnull((select sum(invf) from almacen.control_invd x where invf>0 and x.clave=a.clave group by x.clave),0)as exis
+ FROM almacen.salidas_ped_det a
+left join almacen.salidas_ped b on b.id=a.id_cc
+where a.tipo='C' and a.sur<a.ped order by fecha desc,folio desc";
         $q = $this->db->query($s);
         return $q;
     }
     public function precios_mal()
     {
         $id_user = $this->session->userdata('id');
-        $s = "SELECT f.codigo,f.costo as costo_alterno,f.prv as prv_alterno,
+        $s = "SELECT d.fecha as fecc,ifnull(f.codigo,0),f.costo as costo_alterno,f.prv as prv_alterno,
 concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),' ',trim(presenta))as descri,
-e.nombre as id_userx,a.*,b.razo as prvbasex,c.razo as prvx,
+e.nombre as id_userx,a.*,ifnull(b.razo,' ') as prvbasex,c.razo as prvx,
 h.razo as prvx_alterno,f.prv as prv_alterno
 FROM compras.pedido_d a
 left join catalogo.provedor b on b.prov=a.prvbase
@@ -412,7 +485,8 @@ left join compras.usuarios e on e.id=d.id_user
 left join catalogo.cat_nuevo_general_prv f on f.clagob=a.clagob and f.prv<>a.prv
 left join catalogo.cat_nuevo_general g on g.codigo=f.codigo
 left join catalogo.provedor h on h.prov=f.prv
-where a.costo>a.costobase and a.ped>0 and a.val=0";
+where a.ped>0 and a.val=0 and d.fecha>=subdate(date(now()),interval 90 day) 
+";
         $q = $this->db->query($s);
         if ($q->num_rows() > 0) {
             $b = 0;
@@ -421,6 +495,7 @@ where a.costo>a.costobase and a.ped>0 and a.val=0";
                 $a[$r->clagob]['id'] = $r->id;
                 $a[$r->clagob]['id_cc'] = $r->id_cc;
                 $a[$r->clagob]['id_userx'] = $r->id_userx;
+                $a[$r->clagob]['fecc'] = $r->fecc;
                 $a[$r->clagob]['sec'] = $r->sec;
                 $a[$r->clagob]['clagob'] = $r->clagob;
                 $a[$r->clagob]['susa'] = $r->susa;
@@ -432,6 +507,7 @@ where a.costo>a.costobase and a.ped>0 and a.val=0";
                 $a[$r->clagob]['descu'] = $r->descu;
                 $a[$r->clagob]['prv'] = $r->prv;
                 $a[$r->clagob]['prvx'] = $r->prvx;
+                
                 $a[$r->clagob]['uno'][$r->prv_alterno]['prv_alterno'] = $r->prv_alterno;
                 $a[$r->clagob]['uno'][$r->prv_alterno]['prvx_alterno'] = $r->prvx_alterno;
                 $a[$r->clagob]['uno'][$r->prv_alterno]['costo_alterno'] = $r->costo_alterno;
@@ -566,12 +642,42 @@ cantidadp, cantidads, edo,  sec, folret, codigo)
     public function far_pedido_det_his($id)
     {
         $id_user = $this->session->userdata('id');
-        $s = "select a.* From almacen.salidas_ped_det a
-    where a.tipo='C' and a.id_cc=$id";
+        $s = "select b.folio, a.id_cc, a.fecha, a.clave, a.codigo, a.susa, a.descri, sum(ped) as ped, a.costo, a.id, a.tipo, a.sec, a.receta, a.sur,
+ifnull((select sum(cantidads) from almacen.salidas_c x where x.folio=b.folio and x.claves=a.clave),0)as surti
+From almacen.salidas_ped_det a
+left join almacen.salidas_ped b on b.id=a.id_cc
+where a.tipo='C' and a.id_cc=$id
+group by clave
+order by clave";
         $q = $this->db->query($s);
         return $q;
     }
-    
+     public function far_pedido_rec()
+    {$aaa=date('Y');
+        $id_user = $this->session->userdata('id');
+        $s = "select b.folio,b.suc,sum(ped)as ped,c.nombre,a.receta,a.fecha,
+ifnull((select (cantidads) from almacen.salidas_c x where x.folio=b.folio and x.claves=a.clave 
+group by x.folio,x.claves),0)as surti
+From almacen.salidas_ped_det a
+left join almacen.salidas_ped b on b.id=a.id_cc
+left join catalogo.sucursal c on c.suc=b.suc
+where a.tipo='C' and receta<>' '  and date_format(a.fecha,'%Y')=$aaa group by receta";
+        $q = $this->db->query($s);
+        return $q;
+    }
+public function far_pedido_rec_una($receta)
+    {$aaa=date('Y');
+        $id_user = $this->session->userdata('id');
+        $s = "select a.clave,a.descri,a.susa,b.folio,b.suc,(ped)as ped,c.nombre,a.receta,a.fecha,
+x.cantidads as surti
+From almacen.salidas_ped_det a
+left join almacen.salidas_ped b on b.id=a.id_cc
+left join catalogo.sucursal c on c.suc=b.suc
+left join almacen.salidas_c x on x.folio=b.folio and x.claves=a.clave
+where a.tipo='C' and receta like '%$receta%'  and date_format(a.fecha,'%Y')=$aaa";
+        $q = $this->db->query($s);
+        return $q;
+    }    
     public function actualiza_detalle_pedido($id, $pedido)
     {
         $this->db->where('id', $id);
@@ -595,6 +701,13 @@ cantidadp, cantidads, edo,  sec, folret, codigo)
         $this->db->update('compras.pedido_d');
         return $this->calcula_importe($id);
     }
+    public function actualiza_detalle_costo($id, $costo)
+    {
+        $this->db->where('id', $id);
+        $this->db->set('costo', $costo);
+        $this->db->update('compras.pedido_d');
+        return $this->calcula_importe($id);
+    }
 
     function calcula_importe($id)
     {
@@ -607,6 +720,386 @@ cantidadp, cantidads, edo,  sec, folret, codigo)
         return number_format($row->ped, 2)."|".number_format($row->importe, 2)."|".number_format($row->descuento, 2)."|".number_format($row->total, 2);
         
     }
+
+//////////////////////////////////////////////////////////////////////////////Mover a insumos
+//////////////////////////////////////////////////////////////////////////////Mover a insumos
+//////////////////////////////////////////////////////////////////////////////Mover a insumos
+function val_pedido_ins($id_plaza)
+{
+    $s="SELECT a.suc,c.nombre as sucx, b.descri, a.id, fecha_cap,
+(select sum(canp_sup*costo) from papeleria.insumos_d x where x.id_cc=a.id)as imp
+FROM papeleria.insumos_c a
+join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
+join catalogo.sucursal c on c.suc=a.suc  and superv=$id_plaza
+where tipo=0 and stat_sup='B'";
+$q=$this->db->query($s);
+return $q;
+}
+function val_pedido_no_terminados($id_plaza)
+{
+    $s="SELECT a.suc,c.nombre as sucx, b.descri, a.id, fecha_cap,
+(select sum(canp_sup*costo) from papeleria.insumos_d x where x.id_cc=a.id)as imp
+FROM papeleria.insumos_c a
+join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
+join catalogo.sucursal c on c.suc=a.suc  and superv=$id_plaza
+where tipo=0";
+$q=$this->db->query($s);
+return $q;
+}
+function val_pedido_ins_det($id_cc)
+{
+    $s="SELECT b.descripcion,a.* FROM papeleria.insumos_d a
+join catalogo.cat_insumos b on b.id_insumos=a.id_insumos
+where id_cc=$id_cc";
+$q=$this->db->query($s);
+return $q;
+}
+
+function val_pedido_ins_det_uno($id_cc,$id)
+{
+    $s="SELECT b.descripcion,a.* FROM papeleria.insumos_d a
+join catalogo.cat_insumos b on b.id_insumos=a.id_insumos
+where id_cc=$id_cc and a.id=$id";
+$q=$this->db->query($s);
+return $q;
+}
+
+
+function inserta_insumos_s($id_cc)
+{
+
+$s="insert ignore into papeleria.insumos_s
+(id_cc, id_dd, fol, id_insumos, canp, cans,fecha_cap, tipo, costo, costo_cat, canr, fecha_sur, fecha_val)
+
+(SELECT
+b.id_cc, b.id,'A',b.id_insumos, canp_sup,canp_sup, b.fecha_cap, 1, b.costo, b.costo_cat, canp_sup,date(now()),'0000-00-00'
+FROM papeleria.insumos_c a, papeleria.insumos_d b
+where a.tipo=0 and canp_sup>0 and a.id=b.id_cc and a.id=$id_cc and a.stat_sup='B')";
+$this->db->query($s);
+
+$a=array('tipo'=>1,'fecha_cierre'=>date('Y-m-d H:i:s'),'stat_sup'=>'C');
+$this->db->where('id',$id_cc);
+$this->db->update('papeleria.insumos_c',$a);
+        
+}
+
+function val_pedido_ins_his($id_plaza)
+{
+    $s="SELECT
+b.suc,c.nombre as sucx,a.fecha_sur,a.fecha_cap,descri as comprax,
+case
+when a.tipo=1 then 'PENDIENTE POR SURTIR'
+when a.tipo=2 then 'SURTIDO'
+when a.tipo=3 then 'VALIDADO POR FARMACIA'
+when a.tipo=4 then 'CANCELADO'
+end as pedido,
+b.fecha as fecha_suc,a.fecha_val,a.id_cc,a.fol,sum(cans*costo)as imp
+FROM papeleria.insumos_s a
+join papeleria.insumos_c b on b.id=a.id_cc
+join catalogo.sucursal c on c.suc=b.suc
+join catalogo.cat_insumos_compra d on d.id_insumo=b.id_comprar
+where a.tipo in(1,2,3,4) and superv=$id_plaza
+group by a.id_cc,a.fol
+order by fecha_cap desc,fecha_sur,fecha_val";
+$q=$this->db->query($s);
+return $q;
+}
+function val_pedido_ins_his_det($id_plaza,$id_cc,$fol)
+{
+    $s="SELECT
+
+a.fecha_val,
+a.id_cc,a.fol,a.id_insumos,d.descripcion,canr,(cans*a.costo)as imp
+FROM papeleria.insumos_s a
+join papeleria.insumos_c b on b.id=a.id_cc
+join catalogo.sucursal c on c.suc=b.suc
+join catalogo.cat_insumos d on d.id_insumos=a.id_insumos
+where a.tipo in(1,2,3) and superv=$id_plaza and a.id_cc=$id_cc and a.fol='$fol'";
+$q=$this->db->query($s);
+return $q;
+}
+function val_pedido_ins_his_glo($id_plaza)
+{
+    $s="select 0 as id_cc,a.suc, a.nombre,'PEDIDO A OFICINAS MEDICOS'as comprarx,'0000-00-00' as fecha_cap,'NO GENERO PEDIDO A OFICINAS DE MEDICOS' as obs
+from catalogo.sucursal a
+left join papeleria.insumos_c b on b.id_comprar=3 and a.suc=b.suc and b.tipo<>4 and fecha_cap>=subdate(date(now()),31)
+join catalogo.cat_medicos c on c.matutino=a.suc or c.vespertino=a.suc
+where
+tlid=1 and dia<>'CER' and a.regional=$id_plaza and b.id is null or
+tlid=1 and dia<>'CER' and a.superv=$id_plaza and b.id is null
+union all
+select 0 as id_cc,a.suc, a.nombre,'PEDIDO A OFICINAS FARMACIAS'as comprarx,'0000-00-00' as fecha_cap,'NO GENERO PEDIDO A OFICINAS FARMACIAS' as obs
+from catalogo.sucursal a
+left join papeleria.insumos_c b on b.id_comprar=1 and a.suc=b.suc and b.tipo<>4 and fecha_cap>=subdate(date(now()),31)
+where
+tlid=1 and dia<>'CER' and a.regional=$id_plaza and b.id is null or
+tlid=1 and dia<>'CER' and a.superv=$id_plaza and b.id is null
+union all
+select a.id as id_cc,a.suc,c.nombre,b.descri as comprarx,a.fecha_cap,
+case
+when tipo in(1,2,3) and stat_sup='C' then 'VALIDADO POR SUPERVISOR'
+when tipo=4 then 'CANCELADO'
+when tipo=0 then 'SUCURSAL NO VALIDO SU CAPTURA'
+end as obs
+from papeleria.insumos_c a
+join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
+join catalogo.sucursal c on c.suc=a.suc
+where
+fecha_cap>=subdate(date(now()),31) and regional=$id_plaza or
+fecha_cap>=subdate(date(now()),31) and superv=$id_plaza
+";
+$q=$this->db->query($s);
+return $q;
+}
+//////////////////////////////////////////////////////////////////////////////Mover a insumos
+//////////////////////////////////////////////////////////////////////////////Mover a insumos
+//////////////////////////////////////////////////////////////////////////////Mover a insumos
+
+
+
+
+/*****************************Pedidos especial FANASA**************************************/
+
+   function busca_sucursal_feni($id_plaza)
+    {
+
+        $sql = "select suc,nombre from catalogo.sucursal where tipo2='F' and tlid=1 and superv=$id_plaza";
+        $query = $this->db->query($sql);
+        $suc = array();
+        $suc[0] = 'Seleccione Sucursal';
+
+        foreach ($query->result() as $row) {
+            $suc[$row->suc] = $row->suc. ' - ' . $row->nombre;
+        }
+
+        return $suc;
+            }
+
+   function ins_pre_pedido($data,$code){
+
+        $s = "SELECT * FROM catalogo.cat_fanasa 
+             WHERE Date_format(fecha_modificado,'%Y-%m-%d')=curdate() and codigo=$code";
+
+        $q = $this->db->query($s);
+
+        if ($q->num_rows() > 0)
+            {
+        
+                foreach ($q->result() as $r) {
+                   $a['codigo'] = $r->codigo;    
+                   $a['descripcion'] = $r->descripcion;                
+                }
+               
+                  $datos =array(
+                  'suc'=>$data['suc'],
+                  'activo'=>$data['activo'],
+                  'piezas'=>$data['piezas'],
+                  'fecha'=>date('Y-m-d'),
+                  'cod'=>$a['codigo'],
+                  'descri'=>$a['descripcion'],
+                  'prv'=>825
+                   );
+                              
+                $this->db->insert('compras.pre_pedido_fenix ',$datos);
+            } else {
+                                            
+                    return $success=0;
+
+              }
+   
+     }
+
+
+    function desc_pend_pre_pedido($id_plaza){
+
+            $s = "select a.*,b.nombre, b.superv from compras.pre_pedido_fenix a,catalogo.sucursal b
+                    where a.activo=0 and a.fecha=curdate() and a.suc=b.suc and b.superv=$id_plaza";
+            $q = $this->db->query($s);
+        return $q;
+        }
+
+    function upd_pre_pedido($suc,$cod){
+
+        $data = array(
+        'activo' => 1,
+        'fecha'=>date('Y-m-d')
+         );
+
+        $this->db->where('suc', $suc);
+        $this->db->where('cod', $cod);
+        $this->db->where('fecha',$data['fecha']);
+        $this->db->update('compras.pre_pedido_fenix', $data);
+        }
+
+    function del_cod_pre_pedido($suc,$cod){
+        $data = array(
+        'fecha'=>date('Y-m-d')
+         );
+
+        $this->db->where('suc', $suc);
+        $this->db->where('cod', $cod);
+        $this->db->where('fecha',$data['fecha']);
+       
+
+        $this->db->delete('compras.pre_pedido_fenix');
+     }
+
+     function desc_pre_pedido_fen($id_plaza){
+
+            $s = "select a.*,b.nombre, b.superv from compras.pre_pedido_fenix a,catalogo.sucursal b
+                    where a.activo=1 and a.fecha=curdate() and a.suc=b.suc and b.superv=$id_plaza";
+            $q = $this->db->query($s);
+        return $q;
+        }
+
+
+    function bus_cod_fanasa($descripcion){
+
+            $s = "SELECT * FROM catalogo.cat_fanasa where  Date_format(fecha_modificado,'%Y-%m-%d')=curdate() and descripcion like'%$descripcion%' order by descripcion";
+            $q2 = $this->db->query($s);
+        return $q2;
+
+        }
+
+     function bus_cod_fanas($codigo){
+
+        $sql = " SELECT codigo,descripcion FROM catalogo.cat_fanasa where codigo = $codigo order by codigo; ";
+        $query2 = $this->db->query($sql);        
+         if($query2->num_rows() == 0){
+            $des_resp = "<font color='orange'>El codigo que usted ingreso no esta disponible </font>";
+
+         }else{
+       
+        foreach($query2->result() as $row){
+             $des_resp=$row->descripcion;
+            
+         } 
+        }  
+        return $des_resp;  
+
+     }
+
+
+     function buscar_suc_fen_act(){
+        $sql = "select suc, nombre from catalogo.sucursal where tipo2='F' and tlid=1 and superv>0 or suc in(515,831) order by nombre";
+        $query = $this->db->query($sql);
+        $suc = array();
+        $suc[0] = 'Seleccione Sucursal';
+
+        foreach ($query->result() as $row) {
+            $suc[$row->suc] = $row->suc. ' - ' . $row->nombre;
+        }
+
+        return $suc;
+            }
+
+
+
+    function sol_pedido_sup(){
+
+         $s = "select a.fecha,a.suc,b.nombre,b.superv,c.nombre as nom_sup, a.activo
+                 from compras.pre_pedido_fenix a,catalogo.sucursal b , compras.usuarios c
+                    where a.suc=b.suc and b.superv=c.id_plaza and a.activo =1 and a.fecha=curdate()
+                      group by fecha,suc";
+            $q = $this->db->query($s);
+        return $q;
+    }
+
+
+    function ver_pedido_suc_f($suc){
+        $s = "select * FROM compras.pre_pedido_fenix  where fecha=curdate() and suc=$suc and activo=1";
+            $q = $this->db->query($s);
+        
+        if($q->num_rows() <= 0){
+     redirect('pedido/ped_esp_sucur_fen');
+        }else {
+        return $q;
+        }
+
+    }
+
+    function upd_pre_pedido_c($suc,$cod){
+
+        $data = array(
+        'activo' => 4,
+        'fecha'=>date('Y-m-d')
+         );
+
+        $this->db->where('suc', $suc);
+        $this->db->where('cod', $cod);
+        $this->db->where('fecha',$data['fecha']);
+        $this->db->update('compras.pre_pedido_fenix', $data);
+
+        }
+
+    function actualiza_ped_com($suc){
+
+        $data = array(
+        'activo' => 3,
+        'fecha'=>date('Y-m-d')
+         );
+
+        $this->db->where('activo', 1);
+        $this->db->where('suc', $suc);
+        $this->db->where('fecha',$data['fecha']);
+        $this->db->update('compras.pre_pedido_fenix', $data);
+        }
+
+
+    function ped_autoriza_compr(){
+         $s = "select a.fecha,a.suc,b.nombre,b.superv,c.nombre as nom_sup, a.activo
+                 from compras.pre_pedido_fenix a,catalogo.sucursal b , compras.usuarios c
+                    where a.suc=b.suc and b.superv=c.id_plaza and a.activo =3 and a.fecha=curdate()
+                      group by fecha,suc";
+            $q1 = $this->db->query($s);
+        return $q1;        
+
+        }
+
+    function ver_pedido_a_com($suc){
+         $s = "select * FROM compras.pre_pedido_fenix  where suc=$suc and fecha=curdate() and activo=3";
+            $q = $this->db->query($s);
+        return $q;
+
+    }
+
+    function desc_ppedido_f_com(){
+            $s = "select a.*,b.nombre, b.superv from compras.pre_pedido_fenix a,catalogo.sucursal b
+                    where a.activo=2 and a.fecha=curdate() and a.suc=b.suc ";
+            $q = $this->db->query($s);
+        return $q;
+        }
+
+  function actualiza_pp_com($suc,$codigo){
+
+        $data = array(
+        'activo' => 3,
+        'fecha'=>date('Y-m-d')
+         );
+
+        $this->db->where('activo', 2);
+        $this->db->where('suc', $suc);
+        $this->db->where('fecha',$data['fecha']);
+        $this->db->update('compras.pre_pedido_fenix', $data);
+
+        }
+
+
+    function pp_act_compras(){
+        $s = "select a.*,b.nombre, b.superv from compras.pre_pedido_fenix a,catalogo.sucursal b
+                    where a.activo=3 and a.fecha=curdate() and a.suc=b.suc ";
+            $q1 = $this->db->query($s);
+        return $q1;
+
+
+    }
+
+
+
+
+
+
+
 
 
 }

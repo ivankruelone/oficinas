@@ -12,45 +12,65 @@
                              <thead>
                                  <tr>
                                      <th>Id</th>
+                                     <th>Receta</th>
                                      <th>Sec</th>
                                      <th>Codigo</th>
                                      <th>Clave</th>
                                      <th>Sustancia Activa</th>
                                      <th>Descripcion</th>
-                                     <th>Cantidad</th>
+                                     <th>Ped</th>
+                                     <th>Sur</th>
                                      
                                    </tr>
                              </thead>
                              <tbody>
                                  <?php
-                                  $tcan=0;$timp=0;
+                                  $tcan=0;$timp=0;$tcans=0; $fol=0;
                                 $num=0; $color='black';
                                 foreach ($q->result() as $r) {
                                 $num=$num+1;
-                                $tot=0; $n=0; 
+                                $tot=0; $n=0;
+                                $clave=$r->clave;
+                               
+                                
+                                $sql="SELECT receta FROM almacen.salidas_ped_det where id_cc=$id_cc and clave='$clave';";
+                                $query=$this->db->query($sql);
+                                
+                                
                                 ?> 
                                         <tr>
                                         <td><?php echo $num?></td>
+                                        <td>
+                                        <?php foreach ($query->result() as $row){ ?>
+                                         <?php  echo $row->receta . "<br />"?>
+                                        <?php } ?> 
+                                        </td>
                                         <td style="text-align: right; color: <?php echo $color ?>;"><?php echo $r->sec?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->codigo?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->clave?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->susa?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->descri?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->ped?>
+                                        <td style="text-align: right; color: <?php echo $color ?>"><?php echo $r->surti?>
                                       </tr>
                                        <?php 
                                         $tcan=$tcan+$r->ped;
+                                        $tcans=$tcans+$r->surti;
                                         $timp=$timp+$r->ped*$r->costo;
-                                        }?>
-                                        
-                                
+                                        }
+                                        if($tcans>0 and $tcans<$tcan){$porce=100-(($tcans/$tcan)*100);}
+                                        elseif($tcan==$tcans){$porce=100;}
+                                        elseif($tcans>0 and $tcans>$tcan){$porce=($tcans/$tcan)*100;}
+                                        $fol=$r->folio;
+                                        ?>
                              </tbody>
                              <tfoot>
                              <tr>
-                             <td colspan="4"></td>
+                             <td style="color:blue;" colspan="5">Folio de farmacia <?php echo $fol ?></td>
                              <td style="color:black; text-align: left; "><strong>Total de productos  <?php echo number_format($num,0)?></strong></td>
-                             <td></td>
+                             <td><strong>Surtido % <?php echo number_format($porce,2)?></strong></td>
                              <td style="color:black; text-align: right; "><strong><?php echo number_format($tcan)?></strong></td>
+                             <td style="color:black; text-align: right; "><strong><?php echo number_format($tcans)?></strong></td>
                                         
                              </tr>
                              </tfoot>

@@ -17,7 +17,7 @@
                                         <th>Tipo</th>
                                         <th>Nid</th>
                                         <th>Sucursal</th>
-                                        <th>Promedio de 3 meses</th>
+                                        
                                         <th>Ene</th>
                                         <th>Feb</th>
                                         <th>Mar</th>
@@ -47,7 +47,7 @@
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->tipo2?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $l1?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->sucx?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->prome,0)?></td>
+                                
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta1,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta2,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta3,0)?></td>
@@ -79,7 +79,7 @@ $t12=$t12+($r->venta12);
                               </tbody>
                               <tfoot>
                               <tr>
-                              <td colspan="5" style="color:red; text-align: right">TOTAL</td>
+                              <td colspan="4" style="color:red; text-align: right">TOTAL</td>
                               <td style="color:red; text-align: right"><?php echo number_format($t1,0)?></td>
                               <td style="color:red; text-align: right"><?php echo number_format($t2,0)?></td>
                               <td style="color:red; text-align: right"><?php echo number_format($t3,0)?></td>
@@ -92,6 +92,7 @@ $t12=$t12+($r->venta12);
                               <td style="color:red; text-align: right"><?php echo number_format($t10,0)?></td>
                               <td style="color:red; text-align: right"><?php echo number_format($t11,0)?></td>
                               <td style="color:red; text-align: right"><?php echo number_format($t12,0)?></td>
+
                               </tr>
                              </tfoot>
                          </table>   

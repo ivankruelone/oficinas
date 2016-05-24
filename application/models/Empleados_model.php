@@ -10,37 +10,28 @@ class Empleados_model extends CI_Model
     public function plantilla($f1)
     {
         $aaa = date('Y');
-        $s = "select b.id, b.cia,c.puesto, a.nombre as sucx,a.regional,a.superv,a.tipo2,a.suc,a.nombre,a.plantilla,
+        $s = "select a.fecha_act, b.id, b.cia,c.puesto, a.nombre as sucx,a.regional,a.superv,a.tipo2,a.suc,a.nombre,a.plantilla,
 b.nomina,b.completo,b.puestox,d.nombre_e as regionalx,e.nombre as supervx,
 case when f.motivo is null then 'NO' else 'RETENCION' end as motivo
 from catalogo.sucursal a
-left join catalogo.cat_empleado b on b.succ=a.suc and tipo=1
+join catalogo.cat_empleado b on b.succ=a.suc and tipo=1
 left join catalogo.cat_puesto c on c.puesto=b.puestox and farmacia='S'
 left join catalogo.gerente d on d.ger=a.regional
 left join catalogo.supervisor e on e.zona=a.superv
 left join catalogo.cat_alta_empleado f on f.empleado=b.nomina and f.motivo='RETENCION' and id_causa<>7
-where a.tlid=1 and a.suc>100 and a.suc<=2000
-and a.suc<>170
-and a.suc<>171
-and a.suc<>172
-and a.suc<>173
-and a.suc<>174
-and a.suc<>175
-and a.suc<>176
-and a.suc<>177
-and a.suc<>178
-and a.suc<>179
-and a.suc<>180
-and a.suc<>187
+where a.tlid=1 and a.suc>100 and a.suc<=2899  
 and farmacia='S'
 order by puesto";
-        $q = $this->db->query($s);
+$q = $this->db->query($s);
+
+        
         foreach ($q->result() as $r) {
             $a[$r->regional]['f1'] = $f1;
             $a[$r->regional]['regional'] = $r->regional;
             $a[$r->regional]['regionalx'] = $r->regionalx;
             $a[$r->regional]['m'][$r->superv]['superv'] = $r->superv;
             $a[$r->regional]['m'][$r->superv]['supervx'] = $r->supervx;
+            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['fecha_act'] = $r->fecha_act;
             $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['suc'] = $r->suc;
             $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['sucx'] = $r->sucx;
             $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['plantilla'] = $r->plantilla;
@@ -51,10 +42,41 @@ order by puesto";
             $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['motivo'] = trim($r->motivo);
             $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['id'] = trim($r->id);
         }
+        
         return $a;
+        
+        
     }
-    
-    
+
+public function plantilla_tod($f1)
+    {
+        $aaa = date('Y');
+        $s = "select a.suc,a.nombre,b.nomina,trim(b.completo)as completo,puestox,
+ifnull((select motivo from catalogo.cat_alta_empleado x where x.motivo in('RETENCION','INC.INDEFINIDA') and x.empleado=b.nomina),' ')as motivo
+from catalogo.sucursal a
+join catalogo.cat_empleado b on b.succ=a.suc and b.tipo=1
+where 
+a.regional=$f1 and a.tlid=1 or
+a.superv=$f1 and a.tlid=1 
+order by a.suc
+";
+$q = $this->db->query($s);
+return $q;
+}
+
+    function personal_cerradas()
+    {
+        $s="SELECT a.nomina,trim(completo)as empleado,a.succ,b.nombre,ifnull(c.suc_nueva,'')as nueva_suc,ifnull(c.nombre_c,'')as nueva_sucx
+FROM catalogo.cat_empleado a
+join catalogo.sucursal b on b.suc=a.succ and a.succ<=2899 and a.succ>100
+left join catalogo.sucursal_cambio c on c.suc_vieja=a.succ
+left join catalogo.cat_alta_empleado d on d.empleado=a.nomina and motivo='RETENCION'
+where
+a.tipo=1 and dia='CER' and d.motivo is null or
+a.tipo=1 and tlid=4 and d.motivo is null";
+        $q=$this->db->query($s);
+        return $q;
+    }
     function getEvaluacionAreas()
     {
         $query = $this->db->get('desarrollo.evaluacion_areas');
@@ -354,6 +376,79 @@ order by puesto";
         return $query->row();
     }
     
+    function busca_empleado_dias($nomina, $mes, $aaa)
+    {
+        if($aaa == 2014){
+        
+        $this->db->select("a.suc, b.nombre, month(a.fecha) as mes, a.fecha, DATEDIFF(date(now()),a.fecha)as dias", false);
+        $this->db->from('vtadc.venta_detalle a');
+        $this->db->join('catalogo.sucursal b', 'a.suc=b.suc', 'LEFT');
+        $this->db->where('a.nomina', $nomina);
+        $this->db->where("month(a.fecha)=$mes", null, false);
+        $this->db->where("year(a.fecha)=$aaa", null, false);
+        $this->db->group_by('a.suc');
+        $query = $this->db->get();
+        //echo $aaa;
+        //echo $this->db->last_query();
+        //die ();
+        
+         }elseif($aaa == 2013){
+         $this->db->select("a.suc, b.nombre, month(a.fecha) as mes, a.fecha, DATEDIFF(date(now()),a.fecha)as dias", false);
+        $this->db->from('vtadc.venta_detalle2013 a');
+        $this->db->join('catalogo.sucursal b', 'a.suc=b.suc', 'LEFT');
+        $this->db->where('a.nomina', $nomina);
+        $this->db->where("month(a.fecha)=$mes", null, false);
+        $this->db->where("year(a.fecha)=$aaa", null, false);
+        $this->db->group_by('a.suc');
+        $query = $this->db->get();
+        //echo $aaa;
+        //echo $this->db->last_query();
+        //die ();
+            
+         }else{
+            
+         }
+        return $query;
+    }
     
+    function valida_plantilla($id_plaza)
+    {
+        $s = "select a.suc, a.nombre,b.nomina, b.completo,b.puestox, case when b.suc >=1 then 'Si' else 'No' end as status,observ
+              from catalogo.sucursal a
+              join catalogo.cat_empleado b on a.suc=b.succ 
+              where a.superv=$id_plaza and b.tipo=1 and tipo3 in('FE','FA','DA','MO') and $id_plaza>0";
+        
+        $q = $this->db->query($s);
+              
+        return $q;
+             
+    }
+
+     function observ_empleado($suc)
+    {
+ 
+      $this->db->select('nomina,completo,observ');
+      $this->db->from('catalogo.cat_empleado');
+      $this->db->where('nomina', $suc);
+      $this->db->where('tipo', 1);
+      $query = $this->db->get();
+      $query = $query->row();
+      return $query;
+         
+    }
+
+     function guardar_observ($data)
+    {
+        $datos =array(
+        'observ'=>$data['observ'],
+        'suc'=>$data['suc'],
+        'fecha_val'=>date('Y-m-d H:i:s')
+        );
+        
+        $this->db->where('nomina',$data['nomina']);
+                
+        $this->db->update('catalogo.cat_empleado',$datos);
+                           
+    } 
 
 }

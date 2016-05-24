@@ -340,7 +340,9 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
       ////////////////////////////////////////////////////////////////////////////////////////////////////////inventario
      public function cat_productos_letra($letra)
     {
-        
+        //codigo, descripcion, lab, iva, farmacia, pub, venta, tipo, registro, id, id_user, 
+        //fecha_archivo, producto, clave, susa, lin, sublin, max, min, antibiotico, labprv, 
+        //aaa_registro, cos, cos_fanasa, cos_nadro, cos_saba, ofe_saba, ofe_nadro, ofe_fanasa, fin_saba, fin_nadro, fin_fanasa, fecha_registro, sec, labor, ivax
         $s = "select a.*,b.labor,case when iva=0 then 'Sin Iva' else 'Con Iva' end as ivax from catalogo.cat_mercadotecnia a
         left join catalogo.laboratorios b on b.num=a.lab
         where substring(descripcion,1,1)='$letra'
@@ -630,7 +632,7 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
     function busca_lin()
     {
         
-        $sql = "SELECT *from catalogo.lineas_cosvta
+        $sql = "SELECT * FROM catalogo.cat_lin
         ";
         $query = $this->db->query($sql);
         
@@ -638,7 +640,22 @@ left join catalogo.cat_mercadotecnia b on b.codigo=a.codigo";
         $lin[0] = "Seleccione Linea";
         
         foreach($query->result() as $row){
-            $lin[$row->lin] = $row->linx;
+            $lin[$row->lin] = $row->nombre;
+        }
+        
+        return $lin;  
+    }
+    function busca_sublinn()
+    {
+        
+        $sql = "SELECT * FROM catalogo.cat_sublin order by codlin,codslin";
+        $query = $this->db->query($sql);
+        
+        $lin = array();
+        $lin[0] = "Seleccione Sublinea";
+        
+        foreach($query->result() as $row){
+            $lin[$row->codslin] = $row->codlin."-".$row->descrip;
         }
         
         return $lin;  
@@ -753,10 +770,19 @@ public function mer_genera_lic_b($id)
         $q=$this->db->query($s);
         return $q;
     }
-/////////////////////////////////////////////////////
-/////////////////////////////////////////////////////
-/////////////////////////////////////////////////////
+             /////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////
+/////////////////Buscar existencias de medicamentos////////////////////////////////////
 
+public function busca_cod_medi($codigo)
+    {
+     $s="select a.suc,c.nombre, a.codigo, a.sec, a.rel, a.cantidad, a.fechai,b.descripcion1
+     from desarrollo.inv a, catalogo.cod_rel b, catalogo.sucursal c
+        where a.codigo=b.ean and a.suc=c.suc and a.codigo= $codigo and a.fechai=CURDATE()";
+
+        $q=$this->db->query($s);
+        return $q;
+    }
 
 
 

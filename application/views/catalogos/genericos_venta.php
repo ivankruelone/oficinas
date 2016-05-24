@@ -18,8 +18,7 @@
                                      <th>Sec</th>
                                      <th>Sustancia Activa</th>
                                      <th>$ Gen</th>
-                                     <th>$ Ddr</th>
-                                     <th>Naturista</th>
+                                    
                                  </tr>
                              </thead>
                              <tbody>
@@ -35,8 +34,8 @@
                                     <td><?php echo $r['sec']?></td>
                                     <td style="width: inherit;"><?php echo $r['susa']?></td>
                                     <td style="text-align: right;"><?php echo number_format($r['gen'],2)?></td>
-                                    <td style="text-align: right;"><?php echo number_format($r['ddr'],2)?></td>
-                                    <td style="text-align: right;"><?php echo $r['natur']?></td>
+                                    
+                                    
                                 </tr>
                                 <?php
                                 }

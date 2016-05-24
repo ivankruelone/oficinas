@@ -63,7 +63,7 @@
             $data_aaa_registro = array(
               'name'        => 'aaa_registro',
               'id'          => 'aaa_registro',
-              'value'       => '',
+              'value'       => 0,
               'maxlength'   => '4',
               'size'        => '4'
               
@@ -87,7 +87,7 @@
          $data_max = array(
               'name'        => 'max',
               'id'          => 'max',
-              'value'       => '',
+              'value'       => 0,
               'maxlength'   => '7',
               'size'        => '7'
               
@@ -95,7 +95,7 @@
             $data_min = array(
               'name'        => 'min',
               'id'          => 'min',
-              'value'       => '',
+              'value'       => 0,
               'maxlength'   => '7',
               'size'        => '7'
               
@@ -213,7 +213,7 @@
                                    <td style="text-align: left;"><?php echo number_format($r['pub'],2)?></td>
                                    <td style="text-align: left;"><?php echo number_format($r['venta'],2)?></td>
                                    <td style="text-align: left;"><?php echo $r['registro']?></td>
-                                   <td style="text-align: left;"><?php echo $r['fecha_registro']?></td>
+                                   <td style="text-align: left;"><?php echo $r['aaa_registro']?></td>
                                    <td style="text-align: left;"><?php echo $r['clave']?></td>
                                    <td style="text-align: left;"><?php echo $r['ivax']?></td>
                                    <td style="text-align: left;"><?php echo $r['producto']?></td>

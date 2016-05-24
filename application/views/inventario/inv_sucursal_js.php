@@ -37,9 +37,12 @@ $(document).ready(function() {
     
  var oTable = $('#tabla1').dataTable( {
             "aoColumns": [
+                { "sSortDataType": "dom-text" },
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text" },
                 { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"},
                 { "sSortDataType": "dom-text", "sType": "formatted-num"}
             ],

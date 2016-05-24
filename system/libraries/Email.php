@@ -393,7 +393,7 @@ class CI_Email {
 			$this->_body = stripslashes($this->_body);
 		}
 
-		return $this;
+		return $body;
 	}
 
 	// --------------------------------------------------------------------
@@ -2015,6 +2015,7 @@ class CI_Email {
 						'smil'	=>	'application/smil',
 						'mif'	=>	'application/vnd.mif',
 						'xls'	=>	'application/vnd.ms-excel',
+                        'xlsx'	=>	'application/vnd.ms-excel',
 						'ppt'	=>	'application/vnd.ms-powerpoint',
 						'wbxml'	=>	'application/vnd.wap.wbxml',
 						'wmlc'	=>	'application/vnd.wap.wmlc',

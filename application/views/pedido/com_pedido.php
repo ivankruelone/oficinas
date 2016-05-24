@@ -40,6 +40,9 @@
     <option value="13"><?php if($cia=='13')?>Farmacia de Genericos</option>
     <option value="1"><?php if($cia=='1')?><strong>Farmacias el Fenix</strong></option>
     </select>
+    <td align="left" ><font size="+1"><strong>Licitacion: </strong></font></td>
+	<td align="left"><?php echo form_dropdown('lic', $lic, '', 'id="lic"') ;?> </td>
+    
     </td>
 
  </tr>
@@ -75,7 +78,12 @@
                                 $l2= anchor('pedido/com_pedido_borrado/'.$r->id,'Borrar </a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
                                 $num=$num+1;
                                 $tot=0; $n=0; 
-                                  $l0 = anchor('pedido/com_pedido_det/'.$r->id,$r->id.'</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
+                                  if($r->prv==9998){
+                                  $l0 = anchor('pedido/com_pedido_det_clave/'.$r->id,$r->id.'</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));  
+                                  }else{
+                                  $l0 = anchor('pedido/com_pedido_det/'.$r->id,$r->id.'</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));  
+                                  }
+                                  
                                   if($r->valida==0 and $r->importe>0){
                                   $l1 = anchor('pedido/com_pedido_cer/'.$r->id,'Cerrar folio</a>', array('title' => 'Haz Click aqui para cerrar!', 'class' => 'encabezado'));  
                                   }else{
@@ -86,7 +94,7 @@
                                         <tr>
                                         <td><?php echo $num?></td>
                                         <td><?php echo $l0?></td>
-                                        <td style="text-align: right; "><?php echo $r->fecha?></td>
+                                        <td style="text-align: right; "><?php echo $r->fecha_cap?></td>
                                         <td style="text-align: left; "><?php echo $r->almacenx?></td>
                                         <td style="text-align: left; "><?php echo $r->prvx?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->importe,2)?></td>

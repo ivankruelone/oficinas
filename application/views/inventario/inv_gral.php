@@ -23,11 +23,9 @@
                                      <th style="color:gray; text-align: right">Cedis</th>
                                      <th style="color:gray; text-align: right">F.Bodega</th>
                                      <th style="color:gray; text-align: right">Chet</th>
-                                     <th style="color:gray; text-align: right">Zac</th>
                                      <th style="color:gray; text-align: right">Agu</th>
                                      <th style="color:gray; text-align: right">Tra</th>
                                      <th style="color:gray; text-align: right">Seg</th>
-                                     <th style="color:gray; text-align: right">Esp</th>
                                      <th style="color:gray; text-align: right">Con</th>
                                      <th style="color:gray; text-align: right">Mod</th>
                                  </tr>
@@ -47,11 +45,9 @@
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->cedis,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->fbo,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->cht,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->zac,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->agu,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->tra,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->seg,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->esp,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->con,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->modu,0)?></td>
                                 </tr>

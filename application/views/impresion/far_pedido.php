@@ -29,7 +29,7 @@ $this->writeHTML($tbl, true, false, false, false, '');
         // Position at 1.5 cm from bottom 
         $this->SetY(-15); 
         // Set font 
-        $this->SetFont('helvetica', 'I', 9); 
+        $this->SetFont('helvetica', 'I', 8); 
         // Page number 
         $this->Cell(0, 10, 'Pagina '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C'); 
     } 
@@ -98,14 +98,14 @@ $f='';
         <thead>
         
         <tr>
-        <th colspan=\"11\" align=\"center\"><font size=\"+3\"><strong>PEDIDO DE MERCANCIA NO VALIDO PARA FARMACIA</strong></font></th>
+        <th colspan=\"12\" align=\"center\"><font size=\"+3\"><strong>PEDIDO DE MERCANCIA NO VALIDO PARA FARMACIA</strong></font></th>
         </tr>
          <tr>
-        <th colspan=\"11\" align=\"left\"><font size=\"+1\"><strong>FOLIO PARA EL ALMACEN $r->folio</strong></font></th>
+        <th colspan=\"12\" align=\"left\"><font size=\"+1\"><strong>FOLIO PARA EL ALMACEN $r->folio</strong></font></th>
         </tr>
        
         <tr>
-        <th colspan=\"11\" align=\"left\"><font size=\"+1\"><strong>$r->suc $r->sucx</strong></font></th>
+        <th colspan=\"12\" align=\"left\"><font size=\"+1\"><strong>$r->suc $r->sucx</strong></font></th>
         </tr>
         <tr>
         <th colspan=\"1\" align=\"left\"><strong>CLAGOB</strong></th>
@@ -114,6 +114,7 @@ $f='';
         <th colspan=\"3\" align=\"left\"><strong>SUSTANCIA ACTIVA</strong></th>
         <th colspan=\"4\" align=\"left\"><strong>DESCRIPCION</strong></th>
         <th colspan=\"1\" align=\"right\"><strong>PIEZAS</strong></th>
+        <th colspan=\"1\" align=\"right\"><strong>PIEZAS</strong></th>
         </tr>
         </thead>
        <tbody>";
@@ -121,20 +122,34 @@ $f='';
        
                             
                                  $color='gray'; $color1='black'; $color2='blue'; $color3='green'; 
-                                $num=0;$t1=0;$t2=0;
+                                $num=0;$t1=0;$t2=0;$t3=0;
                                 
                                 foreach ($a->result() as $r) {
+                                    
+                                $clave=$r->clave;    
+                                $sql="SELECT receta FROM almacen.salidas_ped_det where id_cc=$id and clave='$clave';";
+                                $query=$this->db->query($sql); 
+                                     
+                                           
+                                        
                                 
                              $e.="     
                                         <tr>
-                                        <td>".$r->clave."</td>
+                                        <td>".$clave."</td>
                                         <td>".$r->codigo."</td>
-                                        <td style=\"text-align: left;\" colspan=\"1\">".$r->receta."</td>
+                                        <td style=\"text-align: left;\" colspan=\"1\">";
+                                        foreach ($query->result() as $row){
+                                        
+                              $e.=      "$row->receta<br />";
+                                        }
+                              $e.="     </td>
                                         <td style=\"text-align: left;\" colspan=\"3\">".$r->susa."</td>
                                         <td style=\"text-align: left;\" colspan=\"4\">".$r->descri."</td>
                                         <td style=\"text-align: right;\">".number_format($r->ped,0)."</td>
+                                        <td style=\"text-align: right;\">".number_format($r->surti,0)."</td>
                                         </tr>";
                                $t1=$t1+$r->ped;
+                               $t3=$t3+$r->surti;
                                $t2=$t2+($r->costo*$r->ped);
                                $num=$num+1;
                                         }
@@ -144,15 +159,16 @@ $f='';
                              <tr>
                              <td style=\"text-align: left;color: royalblue;\" colspan=\"10\">Productos $num</td>
                              <td style=\"text-align: right;color: royalblue;\">".number_format($t1,0)."</td>
+                             <td style=\"text-align: right;color: royalblue;\">".number_format($t3,0)."</td>
                              </tr>
                              <tr>
-                             <td colspan=\"11\" style=\"text-align:center;\">ATENTAMENTE</td>
+                             <td colspan=\"12\" style=\"text-align:center;\">ATENTAMENTE</td>
                              </tr>
                              <tr>
-                             <td colspan=\"11\" style=\"text-align:center;\">".$l1."</td>
+                             <td colspan=\"12\" style=\"text-align:center;\">".$l1."</td>
                              </tr> 
                              <tr>
-                             <td colspan=\"11\" style=\"text-align:center;\">".$nombre."</td>
+                             <td colspan=\"12\" style=\"text-align:center;\">".$nombre."</td>
                              </tr>
                              </tfoot>
         </table>";

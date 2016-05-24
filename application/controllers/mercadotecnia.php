@@ -21,6 +21,32 @@ class Mercadotecnia extends CI_Controller
         $this->load->view('main', $data);
     }
     
+    function busqueda1()
+    {
+       
+        $data['titulo'] = "Indice";
+        $this->load->view('main', $data);
+    }
+    
+    function busqueda1_encontro()
+    {
+        $var=$this->input->post('bus1');
+        $data['titulo'] = "Factura";
+        $data['q'] = $this->catalogos_model->busqueda1_encontro($var);
+        $data['js'] = 'mercadotecnia/busqueda1_encontro_js';
+        $this->load->view('main', $data);
+    }
+     function oferta_candado()
+    {
+        $data['titulo'] = "CAMBIO DE PRECIOS DEL CENTRAL 01 PHARMACY 1";
+        $data['tit']='Generar optimos';
+        $data['varnom']='Pharmacy 1';
+        $data['q'] = $this->catalogos_model->oferta_candado();
+        $data['js'] = 'mercadotecnia/oferta_candado_js';
+        $this->load->view('main', $data);
+    }
+    
+    
     function factura()
     {
         $data['titulo'] = "Factura";
@@ -265,7 +291,7 @@ class Mercadotecnia extends CI_Controller
         $data['lab']=$this->mercadotecnia_model->busca_lab();
         $data['lin']=$this->mercadotecnia_model->busca_lin();
         $data['iva']=0;
-        $data['sublin']=$this->mercadotecnia_model->busca_lin();
+        $data['sublin']=$this->mercadotecnia_model->busca_sublinn();
         $data['tipo_p']='NOR';
         $data['q'] = $this->mercadotecnia_model->cat_productos_letra($letra);
         $data['js'] = 'mercadotecnia/productos_labora_js';
@@ -277,7 +303,7 @@ class Mercadotecnia extends CI_Controller
         $data['lab']=$this->mercadotecnia_model->busca_lab();
         $data['lin']=$this->mercadotecnia_model->busca_lin();
         $data['iva']=0;
-        $data['sublin']=$this->mercadotecnia_model->busca_lin();
+        $data['sublin']=$this->mercadotecnia_model->busca_sublinn();
         $data['tipo_p']='NOR';
         $data['q'] = $this->mercadotecnia_model->cat_productos_labor($l);
         $data['js'] = 'mercadotecnia/productos_labora_js';
@@ -502,10 +528,33 @@ class Mercadotecnia extends CI_Controller
     }
 
 
+  /*************buscar existencia de medicamentos*************/
 
+    function buscar_exist_med() {
+
+    $data['titulo'] = "Buscar existencia";
+    $this->load->view('main', $data); 
+
+     }
+
+        
+    function producto_bus_codi()
+    {
+
+       $codigo=$this->input->post('codigo');
+        $data['titulo'] = "Buscar existencia";
+        $data['q'] = $this->mercadotecnia_model->busca_cod_medi($codigo);
+        $data['js'] = 'mercadotecnia/producto_bus_codi_js';
+        $this->load->view('main', $data);
+    }
 
 
 
     
+
+
+
+
+
 
 }

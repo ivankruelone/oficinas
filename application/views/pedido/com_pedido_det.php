@@ -56,6 +56,10 @@
                                        'name'        => 'descu_'.$r->id,
                                        'id'          => $r->id,
                                        'value'       => $r->descu
+                                        );$data_costo = array(
+                                       'name'        => 'descu_'.$r->id,
+                                       'id'          => $r->id,
+                                       'value'       => $r->costo
                                         );?> 
                                         <tr>
                                         <td><?php echo $num?></td>
@@ -66,12 +70,19 @@
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r->prvbasex?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>">
                                         <span id="pedidoact_<?php echo $r->id; ?>"><?php echo $r->ped?></span>
+                                        <?php if($r->prv==9998){?>
                                         <?php echo form_input($data_ped, "", 'required');?>
                                         <?php echo '<br />Regalo'.form_input($data_regalo, "", 'required');?>
-                                        <?php echo'<br />Desc.'.form_input($data_descu, "", 'required');?>	
+                                        <?php echo'<br />Desc.'.form_input($data_descu, "", 'required');?>
+                                        <?php echo'<br />Costo '.form_input($data_costo, "", 'required');?>
+                                        <?php }else{ ?>
+                                        <?php echo form_input($data_ped, "", 'required');?>
+                                        <?php echo '<br />Regalo'.form_input($data_regalo, "", 'required');?>
+                                        <?php echo'<br />Desc.'.form_input($data_descu, "", 'required');?>
+                                        <?php } ?>	
                                         </td>
 
-                                       <td style="text-align: right; color: <?php echo $color ?> "><?php echo number_format($r->costo,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color ?> " id="costo_<?php echo $r->id; ?>"><?php echo number_format($r->costo,2)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?> " id="importe_<?php echo $r->id; ?>"><?php echo number_format($r->costo*$r->ped,2)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?> " id="descuento_<?php echo $r->id; ?>"><?php echo number_format(($r->costo*$r->ped)-$tolal,2)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?> " id="total_<?php echo $r->id; ?>"><?php echo number_format($tolal,2)?></td>

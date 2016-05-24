@@ -49,7 +49,7 @@
                                         <tr>
                                         <td style="text-align: left; color: <?php echo $color ?> "><?php echo $num?></td>
                                         <td style="text-align: left; color: <?php echo $color ?> "><?php echo $r['id_cc']?></td>
-                                        <td style="text-align: left; color: <?php echo $color ?> "><?php echo $r['id_userx']?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?> "><?php echo $r['id_userx'].' '.$r['fecc']?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>;"><?php echo $r['sec'].' '.$l0?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r['clagob']?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $r['susa']?></td>
@@ -69,7 +69,7 @@
                                         <tr>
                                         <td  style="text-align: right;" colspan="3"><?php echo number_format($r1['costo_alterno'],2)?></td>
                                         <td><?php echo $r1['prv_alterno']?></td>
-                                        <td colspan="12"><?php echo $r1['prvx_alterno']?></td>
+                                        <td colspan="13"><?php echo $r1['prvx_alterno']?></td>
                                         </tr>
                                         <?php 
                                          }//$r1[''] 
@@ -83,14 +83,18 @@
                              </tbody>
                              <tfoot>
                              <tr>
-                             <td colspan="8"></td>
+                             <td colspan="6"></td>
                              <td style="color:black; text-align: right; "><strong><?php echo number_format($tbase,2)?></strong></td>
+                             <td></td>
+                             <td></td>
+                             <td></td>
                              <td style="color:black; text-align: right; "><strong><?php echo number_format($tcan,0)?></strong></td>
                              <td></td>
                              <td style="color:black; text-align: right; "><strong><?php echo number_format($timp,2)?></strong></td>
                              <td></td>
                              <td style="color:black; text-align: right; "><strong><?php echo number_format($ttot,2)?></strong></td>
-                                        
+                             <td></td>
+                             <td></td>           
                              </tr>
                              </tfoot>
                          </table>                        

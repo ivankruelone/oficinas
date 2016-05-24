@@ -13,6 +13,8 @@
                              <thead>
                                  <tr>
                                      <th>Id</th>
+                                     <th>Borrar</th>
+                                     <th>Licitacion</th>
                                      <th>Folio</th>
                                      <th>Orden</th>
                                      <th>Fecha</th>
@@ -33,21 +35,24 @@
                                 $tot=0; $n=0; 
                                   $l0 = anchor('pedido/com_pedido_det_his/'.$r->id,$r->id.'</a>', array('title' => 'Haz Click aqui para detalle!', 'class' => 'encabezado'));
                                   if($r->valida==0 and $r->importe>0){
-                                  $l1 = anchor('pedido/com_pedido_imp/'.$r->id,'Imprime</a>', array('title' => 'Haz Click aqui para cerrar!', 'class' => 'encabezado'));  
-                                  }else{
-                                  $l1='Autorizacion';  
-                                  }
+                                  $l1 = anchor('pedido/com_pedido_imp/'.$r->id.'/'.$r->estatus,'Imprime</a>', array('title' => 'Haz Click aqui para cerrar!', 'class' => 'encabezado'));  
+                                  }else{$l1='Autorizacion';}
+                                  $l2=anchor('pedido/borrar_orden_cerrada/'.$r->id,'Borrar');
+                                  if($r->estatus==0){$color='red';}else{$color='gray';}
                                   
                                 ?>
                                         <tr>
-                                        <td><?php echo $num?></td>
-                                        <td><?php echo $l0?></td>
-                                        <td><?php echo $r->folprv?></td>
-                                        <td style="text-align: right; "><?php echo $r->fecha?></td>
-                                        <td style="text-align: left; "><?php echo $r->almacenx?></td>
-                                        <td style="text-align: left; "><?php echo $r->prvx?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->importe,2)?></td>
-                                        <td style="text-align: right; "><?php echo $l1?></td>
+                                        
+                                        <td style="text-align: right; color:<?php echo $color?>;"><?php echo $num?></td>
+                                        <td style="text-align: left; color:<?php echo $color?>;"><?php echo $l2?></td>
+                                        <td style="text-align: left; color:<?php echo $color?>;"><?php echo $r->licita?></td>
+                                        <td style="text-align: left; color:<?php echo $color?>;"><?php echo $l0?></td>
+                                        <td style="text-align: left; color:<?php echo $color?>;"><?php echo $r->folprv?></td>
+                                        <td style="text-align: right; color:<?php echo $color?>;"><?php echo $r->fecha?></td>
+                                        <td style="text-align: left;  color:<?php echo $color?>"><?php echo $r->almacenx?></td>
+                                        <td style="text-align: left;  color:<?php echo $color?>"><?php echo $r->prvx?></td>
+                                        <td style="text-align: right;  color:<?php echo $color?>"><?php echo number_format($r->importe,2)?></td>
+                                        <td style="text-align: right;  color:<?php echo $color?>"><?php echo $l1?></td>
                                         </tr>
                                         <?php 
                                         }?>

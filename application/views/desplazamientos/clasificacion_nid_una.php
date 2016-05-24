@@ -17,11 +17,8 @@
                                         <th>Sec</th>
                                         <th>Clas</th>
                                         <th>Sustancia Activa</th>
-                                        <th>2011</th>
-                                        <th>2012</th>
-                                        <th>2013</th>
-                                        <th>Final</th>
-                                        <th>Nuevo Maximo</th>
+                                        <th>Max.Actual</th>
+                                        <th>Max.Anterior</th>
                                         <th>Ene</th>
                                         <th>Feb</th>
                                         <th>Mar</th>
@@ -36,7 +33,7 @@
                                         <th>Dic</th>
                                         <th>Inv</th>
                                         <th>Fecha Inv</th>
-                                        <th>Detalle</th>
+                                        
                                  </tr>
                              </thead>
                              <tbody>
@@ -44,9 +41,9 @@
                                  <?php
                                 $color='gray';
                                 $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;$t8=0;$t9=0;$t10=0;$t11=0;$t12=0;$tinv=0;
-                                $num=0;
+                                $num=0;$color1=0;
                                 foreach ($a->result()as $r){
-                                    
+                                if($r->final<>$r->correcto){$color1='#FA0432';}else{$color1='blue';}    
                                     
                               
                                  
@@ -64,11 +61,8 @@
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->sec?></td>
                                 <td style="color:<?php echo $color?>; text-align: center"><?php echo $r->tipo?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->susa?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->m2011,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->m2012,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->m2013,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->final,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($finalm,0)?></td>
+                                <td style="color: <?php echo $color1?>; text-align: right"><?php echo number_format($r->final,0)?></td>
+                                <td style="color: <?php echo $color1?>; text-align: right"><?php echo number_format($r->correcto,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta1,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta2,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta3,0)?></td>
@@ -81,9 +75,9 @@
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta10,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta11,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r->venta12,0)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($inv,0)?></td>
+                                <td style="color: <?php echo 'green'?>; text-align: right"><?php echo number_format($inv,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo $fechai?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"></td>
+                                
                                 </tr>
                                <?php 
 $t1=$t1+($r->venta1);
@@ -104,7 +98,7 @@ $tinv=$tinv+($inv);
                               </tbody>
                               <tfoot>
                               <tr>
-                              <td colspan="9" style="color:red; text-align: right">TOTAL</td>
+                              <td colspan="6" style="color:red; text-align: right">TOTAL</td>
                               <td style="color:red; text-align: right"><?php echo number_format($t1,0)?></td>
                               <td style="color:red; text-align: right"><?php echo number_format($t2,0)?></td>
                               <td style="color:red; text-align: right"><?php echo number_format($t3,0)?></td>

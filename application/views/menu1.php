@@ -1,72 +1,44 @@
               <ul class="sidebar-menu">
-              
-                  <li class="sub-menu" id="menu_catalogos">
+               <li class="sub-menu" id="menu_compra">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
-                          <span>Catalogos</span>
+                          <span>Compras</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_catalogos_genericos"><?php echo anchor('catalogos/genericos', 'Genericos'); ?></li>
-                          <li id="menu_catalogos_seguro_popular"><?php echo anchor('catalogos/seguro_popular', 'Seguros Populares'); ?></li>
-                          <li id="menu_catalogos_especialidad"><?php echo anchor('catalogos/especialidad', 'Especialidad'); ?></li>
+                          <li id="menu_compra_s_factura_central"><?php echo anchor('backoffice/s_factura_central', 'Facturas-Mayoristas'); ?></li>
                       </ul>
                   </li>
-                 <li class="sub-menu" id="menu_procesos">
+                  <li class="sub-menu" id="menu_contabilidad">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
-                          <span>Procesos</span>
+                          <span>Contabilidad</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                      <li id="menu_procesos_ims"><?php echo anchor('procesos/ims', 'Ims'); ?></li>
-                          <li id="menu_procesos_facturas_oficinas"><?php echo anchor('procesos/facturas_oficinas', 'Factura oficinas'); ?></li>
-                          <li id="menu_procesos_facturas_pdv"><?php echo anchor('procesos/facturas_pdv', 'Factura pdv'); ?></li>
-                          <li id="menu_procesos_pro_inv"><?php echo anchor('procesos/pro_inv', 'Inventario'); ?></li>
-                          <li id="menu_procesos_pro_ent_sal"><?php echo anchor('procesos/pro_ent_sal', 'Entra-sal'); ?></li>
-                          <li id="menu_procesos_desplaza_segpop"><?php echo anchor('procesos/desplaza_segpop', 'Desplazamientos segpop'); ?></li>
-                          <li id="menu_procesos_subir_inv"><?php echo anchor('procesos/subir_inv', 'SUBIR INVENTARIO'); ?></li>
-                          <li id="menu_procesos_tabla_pedidos_formulados"><?php echo anchor('procesos/tabla_pedidos_formulados', 'Pedidos Formulados'); ?></li>
-                      </ul>
-                  </li>   
-                  
-                <li class="sub-menu" id="menu_pedido">
-                      <a href="javascript:;" class="">
-                          <i class="icon-book"></i>
-                          <span>Pedido</span>
-                          <span class="arrow"></span>
-                      </a>
-                      <ul class="sub">
-                          <li id="menu_pedido_generar"><?php echo anchor('pedido/generar', 'Generar'); ?></li>
-                          <li id="menu_pedido_pedidos"><?php echo anchor('pedido/pedidos', 'Pedidos'); ?></li>
-                          <li id="menu_pedido_orden_compra"><?php echo anchor('pedido/pedido_compra', 'Por prv'); ?></li>
-                          <li id="menu_pedido_precios"><?php echo anchor('pedido/precios', 'Autorizar precios'); ?></li>
-                      </ul>
-                  </li>
-                  
-                  <li class="sub-menu" id="menu_orden">
-                      <a href="javascript:;" class="">
-                          <i class="icon-book"></i>
-                          <span>orden</span>
-                          <span class="arrow"></span>
-                      </a>
-                      <ul class="sub">
-                          <li id="menu_orden"><?php echo anchor('orden/orden_compra', 'Trabaja orden'); ?></li>
-                          <li id="menu_orden_historico"><?php echo anchor('orden/historico', 'Historico'); ?></li>
+                          <li id="menu_contabilidad_s_depositos"><?php echo anchor('contabilidad/s_depositos', 'Depositos'); ?></li>
                           
                       </ul>
                   </li>
-                  
-                  <li class="sub-menu" id="menu_orden">
+                  <li class="sub-menu" id="menu_finanzas">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
-                          <span>Reportes</span>
+                          <span>finanzas</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_orden"><?php echo anchor('reportes/reporte', 'Poliza de inventario'); ?></li>
-                          <li id="menu_inv_inventario_tod"><?php echo anchor('inventario/mes_tod','TODOS'); ?></li>
+                          <li id="menu_finanzas_s_proyeccion_venta"><?php echo anchor('finanzas/s_proyeccion_v', 'Evaluacion Venta'); ?></li>  
+                          <li id="menu_finanzas_s_rentabilidad_farmacia"><?php echo anchor('finanzas/s_rentabilidad_farmacia', 'Rentabilidad'); ?></li>
+                          <li id="menu_finanzas_s_rentabilidad_farmacia"><?php echo anchor('finanzas/s_rentabilidad_farmacia_por', 'Rentabilidad Detalle'); ?></li>
+                          <li id="menu_finanzas_ventas_s_ventas_aaa_mes"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>
+                          <li id="menu_finanzas_ventas_s_ventas_aaa6"><?php echo anchor('finanzas/s_ventas_aaa6', 'Ventas 6 A&ntilde;os'); ?></li>
+                          
                       </ul>
-                  </li>
+                  </li>    
+                  
+                  
+                   
+                  
+                  
                   
               </ul>

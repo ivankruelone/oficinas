@@ -7,6 +7,310 @@ class Procesos_model extends CI_Model
         parent::__construct();
     }
  
+ public function inv_yucif($in, $carpeta, $archivo, $metodo = FALSE)
+ {
+       $mov=0;
+        if($metodo == FALSE){
+            $string = file($in.$carpeta.'/'.$archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        }else{
+            $string = file($archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        }
+                    
+        $extrae=$string[0];
+        $suc=substr($extrae,1,4);
+        $diap=substr($extrae,6,2);
+        $mesp=substr($extrae,8,2);
+        $aaap=substr($extrae,10,2);
+        $fechap='20'.$aaap.'-'.str_pad($mesp,2,"0",STR_PAD_LEFT)."-".str_pad($diap,2,"0",STR_PAD_LEFT);
+        $sxz="select SUBDATE(date(now()),INTERVAL 2 DAY)as di, a.*from catalogo.sucursal a where a.suc=$suc";
+        $qxz=$this->db->query($sxz);
+        if($qxz->num_rows() > 0){
+            $rxz=$qxz->row();
+            $tsuc=$rxz->tipo2;
+            $cia=$rxz->cia;
+            $fecha_limite=$rxz->di;
+        }else{
+            $tsuc=' ';
+			$fecha_limite=date('Y-m-d');   
+        }
+        //echo "<pre>";
+           
+        //echo "$archivo - $fechap</pre>";
+        //die(); 
+           
+        
+        $this->db->delete('desarrollo.inv', array('suc' => $suc));
+                   
+        $linea = array_map('rtrim', $string);
+        
+        $a = array();
+        
+        foreach($linea as $lin){
+   
+            $x5='';
+            $b= $lin."<br />";
+                        
+            $x=substr($lin,0,1);
+            $x2=substr($lin,5,1);
+            $x3=substr($lin,0,4);
+            $x4=substr($lin,0,9);
+            $x5=substr($lin,0,1);
+            //tsuc, id, suc, mov, codigo, cantidad, fechai, fechag, sec
+            $cod=substr($lin,0,13);   
+            $can=substr($lin,14,4);
+            
+            if($x3=='>07+'){$mov=7;}
+            if($x3=='>03+'){$mov=3;}
+            if($x3=='>91+'){$mov=0;}
+            if($x3=='>41+'){$mov=41;}  
+            $x5=substr($lin,18,1);
+            if($x5=='+' and $mov>0){//$x5=='+' and $can>0 para que no pase inventario en cero
+                if($mov==7){$sec=$cod;}
+                if($mov==3){$sec=0;}
+                
+                //$sww="insert ignore into desarrollo.inv(tsuc,mov,suc,codigo,cantidad,fechai,sec,cia)
+                //values('$tsuc',$mov,$suc,$cod,$can,$fechap,$sec,$cia)";
+                //$qww=$this->db->query($sww);
+                
+                $sww="select a.*from desarrollo.inv a where a.suc=$suc and a.codigo=$cod and mov=$mov and fechai=$fechap";
+                $qww=$this->db->query($sww);
+                if($qww->num_rows() == 0){
+                   $new_member_insert_data = array(
+         	                               'tsuc' => $tsuc,
+                                            'mov' => $mov,
+                                            'suc' => $suc,
+                                            'codigo' => $cod,
+                                            'cantidad' => $can,
+                                            'fechai' => $fechap,
+                                            'sec' => $sec,
+                                            'cia' => $cia
+                                            );
+//$insert = $this->db->insert('desarrollo.inv', $new_member_insert_data);
+$cos=0;$vta=0;
+                    array_push($a, $new_member_insert_data);
+                }  
+            }
+                   
+        }
+       $this->db->insert_batch('desarrollo.inv', $a);
+  
+ }
+
+function rv_ad($in, $carpeta, $archivo)
+    {
+$sql = "LOAD DATA INFILE ? REPLACE INTO TABLE vtadc.venta_detalle
+LINES STARTING BY 'VE0' TERMINATED BY '\r\n'
+(@var1)
+SET
+suc = SUBSTR(@var1, 1, 7),
+fecha = SUBSTR(@var1, 8, 8),
+tiket = SUBSTR(@var1,16, 10),
+codigo = SUBSTR(@var1, 26, 13),
+descri = UCASE(TRIM(SUBSTR(@var1, 39, 35))),
+can = TRIM(SUBSTR(@var1, 74, 7)),
+vta = ROUND(TRIM(SUBSTR(@var1, 81, 11))/100, 2),
+des = ROUND(TRIM(SUBSTR(@var1, 92, 11))/100, 3),
+importe = ROUND((TRIM(SUBSTR(@var1, 81, 11))/100 - TRIM(SUBSTR(@var1, 92, 11))/100) * TRIM(SUBSTR(@var1, 74, 7)), 2),
+iva = ROUND(TRIM(SUBSTR(@var1, 103, 11))/100, 2),
+nombre = UCASE(TRIM(SUBSTR(@var1, 125, 30))),
+dire = UCASE(TRIM(SUBSTR(@var1, 175, 100))),
+cedula = TRIM(SUBSTR(@var1, 275, 10)),
+
+tventa = TRIM(SUBSTR(@var1, 286, 1)),
+tarjeta = TRIM(SUBSTR(@var1, 297, 13)),
+tipo = SUBSTR(@var1, 310, 2),
+consecu = TRIM(SUBSTR(@var1, 312, 10)),
+nomina = TRIM(SUBSTR(@var1, 322, 7))
+;";
+$this->db->query($sql, $in.$carpeta.'/'.$archivo);
+
+$sa = "LOAD DATA INFILE ? REPLACE INTO TABLE vtadc.gc_compra_det
+LINES STARTING BY 'CO0000'
+(@var2)
+SET
+suc = SUBSTR(@var2, 1, 4),
+aaa = SUBSTR(@var2, 5, 4),
+mes = SUBSTR(@var2, 9, 2),
+fecha = SUBSTR(@var2, 5, 8),
+factura =UCASE(TRIM(SUBSTR(@var2,13, 17))),
+codigo = SUBSTR(@var2, 30, 13),
+can = TRIM(SUBSTR(@var2, 43, 7)),
+costo = ROUND((TRIM(SUBSTR(@var2, 50, 11))/100), 2),
+iva = ROUND((TRIM(SUBSTR(@var2, 76, 11))/100), 2),
+impo = ROUND((TRIM(SUBSTR(@var2, 87, 11))/100), 2),
+imp_fac = ROUND((TRIM(SUBSTR(@var2, 106, 11))/100), 2)
+;"; 
+ 
+$this->db->query($sa, $in.$carpeta.'/'.$archivo);}
+ 
+  function rv_can($in, $carpeta, $archivo)
+    {
+
+$s = "LOAD DATA INFILE ? REPLACE INTO TABLE vtadc.cancelados
+LINES STARTING BY '||CA0000'
+(@var2)
+SET
+suc = SUBSTR(@var2, 1, 4),
+aaa = SUBSTR(@var2, 5, 4),
+mes = SUBSTR(@var2, 9, 2),
+dia = SUBSTR(@var2, 11, 2),
+fecha = SUBSTR(@var2, 5, 8),
+tiket = SUBSTR(@var2,13, 10),
+codigo = SUBSTR(@var2, 23, 13),
+pieza = TRIM(SUBSTR(@var2, 71, 7)),
+impor = ROUND((TRIM(SUBSTR(@var2, 78, 11))/100 - TRIM(SUBSTR(@var2, 89, 11))/100) * TRIM(SUBSTR(@var2, 71, 7)), 2)
+;"; 
+
+$this->db->query($s, $in.$carpeta.'/'.$archivo);
+}
+   function rv($in, $carpeta, $archivo)
+    {
+        $x1 = substr($archivo, 2, 4);
+
+                    $string = file($in.$carpeta.'/'.$archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                   //////////////////////////////////////////////////////////////////////////////////////////
+                   ////////////////////////////////////////////////////////////////////////////////////////// 
+                   $linea = array_map('rtrim', $string); 
+                      foreach($linea as $lin)
+                    {
+
+                        $x = substr($lin,0,3);
+                        $xx = substr($lin,0,4);
+                        $y = substr($lin,0,5);
+                        $yy = substr($lin,0,5);
+                        
+                        if($x == 'TCP' and $xx <> 'TCP*'){
+echo $xx;
+                        $tarjeta=substr($lin,3,13);
+                        $tipo=substr($lin,17,1);
+                        $nombre=utf8_encode(substr($lin,18,35));
+                        $dire=utf8_encode(substr($lin,118,200));
+                        $dire2=utf8_encode(substr($lin,318,200));
+                        $vigencia=substr($lin,628,8);
+                        $venta=substr($lin,636,8);
+                        $nomina=substr($lin,644,10);
+                        $sx="select *from vtadc.tarjetas where suc = $x1 and codigo = $tarjeta and tipo = $tipo;";
+                        $qx=$this->db->query($sx);
+                        if(($qx->num_rows() == 0) and ($tipo<>'*')){
+                        $new_member_insert_data_tar = array(
+//codigo, tipo, nombre, dire, dire2, vigencia, venta, nomina, suc, id
+        	                                 'tipo' => $tipo,
+                                             'nombre' => $nombre,
+                                             'dire' => $dire,
+                                             
+                                             'dire2' => $dire2,
+                                             'codigo' => $tarjeta,
+                                             'vigencia' => $vigencia,
+                                             'venta'=>$venta,
+                                             'nomina'=>$nomina,
+                                             'suc'=>$x1
+                                            );
+		                      $insert = $this->db->insert('vtadc.tarjetas', $new_member_insert_data_tar);   
+                            }
+                        
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        }elseif($y == '||TCP' and $yy <> '||TCP*' ){
+
+
+
+                        $tarjeta=substr($lin,5,13);
+                        $tipo=substr($lin,19,1);
+                        $nombre=utf8_encode(substr($lin,20,35));
+                        $dire=utf8_encode(substr($lin,120,200));
+                        $dire2=utf8_encode(substr($lin,320,200));
+                        $vigencia=substr($lin,630,8);
+                        $venta=substr($lin,638,8);
+                        $nomina=substr($lin,646,10);
+                        $sx="select *from vtadc.tarjetas where suc = $x1 and codigo = $tarjeta and tipo = $tipo;";
+                        $qx=$this->db->query($sx);
+                        if(($qx->num_rows() == 0) and ($tipo<>'*')){
+                        $new_member_insert_data_tar = array(
+//codigo, tipo, nombre, dire, dire2, vigencia, venta, nomina, suc, id
+        	                                 'tipo' => $tipo,
+                                             'nombre' => $nombre,
+                                             'dire' => $dire,
+                                             
+                                             'dire2' => $dire2,
+                                             'codigo' => $tarjeta,
+                                             'vigencia' => $vigencia,
+                                             'venta'=>$venta,
+                                             'nomina'=>$nomina,
+                                             'suc'=>$x1
+                                            );
+		                      $insert = $this->db->insert('vtadc.tarjetas', $new_member_insert_data_tar);   
+                            }
+
+                            
+                        }
+                    }   
+        
+    
+            
+    }
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+public function llena_mov_inv($fec1,$fec2,$sem)
+{
+$e1="insert into oficinas.salidas_entradas_inv
+(tsuc, suc, sem, sal1, sal_imp1, sal2, sal_imp2, fec1, fec2, ent1, ent_imp1, ent2, ent_imp2)
+(select b.tipo2,a.suc,$sem,0,0,0,0,'$fec1','$fec2',sum(c.sur),sum(c.sur*costo*1.10),0,0
+from catalogo.folio_pedidos_cedis a
+left join desarrollo.pedidos c on c.fol=a.id
+left join catalogo.sucursal b on b.suc=a.suc
+where a.suc>100 and a.suc<=1999 and a.tid='C' and c.sur>0 and a.fechas>='$fec1' and a.fechas<='$fec2'
+group by a.suc)
+on duplicate key update ent1=values(ent1), ent_imp2=values(ent_imp1)";
+$this->db->query($e1);
+$e2="insert into oficinas.salidas_entradas_inv
+(tsuc, suc, sem, sal1, sal_imp1, sal2, sal_imp2, fec1, fec2, ent1, ent_imp1, ent2, ent_imp2)
+(select b.tipo2,a.suc,$sem,0,0,0,0,'$fec1','$fec2',0,0,sum(c.sur),sum(c.sur*costo*1.10)
+from catalogo.folio_pedidos_cedis_especial a
+left join desarrollo.pedidos c on c.fol=a.id
+left join catalogo.sucursal b on b.suc=a.suc
+where a.suc>100 and a.suc<=1999 and a.tid='C' and c.sur>0 and a.fechas>='$fec1' and a.fechas<='$fec2'
+group by a.suc
+)
+on duplicate key update ent2=values(ent2), ent_imp2=values(ent_imp2);";
+$this->db->query($e2);
+
+$s="insert into oficinas.salidas_entradas_inv
+(tsuc, suc, sem, sal1, sal_imp1, sal2, sal_imp2, fec1, fec2, ent1, ent_imp1, ent2, ent_imp2)
+(select b.tipo2,a.suc,$sem,sum(can),sum(importe),0,0,'$fec1','$fec2',0,0,0,0
+from vtadc.venta_detalle a
+left join catalogo.sucursal b on b.suc=a.suc
+where a.suc>100 and fecha>='$fec1' and fecha<='$fec2'
+group by a.suc)
+on duplicate key update sal1=values(sal1), sal_imp1=values(sal_imp1)
+";
+$this->db->query($s);
+die();
+}
+
+
 public function facturas_oficinas()
 {
 $cat="update metro.surtido_d a,catalogo.almacen b
@@ -66,7 +370,7 @@ $f3="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_
 left join farmabodega.traspaso_d b on b.id_cc=x.id
 where year(x.fecha)>=year(now())
  and cans>0
-and x.entra=1600
+and x.entra=999
 group by x.id
 )
 on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
@@ -78,7 +382,7 @@ $f4="insert into vtadc.gc_factura(suc, factura, importe_prv, importe_suc, fecha_
 left join farmabodega.devolucion_d b on b.id_cc=x.id
 where year(x.fecha)>=year(now())
  and cans>0
-and x.entra=1600
+and x.entra=999
 group by x.id
 )
 on duplicate key update importe_prv=values(importe_prv),importe_prvcosto=values(importe_prvcosto)";
@@ -306,13 +610,13 @@ on duplicate key update final=values(final)
  
 public function ver_inv()
     {
-$s="select aaa,mes,dia,sum(piezas)as piezas, count(suc)as numero,sum(importe)as importe  from oficinas.inv_mes_suc group by aaa,mes";
+$s="select sem, aaa,mes,dia, date(concat(aaa,'-',mes,'-',dia))as fecha,sum(piezas)as piezas, count(suc)as numero,sum(importe)as importe  from oficinas.inv_mes_suc group by aaa,mes";
 $q=$this->db->query($s);
 return $q;
     }
 public function ver_inv_suc()
     {
-$s="select date_add(b.fechai,interval +1 day)as fecha,a.suc,a.nombre,ifnull(sum(b.cantidad),0)as inv
+$s="select a.obser,date_add(b.fechai,interval +1 day)as fecha,a.suc,a.nombre,ifnull(sum(b.cantidad),0)as inv
 from catalogo.sucursal a
 left join desarrollo.inv b on b.suc=a.suc and b.mov=7 or b.suc=a.suc and b.mov=3
 where a.suc>=100 and a.suc<=1999 and a.tlid=1
@@ -322,15 +626,53 @@ return $q;
     }
 public function ver_inv_suc_his()
     {
-$s="select aaa,mes,dia,sum(piezas)as piezas, count(suc)as numero,sum(importe)as importe 
-from oficinas.inv_mes_suc_his group by aaa,mes";
+$s="select sem,date(concat(aaa,'-',mes,'-',dia))as fecha,aaa,mes,dia,sum(piezas)as piezas, count(suc)as numero,sum(importe)as importe 
+from oficinas.inv_mes_suc_his group by aaa,mes,sem
+order by sem desc";
 $q=$this->db->query($s);
 return $q;
     }
- 
+    
+    function cargaInvChetumal($a)
+    {
+        $this->db->insert_batch('oficinas.inv_seguros_lote', $a);
+    }
+    
+    function invChetumal()
+    {
+        $this->db->delete('oficinas.inv_seguros_lote', array('suc' => 16000));
+        $QUINTANA = $this->load->database('quintana', TRUE);
+        
+        $sql = "select 16000 as sucursal, trim(codbarras) as clave, trim(descripcion) as descripcion, a.cantidad, trim(lote) as lote, fechacaducidad, fechainv from almacen a
+join lotes l on a.idlote = l.id
+join articulos s on a.articulo = s.cvearticulo
+where idalmacen = 350;";
+        $query = $QUINTANA->query($sql);
+        
+        $a = array();
+        foreach($query->result() as $row)
+        {
+            $b = array(
+                'suc'=>$row->sucursal, 
+                'clave'=>str_replace('.', '', $row->clave), 
+                'lote'=>$row->lote, 
+                'caducidad'=>$row->fechacaducidad, 
+                'cantidad'=>$row->cantidad, 
+                'codigo'=>0, 
+                'descri'=>utf8_encode($row->descripcion), 
+                'costo'=>0
+                );
+                
+           array_push($a, $b);
+        }
+        
+        $this->cargaInvChetumal($a);
+    }
     
 public function genera_inv($aaa,$mes,$dia,$sem)
 {
+    
+    $this->invChetumal();
 $x1="delete from oficinas.inv_mes_suc_det";$this->db->query($x1);
 $x="delete from oficinas.inv_mes_suc";$this->db->query($x);
 $x2="delete from oficinas.inv_seguros where suc in(6050,90002)";$this->db->query($x2);
@@ -339,7 +681,8 @@ $s="insert ignore into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, 
 (SELECT $aaa,$mes, a.cia,a.suc,a.sec,' ',a.codigo,' ',a.cantidad,
 0,0,'FARMACIA',$dia
 FROM desarrollo.inv a
-where a.mov=03 and a.cantidad>0 and suc>100)";
+left join catalogo.sucursal b on b.suc=a.suc
+where a.mov=03 and a.cantidad>0 and a.suc>100 and tlid=1)";
 $this->db->query($s);
 
 $s="update metro.inventario_d a, catalogo.cat_mercadotecnia b
@@ -395,7 +738,7 @@ set a.costo=b.costo
 where a.inv1>0 and a.costo=0 and a.sec=b.sec and b.tsec='G'";
 $this->db->query($s);
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
-(select $aaa,$mes,13,900,aa.sec,' ',aa.codigo,bb.susa1,sum(inv1),aa.costo,bb.lin,'ALM CEDIS',$dia
+(select $aaa,$mes,13,900,aa.sec,' ',aa.codigo,ifnull(bb.susa1,' '),sum(inv1),aa.costo,ifnull(bb.lin,0),'ALM CEDIS',$dia
 from desarrollo.inv_cedis aa left join catalogo.sec_generica bb on bb.sec=aa.sec where aa.inv1>0 group by aa.sec)
 ";
 $this->db->query($s);
@@ -406,23 +749,25 @@ $this->db->query($s);
 //$this->db->query($s);
 
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
-(select $aaa,$mes,1,100,0,aa.clave,aa.codigo,ifnull((select susa1 from catalogo.almacen bb where bb.sec=aa.clave group by bb.sec),''),sum(cantidad),aa.costo,1,'ALM METRO',$dia
+(select $aaa,$mes,1,100,0,aa.clave,aa.codigo,ifnull((select substr(susa1,1,100) from catalogo.almacen bb where bb.sec=aa.clave group by bb.sec),''),sum(cantidad),aa.costo,1,'ALM METRO',$dia
 from metro.inventario_d aa left join catalogo.almacen bb on bb.sec=aa.clave where aa.cantidad>0 group by aa.clave)";
 $this->db->query($s);
 
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
-(select $aaa,$mes,13,1600 ,aa.clave,' ',aa.codigo,bb.susa1,sum(cantidad),bb.costo,bb.lin,'ALM FARMABODEGA',$dia
+(select $aaa,$mes,13,1600 ,aa.clave,' ',aa.codigo,ifnull(bb.susa1,' '),sum(cantidad),ifnull(bb.costo,0),ifnull(bb.lin,0),'ALM FARMABODEGA',$dia
 from farmabodega.inventario_d aa left join catalogo.almacen bb on bb.clabo=aa.clave where aa.cantidad>0 group by aa.clave)
 ";
 $this->db->query($s);
 $s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
-(select $aaa,$mes,$dia,90002,clave,descri,sum(cantidad), 0,1,sum(cantidad),clave from segpop.inventario_d  where cantidad>0 group by clave)
+(select $aaa,$mes,$dia,90002,clave,'',sum(cantidad), 0,1,sum(cantidad),clave from segpop.inventario_d  where cantidad>0 group by clave)
 ";
 $this->db->query($s);
-$s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
-(select $aaa,$mes,$dia,6050,clave,descri,sum(cantidad/contable_div), 0,5,sum(cantidad/contable_div),clave from trasimeno140.inventario_d  where cantidad>0 group by clave)
-";
-$this->db->query($s);
+//$s="insert into oficinas.inv_seguros(aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
+//(select $aaa,$mes,$dia,6050,clave,' ',sum(cantidad/(case when contable_div >0 then contable_div else 1 end)),
+// costo,5,sum(cantidad/(case when contable_div >0 then contable_div else 1 end)),clave
+//from trasimeno140.inventario_d where cantidad>0 group by clave)
+//";
+//$this->db->query($s);
 
   
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin,tipo,dia)
@@ -433,35 +778,43 @@ where aa.invf>0  group by aa.clave)";
 $this->db->query($s);
 
 //////////////seguros populares
-$ss="delete from oficinas.inv_seguros where suc=16000";
+$ss="delete from oficinas.inv_seguros where suc in (16000)";
 $this->db->query($ss);
 $ss="insert into oficinas.inv_seguros (aaa, mes, dia, suc, clave, descripcion, piezas, costo, lin, piezas_paquete, clave_sin_punto)
-(select $aaa,$mes,$dia,16000,clave,descri,sum(cantidad),costo,lin,
-SUM(case when div_conta>0 then cantidad/div_conta else cantidad end),clave from oficinas.inv_seguros_lote group by clave)";
+(select $aaa,$mes,$dia,suc,clave,descri,sum(cantidad),costo,lin,
+SUM(case when div_conta>0 then cantidad/div_conta else cantidad end),clave 
+from oficinas.inv_seguros_lote group by suc,clave)";
 $this->db->query($ss);
-$s = "update  oficinas.inv_seguros a set piezas_paquete=piezas, clave_sin_punto=clave 
-where  a.aaa=$aaa and a.mes=$mes and suc<>16000";
-$q = $this->db->query($s);
- 
-$s = "update  oficinas.inv_seguros a,oficinas.convertir_claves b
-set clave_sin_punto=b.clave
-where a.clave=b.clave_punto and a.aaa=$aaa and a.mes=$mes and suc<>16000";
-$q = $this->db->query($s);
 
-$s = "update oficinas.inv_seguros a, catalogo.costos_gobierno b
-set a.costo=b.costo,piezas_paquete= case when paquete>1 then (a.piezas/b.paquete) else a.piezas end
-where a.clave_sin_punto=b.clave and  a.aaa=$aaa and a.mes=$mes and suc <> 16000";
-$q = $this->db->query($s);
 
 $s="insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo,dia)
 (select aaa, mes, 1, suc,0, clave_sin_punto,0, substr(descripcion,1,70), piezas_paquete, costo, lin, 'ALM SEGPOP',$dia 
-from oficinas.inv_seguros a where a.aaa=$aaa and a.mes=$mes and suc in(17000,14000,16000,6050,90002) and piezas_paquete>0)";
+from oficinas.inv_seguros a where a.aaa=$aaa and a.mes=$mes and suc in(16000,6050,90002) and piezas_paquete>0)";
+$this->db->query($s);
+
+$s="
+insert into oficinas.inv_mes_suc_det(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia)
+(
+SELECT $aaa,$mes,1,14000,0,c.clave,0,substring(b.descripcion,0,70),ifnull(sum(inv),0),
+ifnull((costo/div_agu),0), ifnull((case when tipo_producto=2 then 5 else 1 end),0),
+'ALM AGUASCALIENTES',$dia
+ FROM aguascalientes.inventario a
+left join aguascalientes.productos b on b.id=a.p_id
+left join oficinas.convertir_claves c on c.clave_punto=b.clave
+left join catalogo.costos_gobierno d on d.clave=c.clave
+where inv>0 and c.clave is not null
+group by c.clave
+)
+";
 $this->db->query($s);
  
-$s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia,sem)
-(select aaa,mes,cia,suc,sum(piezas),sum(piezas*costo),dia,$sem from oficinas.inv_mes_suc_det where  aaa=$aaa and mes=$mes group by aaa,mes,suc)";
+$s="insert into oficinas.inv_mes_suc(aaa, mes, cia, suc, piezas, importe,dia,sem,tsuc)
+(select a.aaa,a.mes,a.cia,a.suc,sum(a.piezas),sum(a.piezas*a.costo),a.dia,$sem,b.tipo2 
+from oficinas.inv_mes_suc_det a
+left join catalogo.sucursal b on b.suc=a.suc
+where  aaa=$aaa and mes=$mes group by a.aaa,a.mes,a.suc)";
 $this->db->query($s);
-die();
+
 $s="insert into desarrollo.inv_cosvta(cia, suc, sem, aaaa, mes, lin, plaza, succ, importe,piezas)
 (select a.cia,a.suc,$sem,aaa,mes,lin,b.plaza,b.suc_contable,
  sum(piezas*costo), sum(piezas)
@@ -470,19 +823,21 @@ left join catalogo.sucursal b on b.suc=a.suc
 where a.costo>0 and a.aaa=$aaa and a.mes=$mes and a.dia=$dia and a.suc>=100
 group by a.aaa,a.mes,a.dia,a.suc,a.lin
 )";
-$this->db->query($s);
+//$this->db->query($s);
 
 }
-
-
-public function respalda_inv()
+public function respalda_inv($aaa,$mes,$dia,$sem)
 {
-$s="insert into oficinas.inv_mes_suc_det_his (aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia)
-(select aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia from  oficinas.inv_mes_suc_det)";
+$s="insert into oficinas.inv_mes_suc_det_sem
+(aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia,sem)
+(select aaa, mes, cia, suc, sec, clave, codigo, descri, piezas, costo, lin, tipo, dia,$sem 
+from  oficinas.inv_mes_suc_det where aaa=$aaa and mes=$mes and dia=$dia)";
 $this->db->query($s);
-$s1="insert into oficinas.inv_mes_suc_his(aaa, mes, cia, suc, piezas, importe, dia,sem)
-(select aaa, mes, cia, suc, piezas, importe, dia from oficinas.inv_mes_suc)";
-$this->db->query($s1);    
+$s1="insert into oficinas.inv_mes_suc_his(aaa, mes, cia, suc, piezas, importe, dia,sem,tsuc)
+(select aaa, mes, cia, suc, piezas, importe, dia,sem,tsuc 
+from oficinas.inv_mes_suc  where aaa=$aaa and mes=$mes and dia=$dia)";
+$this->db->query($s1);
+
 }
 
 public function ver_ent_sal()
@@ -567,7 +922,6 @@ $s="insert into sem_ent_sal(suc, ent, sal, fec1, fec2, sem, ent_back, imp_ent, i
 (select suc,0,0,'$fec1','$fec2',0,0,0,contado,0,credito,recarga from vtadc.gc_venta_mes where aaa=$aaa and mes=$mes)
 on duplicate key update imp_sal=values(imp_sal),imp_cred=values(imp_cred),imp_rec=values(imp_rec)";
 $this->db->query($s);
- 
 }
 
 
@@ -981,6 +1335,108 @@ $this->db->query($s);
 
 
 
+    function bansefiDesplazamiento($perini, $perfin)
+    {
+        $sql = "Delete from vtadc.desplazamiento_credito_paso;";
+        $this->db->query($sql);
+        
+        $BANSEFI = $this->load->database('bansefi', TRUE);
+        
+        $sql = "select 2 as cliente, extract(year from fecha)as aaa, extract(month from fecha)as mes, trim(cvearticulo) as ean, trim(descripcion) as descripcion, sum(cantidadsurtida) as cantidad, sum(saldo) as saldo
+from receta where fecha between ? and ? and status = 't' and cvearticulo <> ''
+group by cliente, aaa, mes, ean, descripcion";
+        $query = $BANSEFI->query($sql, array($perini, $perfin));
+        
+        $a = array();
+        
+        foreach($query->result() as $row)
+        {
+            $b = array(
+                'cliente'       => $row->cliente, 
+                'aaa'           => $row->aaa, 
+                'mes'           => $row->mes, 
+                'ean'           => $row->ean, 
+                'descripcion'   => utf8_encode($row->descripcion), 
+                'cantidad'      => $row->cantidad,
+                'saldo'         => $row->saldo
+            );
+            
+            array_push($a, $b);
+        }
+        
+        $this->db->insert_batch('vtadc.desplazamiento_credito_paso', $a);
 
+        $sql = "SELECT cliente, aaa, mes FROM vtadc.desplazamiento_credito_paso d group by cliente, aaa, mes;";
+        $query = $this->db->query($sql);
+        
+        foreach($query->result() as $row)
+        {
+            $this->db->delete('vtadc.desplazamiento_credito', array('cliente' => $row->cliente, 'aaa' => $row->aaa, 'mes' => $row->mes));
+        }
+
+        $sql = "insert into vtadc.desplazamiento_credito (SELECT cliente, aaa, mes, ean, descripcion, sum(cantidad), sum(saldo) FROM vtadc.desplazamiento_credito_paso d group by cliente, aaa, mes, ean);";
+        $this->db->query($sql);
+    }
+
+    function metroDesplazamiento($perini, $perfin)
+    {
+        $sql = "Delete from vtadc.desplazamiento_credito_paso;";
+        $this->db->query($sql);
+        
+        $METRO = $this->load->database('metro', TRUE);
+        
+        $sql = "select 1 as cliente, extract(year from fecha)as aaa, extract(month from fecha)as mes, trim(cvearticulo) as ean, trim(descripcion) as descripcion, sum(cantidadsurtida) as cantidad, sum(saldo) as saldo
+from receta where fecha between ? and ? and status = 't' and cvearticulo <> ''
+group by cliente, aaa, mes, ean, descripcion";
+        $query = $METRO->query($sql, array($perini, $perfin));
+        
+        $a = array();
+        
+        foreach($query->result() as $row)
+        {
+            $b = array(
+                'cliente'       => $row->cliente, 
+                'aaa'           => $row->aaa, 
+                'mes'           => $row->mes, 
+                'ean'           => $row->ean, 
+                'descripcion'   => utf8_encode($row->descripcion), 
+                'cantidad'      => $row->cantidad,
+                'saldo'         => $row->saldo
+            );
+            
+            array_push($a, $b);
+        }
+        
+        $this->db->insert_batch('vtadc.desplazamiento_credito_paso', $a);
+
+        $sql = "SELECT cliente, aaa, mes FROM vtadc.desplazamiento_credito_paso d group by cliente, aaa, mes;";
+        $query = $this->db->query($sql);
+        
+        foreach($query->result() as $row)
+        {
+            $this->db->delete('vtadc.desplazamiento_credito', array('cliente' => $row->cliente, 'aaa' => $row->aaa, 'mes' => $row->mes));
+        }
+
+        $sql = "insert into vtadc.desplazamiento_credito (SELECT cliente, aaa, mes, ean, descripcion, sum(cantidad), sum(saldo) FROM vtadc.desplazamiento_credito_paso d group by cliente, aaa, mes, ean);";
+        $this->db->query($sql);
+    }
+
+
+////////////////////////////////////borrarlo
+ function prueba_ped($id_plaza)
+ {
+    $s="SELECT b.nombre,a.*
+FROM compras.pre_pedido_f a
+join catalogo.sucursal b on a.suc=b.suc
+where activo=0 and superv=$id_plaza";
+    $q=$this->db->query($s);
+    return $q;
+ }
+function prueba_ped_det($id_cc)
+ {
+    $s="SELECT * FROM compras.pre_pedido_fenix where id_cc=$id_cc";
+    $q=$this->db->query($s);
+    return $q;
+ }
 
 }

@@ -14,6 +14,8 @@ class Entradas extends CI_Controller
         
         $this->load->model('entradas_model');
         $this->load->model('Catalogos_model');
+      
+        
 
     }
 
@@ -105,6 +107,306 @@ function facturas_gs($fa,$mes,$ger)
         $this->load->view('main', $data);
     }
     
-  
+/////////////////////////////////////////////////////////////////reportes de entradas maricruz/////////////////////////////////////////  
+    
+    function busca_entrada_cedis()
+    {
+        
+        $data['titulo'] = 'Busqueda X';
+        $data['js'] = 'entradas/busca_entradas_cedis_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function busca_entrada_cedis_submit()
+    {
+        $data['titulo'] = '';
+        $data['tit']='ENTRADAS DEL '.$this->input->post('perini').' AL '.$this->input->post('perfin');
+        $data['perini'] = $this->input->post('perini');
+        $data['perfin'] = $this->input->post('perfin');
+        $data['prove'] = $this->input->post('prove');
+        $data['clave'] = $this->input->post('clave');
+        $data['lot'] = $this->input->post('lot');
+        $data['query'] = $this->entradas_model->entradas_cedis($this->input->post('perini'), $this->input->post('perfin'), $this->input->post('prove'), $this->input->post('clave'), $this->input->post('lot'));
+        $data['q'] = $this->entradas_model->entradas_metro($this->input->post('perini'), $this->input->post('perfin'), $this->input->post('prove'), $this->input->post('clave'), $this->input->post('lot'));
+        $data['q1'] = $this->entradas_model->entradas_metro($this->input->post('perini'), $this->input->post('perfin'), $this->input->post('prove'), $this->input->post('clave'), $this->input->post('lot'));
+        $data['js'] = 'entradas/busca_entrada_cedis_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+    function busca_entrada_segpop()
+    {
+        
+        $data['titulo'] = ' ';
+        $data['js'] = 'entradas/busca_entradas_segpop_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function busca_entrada_segpop_submit()
+    {
+        
+        $data['titulo'] = '';
+        $data['tit']='ENTRADAS DEL '.$this->input->post('perini').' AL '.$this->input->post('perfin');
+        $data['perini'] = $this->input->post('perini');
+        $data['perfin'] = $this->input->post('perfin');
+        $data['prove'] = $this->input->post('prove');
+        $data['clave'] = $this->input->post('clave');
+        $data['lot'] = $this->input->post('lot');
+        $data['tipo'] = $this->input->post('tipo');
+        $data['q'] = $this->entradas_model->entradas_segpop($this->input->post('perini'), $this->input->post('perfin'), $this->input->post('prove'), $this->input->post('clave'), $this->input->post('lot'), $this->input->post('tipo'));
+        $data['js'] = 'entradas/busca_entrada_segpop_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+//////////////////////////////////////////////////////////////reporte entradas Lic. Adriana ///////////////////////////////////////////////////////
+
+    function alma()
+    {
+        
+        $data['titulo'] = 'Entradas al Almacen "TODOS LOS PROVEEDORES" ';
+        $data['titulo1'] = 'Entradas al Almacen "PROVEEDOR IQFA" ';
+        //$data['js'] = 'entradas/busca_entradas_cedis_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+/////////////////////////////////////////////////////////////cedis////////////////////////////////////////    
+    
+    function alma_cedis()
+    {
+        $datos = $this->entradas_model->getDiasEntradas();
+        $data['titulo'] = 'Entradas al Almacen del CEDIS "TODOS LOS PROVEEDORES" ';
+        $data['js'] = 'entradas/alma_cedis_js';
+        $data['vistaJS'] = $datos;
+        $this->load->view('main', $data);
+    }
+    
+    function alma_cedis1()
+    {
+        $datos = $this->entradas_model->getDiasEntradas3();
+        $data['titulo'] = 'Entradas al Almacen del CEDIS "TODOS LOS PROVEEDORES" ';
+        $data['js'] = 'entradas/alma_cedis_js';
+        $data['vistaJS'] = $datos;
+        $this->load->view('main', $data);
+    }
+    
+    
+    
+    function alma_cedis_detalle($fec)
+    {
+        
+        $data['fec'] = $fec;
+        $data['titulo'] = 'Entradas al Almacen del CEDIS del '.$fec.' "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almacedis($fec);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function alma_cedis_detalle1($fec)
+    {
+        
+        $data['fec'] = $fec;
+        $data['titulo'] = 'Entradas al Almacen del CEDIS del '.$fec.' "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almacedis1($fec);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function detalle_en($id)
+    {
+        
+        $data['titulo'] = 'Entradas al Almacen del CEDIS "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almacedis_det($id);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+
+////////////////////////////////////////////////////////////segpop/////////////////////////////////////////
+
+    function alma_segpop()
+    {
+        $datos = $this->entradas_model->getDiasEntradas1();
+        $data['titulo'] = 'Entradas al Almacen del SEGPOP "TODOS LOS PROVEEDORES" ';
+        $data['js'] = 'entradas/alma_cedis_js';
+        $data['vistaJS'] = $datos;
+        $this->load->view('main', $data);
+    }
+    
+    function alma_segpop1()
+    {
+        $datos = $this->entradas_model->getDiasEntradas4();
+        $data['titulo'] = 'Entradas al Almacen del SEGPOP "TODOS LOS PROVEEDORES" ';
+        $data['js'] = 'entradas/alma_cedis_js';
+        $data['vistaJS'] = $datos;
+        $this->load->view('main', $data);
+    }
+    
+    
+    
+    function alma_segpop_detalle($fec)
+    {
+        
+        $data['fec'] = $fec;
+        $data['titulo'] = 'Entradas al Almacen del SEGPOP del '.$fec.' "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almasegpop($fec);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function alma_segpop_detalle1($fec)
+    {
+        
+        $data['fec'] = $fec;
+        $data['titulo'] = 'Entradas al Almacen del SEGPOP del '.$fec.' "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almasegpop1($fec);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function detalle_en1($nped)
+    {
+        
+        $data['titulo'] = 'Entradas al Almacen del SEGPOP "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almasegpop_det($nped);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+////////////////////////////////////////////////////////////AGUASCALIENTES/////////////////////////////////////////
+
+    function alma_agu()
+    {
+        $datos = $this->entradas_model->getDiasEntradas2();
+        $data['titulo'] = 'Entradas al Almacen de AGUASCALIENTES "TODOS LOS PROVEEDORES" ';
+        $data['js'] = 'entradas/alma_cedis_js';
+        $data['vistaJS'] = $datos;
+        $this->load->view('main', $data);
+    }
+    
+    
+    function alma_agu_detalle($fec)
+    {
+        
+        $data['fec'] = $fec;
+        $data['titulo'] = 'Entradas al Almacen de AGUASCALIENTES del '.$fec.' "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almaaguas($fec);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function detalle_en2($id)
+    {
+        
+        $data['titulo'] = 'Entradas al Almacen de AGUASCALIENTES "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almaaguas_det($id);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    
+////////////////////////////////////////////////////////////MICHOACAN/////////////////////////////////////////
+
+    function alma_mic()
+    {
+        $datos = $this->entradas_model->getDiasEntradas5();
+        $data['titulo'] = 'Entradas al Almacen de MICHOACAN "TODOS LOS PROVEEDORES" ';
+        $data['js'] = 'entradas/alma_cedis_js';
+        $data['vistaJS'] = $datos;
+        $this->load->view('main', $data);
+    }
+    
+    
+    function alma_mic_detalle($fec)
+    {
+        
+        $data['fec'] = $fec;
+        $data['titulo'] = 'Entradas al Almacen de MICHOACAN del '.$fec.' "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almamic($fec);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function detalle_en3($id)
+    {
+        
+        $data['titulo'] = 'Entradas al Almacen de MICHOACAN "TODOS LOS PROVEEDORES" ';
+        $data['q'] = $this->entradas_model->entradas_almamic_det($id);
+        $data['js'] = 'entradas/alma_cedis_detalle_js';
+        $this->load->view('main', $data);
+        
+    }
+    
+    function gastos()
+    {
+        $id_plaza=$this->session->userdata('id_plaza');
+        $supx=$this->Catalogos_model->busca_sup_uno($id_plaza);
+        $data['titulo'] = "Gastos x Supervisor";
+        $data['tit']='CONCENTRADO DE GASTOS x SUCURSAL DE LA ZONA '.$id_plaza.' '.trim($supx);
+        $data['q'] = $this->entradas_model->gastos_suc($id_plaza);
+        //$data['js'] = 'entradas/facturas_g_js';
+        $this->load->view('main', $data);
+    }
+    
+    function gastos_suc($suc)
+    {
+        $data['suc'] = $this->input->post('suc');
+        $sucx=$this->Catalogos_model->busca_suc_una($suc);
+        $data['titulo'] = "Gastos x Supervisor";
+        $data['tit']='CONCENTRADO DE GASTOS DE LA SUCURSAL '.trim($sucx);
+        $data['q'] = $this->entradas_model->gastos_x_suc($suc);
+        $data['q2'] = $this->entradas_model->gastos_x_suc1($suc);
+        $data['js'] = 'entradas/gastos_js';
+        $this->load->view('main', $data);
+    }
+    
+    function muestra_detalle($suc, $id)
+    {
+       
+        $data['suc'] = $this->input->post('suc');
+        $sucx=$this->Catalogos_model->busca_suc_una($suc);
+        $data['titulo'] = "Gastos x Supervisor";
+        $data['tit']='CONCENTRADO DE GASTOS DE LA SUCURSAL '.trim($sucx);
+        $data['q'] = $this->entradas_model->reporte_conceptos($id);
+        $data['js'] = 'entradas/gastos1_js';
+        $this->load->view('main', $data);
+    }
+    
+    function descarga_gasto($id)
+    {
+       $this->load->helper('download');
+       $fa = $this->load->database('facturacion', true);
+       
+       $sql="select ruta from facturacion.gastos_c where id=$id";
+       $q = $fa->query($sql);
+       $row=$q->row();
+       $descarga=$row->ruta;
+       
+       $data = file_get_contents($row->ruta); // Read the file's contents
+       force_download($descarga, $data); 
+        
+    }
+    
+    function valida_gasto($id, $suc)
+    {
+        $q=$this->entradas_model->validaGasto($id);
+        redirect('entradas/gastos_suc/'.$suc);
+    }
+
+    function valida_gasto1($id, $suc)
+    {
+        $q=$this->entradas_model->validaGasto($id);
+        redirect('entradas/gastos_suc/'.$suc);
+    }
+    
     
 }
