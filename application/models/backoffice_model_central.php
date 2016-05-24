@@ -615,7 +615,7 @@ group by cod_rel$var
 union all
 select b.cod_rel$var,
 
-concat(a.lin,'||',a.sublin,'||',b.cod_rel$var,'||',codigo,'||', descripcion,'||', max(pub),'||',max(farmacia),'||',pub$var,'||',far$var)
+concat(a.lin,'||',a.sublin,'||',b.cod_rel$var,'||',codigo,'||', descripcion,'||', round(max(pub)+.33),'||',max(farmacia),'||',pub$var,'||',far$var)
 as lidia
 from
 catalogo.cat_mercadotecnia a
@@ -672,9 +672,9 @@ $s="select cod_rel$var, lidia
 from
 (select cod_rel$var, concat(11,'||',bx.cod_rel$var,'||',
 case when venta_pub<publico then
-case when cx.lin in(2,5,9,10) then round((cx.venta_pub/1.16),4) else cx.venta_pub end
+case when cx.lin in(2,5,9,10) then round((cx.venta_pub/1.16),4) else round(cx.venta_pub+.33) end
 else
-case when cx.lin in(2,5,9,10) then round((dx.publico/1.16),4) else dx.publico end
+case when cx.lin in(2,5,9,10) then round((dx.publico/1.16),4) else round(dx.publico+.33) end
 end)as lidia from
 catalogo.cat_fenix_sec_cod ax,
 catalogo.cod_rel bx,
