@@ -62,5 +62,47 @@ class Tarjetas extends CI_Controller
         $data['q']=$this->tarjetas_model->control_tarjetas_historicas($this->input->post('suc'));
         $this->load->view('main', $data);
     }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    function consultas_tarjetas_pref()
+    {
+       
+        $data['titulo'] = "";
+        $data['tit']='Selecciona fecha inicial, fecha final';
+        //$data['suc']=$this->Catalogos_model->busca_suc_activas();
+        $data['js'] = 'tarjetas/consultas_tarjetas_pref_js';
+        $this->load->view('main', $data);
+        
+    }
+
+   function tarjetas_cliente_preferente()
+    {
+        
+        $inicio= $this->input->post('perini');
+        $fin= $this->input->post('perfin');
+        $data['perini']= $inicio;
+        $data['perfin']= $fin;
+        //echo $inicio;
+        //echo $fin;
+        //die();
+        $data['tit']='Reporte Tarjetas Cliente Preferente'.$inicio.' al '.$fin;
+        $data['query'] = $this->tarjetas_model->control_tar($inicio,$fin);
+        $data['js'] = 'tarjetas/consultas_tarjetas_pref_submit_js';
+        $this->load->view('main', $data);
+    }
+    
+    function detalle_tar_pref($suc,$fol1,$fol2,$perini,$perfin)
+    {
+        $inicio= $perini;
+        $fin= $perfin;
+        $data['perini']= $inicio;
+        $data['perfin']= $fin;
+        $data['titulo'] = 'Detalle Tarjetas Cliente Preferente';
+        $data['query'] = $this->tarjetas_model->detalle_tar_med($suc,$fol1,$fol2,$inicio,$fin);
+        $this->load->view('main', $data);
+    }
+
+
  
 }

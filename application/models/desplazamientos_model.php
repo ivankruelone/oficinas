@@ -297,7 +297,7 @@ FROM compras.ofertas_genericos a
 join vtadc.producto_mes_suc b on b.codigo=a.codigo
 join catalogo.sucursal c on c.suc=b.suc
 join catalogo.cat_almacen_clasifica d on d.sec=a.sec
-where $var insentivo>0  and c.tipo3 in('DA','FA')
+where $var c.tipo3 in('DA') and date(now()) between fecha_activos and fecha_fin
 group by a.codigo
 order by sec
 ";

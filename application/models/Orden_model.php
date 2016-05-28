@@ -420,9 +420,11 @@ order by fecha_modi desc";
         return $q;
     }
 
+    
     function update_order_cambia_det($id_orden, $id_estado, $folprv, $estado, $id_detalle,
-        $sec, $clagob, $canp, $costo, $descu, $base, $codigo = 0, $id_responsable)
+        $sec, $clagob, $canp, $costo, $descu, $base, $codigo, $id_responsable)
     {
+        
         
         $codigoBarras = $codigo;
         $usuario = $this->session->userdata('id');
@@ -440,22 +442,8 @@ order by fecha_modi desc";
             } else {
                 $iva = 0;
             }
-        } else {
-            
-            $cat = "Select *from catalogo.segpop where claves='$clagob' and tip<>'X' group by sec";
-            $q = $this->db->query($cat);
-            $r = $q->row();
-            $codigo = $r->codigo;
-            $susa1 = $r->susa1;
-            $susa2 = $r->susa2;
-            $lin = $r->lin;
-            
-            if ($r->lin == 2 || $r->lin == 5 || $r->lin == 9 || $r->lin == 10) {
-                $iva = 1;
-            } else {
-                $iva = 0;
-            }
-        }
+        } 
+        
         if ($base == 2 and $id_estado <> 7 and $id_responsable<>38603 and $id_responsable<>0 and $id_responsable<>79592) {
             $cat = "SELECT a.*,concat(trim(susa),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa1,
 concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa2 FROM catalogo.cat_nuevo_general a where esp='E' and clagob='$clagob' and codigo = $codigoBarras group by clagob";
@@ -507,7 +495,62 @@ and  a.folprv=$folprv and a.tipo='$estado' and b.id_detalle=$id_detalle ";
             $this->db->query($an);
 }
         }
-        $gra = "insert into orden_modi.orden_d
+        
+    
+/////////////////////////////////////////////////nuevo/////////////////////////////////////////////////nuevo
+/////////////////////////////////////////////////nuevo/////////////////////////////////////////////////nuevo    
+ if($base==3){
+            
+            $cat = "Select *from catalogo.segpop where claves='$clagob' and tip<>'X' group by sec";
+            $q = $this->db->query($cat);
+            $r = $q->row();
+            $codigo = $r->codigo;
+            $susa1 = $r->susa1;
+            $susa2 = $r->susa2;
+            $lin = $r->lin;
+            
+            if ($r->lin == 2 || $r->lin == 5 || $r->lin == 9 || $r->lin == 10) {
+                $iva = 1;
+            } else {
+                $iva = 0;
+            }
+ }elseif($base==4){
+    
+            $cat = "SELECT a.*,concat(trim(susa),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa1,
+                    concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa2 FROM catalogo.cat_nuevo_general a where esp='E' and clagob='$clagob' and codigo = $codigoBarras group by clagob";
+                    echo  "SELECT a.*,concat(trim(susa),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa1,
+                    concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa2 FROM catalogo.cat_nuevo_general a where esp='E' and clagob='$clagob' and codigo = $codigoBarras group by clagob";
+            $q = $this->db->query($cat);
+            $r = $q->row();
+            $codigo = $r->codigo;
+            $susa1 = $r->susa1;
+            $susa2 = $r->susa2;
+            $lin = $r->lin;
+            if ($r->lin == 2 || $r->lin == 5 || $r->lin == 9 || $r->lin == 10) {
+                $iva = 1;
+            } else {
+                $iva = 0;
+            }  
+    
+ }
+ elseif($base==5){
+    
+            $cat = "select *from catalogo.cat_mercadotecnia where codigo=$codigo ";
+            $q = $this->db->query($cat);
+            $r = $q->row();
+            $codigo = $r->codigo;
+            $susa1 = $r->susa;
+            $susa2 = $r->descripcion;
+            $lin = $r->lin;
+            if ($r->lin == 2 || $r->lin == 5 || $r->lin == 9 || $r->lin == 10) {
+                $iva = 1;
+            } else {
+                $iva = 0;
+            }  
+    
+ }   
+    
+    $gra = "insert into orden_modi.orden_d
 (id_orden, id_detalle, codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr, fecha_modi, id_modifica)
 (select 
 id_orden, id_detalle, codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr, CURRENT_TIMESTAMP(), $usuario
@@ -526,7 +569,9 @@ where id_detalle=$id_detalle";
 id_orden, id_detalle, codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr, CURRENT_TIMESTAMP(), $usuario
 from compras.orden_d where id_detalle=$id_detalle)";
         $this->db->query($fin);
-    }
+}
+    
+    
 
 
     function insert_order_det($id_orden, $id_estado, $folprv, $estado, $sec, $clagob,
@@ -923,10 +968,11 @@ order by a.fecha_envio
     function actualizaDataOrden_d($set, $id_detalle,$id_base,$id_compraped,$arr2,$arr3,$id_pedido_d)
     {
         $this->db->update('compras.orden_d', $set, array('id_detalle' => $id_detalle));
-        $this->db->update('compras.pedido_d', $arr3, array('id' => $id_pedido_d));
+        //$this->db->update('compras.pedido_d', $arr3, array('id' => $id_pedido_d));
         if($id_base==1){
             $this->db->update('almacen.compraped', $arr2, array('id' => $id_compraped));
         }
+        
     }
 
 
@@ -1148,7 +1194,7 @@ function orden_segpop_his_esp()
   {
     $id_user=$this->session->userdata('id');
     $id_responsable=$this->session->userdata('responsable');
-    $s="select
+    $s="select b.estatus,
 e.estado as recibex,licita,f.estado as embarcax,folprv,estatus,
 fecha_envio,fecha_limite,
 b.prv,d.razo,a.id_orden,sum(canp*costo)as imp,

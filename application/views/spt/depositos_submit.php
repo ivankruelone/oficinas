@@ -8,8 +8,6 @@
                            </span>
                          </div>
                          <div class="widget-body">
-                       
-                         
                          <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                     <tr>
@@ -63,7 +61,8 @@
                               <td style="text-align: left"><?php echo number_format($deposito, 2)?></td>
                               </tr>
                              </tfoot>
-                         </table>                            
+                         </table>
+                 
                          </div>
                      </div>
                      <!-- END BLANK PAGE PORTLET-->

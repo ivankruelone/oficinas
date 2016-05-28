@@ -160,7 +160,6 @@ class Orden extends CI_Controller
         $data['id_responsable'] = $r->id_responsable;
         $data['fecha_envio'] = $r->fecha_envio;
        
-      
         if ($r->base == 1) {
             
             if ($r->edo == 'alm' and $r->id_responsable==0 or $r->edo == 'met' and $r->id_responsable==0) {
@@ -175,14 +174,13 @@ class Orden extends CI_Controller
         }elseif($r->base == 2 and  ($r->edo == 'alm' || $r->edo == 'met' )) {
             $data['sec'] = $this->catalogos_model->busca_sec_filtro($r->sec, $r->susa2, $r->prv);
             $data['clagob'] = ' ';
-        }elseif($r->base == 2 and  $r->id_responsable==79592) {
+        }elseif($r->base == 3) {
             $data['clagob'] = $this->catalogos_model->busca_clagob_filtro($r->clagob, $r->
                 susa2, $r->prv);
             $data['sec'] = 0;
-        }
-         else {
+        }elseif($r->base == 4){
             $data['clagob'] = $this->catalogos_model->busca_clagob_filtro_gral($r->clagob, $r->
-                susa2, $r->prv);
+                susa2, $r->prv,$r->codigo);
             $data['sec'] = 0;
         }
         $data['js'] = 'orden/s_orden_cambia_det_js';
@@ -519,6 +517,7 @@ class Orden extends CI_Controller
         $data['js'] = 'orden/s_busca_pro_orden_resultado_js';
         $this->load->view('main', $data);
     }
+    
 //////////////////////////////////////////////////////////////////////////////////////////////ORDEN ESPECIAL
 //////////////////////////////////////////////////////////////////////////////////////////////ORDEN por codigo y clavegob
     function busca_producto_segpop()
@@ -613,6 +612,7 @@ class Orden extends CI_Controller
         $data['q'] = $this->orden_model->orden_captura_especial_his();
         $this->load->view('main', $data);   
     }
+    
  //////////////////////////////////////////////////////////////////////////////////////////////ORDEN ESPECIAL por sec
  function s_orden_especial_sec()
     {
@@ -708,7 +708,8 @@ class Orden extends CI_Controller
     function a_com_generar_sumit()
     {
         $id_responsable = $this->session->userdata('responsable');
-        if ($this->input->post('pass') == 'unico') {
+        if ($this->input->post('pass') == 'unico_seg') {
+            $base=3;
             $por = $this->catalogos_model->busca_almacen_por($this->input->post('alm'));
             $embarca = $this->catalogos_model->busca_licitacion_una($this->input->post('lic'));
             $recibe = $this->catalogos_model->busca_alma_uno($this->input->post('alm'));
@@ -725,7 +726,7 @@ class Orden extends CI_Controller
                     'recibe'=>$recibe,
                     'fecha_envio' => '0000-00-00',
                     'fecha_limite' => '0000-00-00',
-                    'base'=>2,
+                    'base'=>$base,
                     'tipo'=> 0);
                 $this->db->insert('compras.orden_c', $data);
                 
@@ -775,13 +776,7 @@ class Orden extends CI_Controller
         redirect('orden/a_orden_segpop');
     }
     
-    function a_orden_segpop_his()
-    {
-        $nivel=$this->session->userdata('nivel');
-        
-        $data['q'] = $this->orden_model->orden_captura_especial_his();
-        $this->load->view('main', $data);   
-    }
+    
     function a_busco_clave_segpop()
     {
         $cla=$this->input->post('cla');
@@ -795,6 +790,7 @@ class Orden extends CI_Controller
         $id_orden = $this->input->post('id_orden');
         echo $this->catalogos_model->busca_id_cat($id_cat,$id_orden);
     }
+     
 //////////////////////////////////////////////////////////////////////////////////////////////ORDEN SEGURO POPULAR NUEVO PROGRAMA
 //////////////////////////////////////////////////////////////////////////////////////////////ORDEN SEGURO POPULAR NUEVO PROGRAMA
  function a_orden_segpop_esp()
@@ -811,7 +807,8 @@ class Orden extends CI_Controller
     function a_com_generar_sumit_esp()
     {
         $id_responsable = $this->session->userdata('responsable');
-        if ($this->input->post('pass') == 'unico') {
+        if ($this->input->post('pass') == 'unico_esp') {
+            $base=4;
             $por = $this->catalogos_model->busca_almacen_por($this->input->post('alm'));
             $embarca = $this->catalogos_model->busca_licitacion_una($this->input->post('lic'));
             $recibe = $this->catalogos_model->busca_alma_uno($this->input->post('alm'));
@@ -828,7 +825,7 @@ class Orden extends CI_Controller
                     'recibe'=>$recibe,
                     'fecha_envio' => '0000-00-00',
                     'fecha_limite' => '0000-00-00',
-                    'base'=>2,
+                    'base'=>$base,
                     'tipo'=> 0);
                 $this->db->insert('compras.orden_c', $data);
                 
@@ -886,6 +883,13 @@ class Orden extends CI_Controller
         $data['q'] = $this->orden_model->orden_segpop_his_esp();
         $data['js'] = 'orden/a_orden_segpop_his_esp_js';
         $this->load->view('main', $data);   
+    }
+    function borrar_orden_segpop_cerrada($id_orden)
+    {
+        $a=array('estatus' => 0,'fecha_desactivado' => date('Y-m-d H:i:s'));
+        $this->db->where('id_orden',$id_orden);
+        $this->db->update('compras.orden_c',$a);
+        redirect('orden/a_orden_segpop_his_esp');
     }
     function a_orden_segpop_his_global()
     {

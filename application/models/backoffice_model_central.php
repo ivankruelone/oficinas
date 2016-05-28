@@ -615,17 +615,19 @@ group by cod_rel$var
 union all
 select b.cod_rel$var,
 
-concat(a.lin,'||',a.sublin,'||',b.cod_rel$var,'||',codigo,'||', descripcion,'||', round(max(pub)+.33),'||',max(farmacia),'||',pub$var,'||',far$var)
+concat(a.lin,'||',a.sublin,'||',b.cod_rel$var,'||',codigo,'||', descripcion,'||', 
+case when b.lin in(2,5,9,10) then (round((max(pub)+(max(pub)*.16)+.33))/1.16) else round(max(pub)+.33) end
+,'||',max(farmacia),'||',pub$var,'||',far$var)
 as lidia
 from
 catalogo.cat_mercadotecnia a
 left join catalogo.cod_rel b on b.cod_rel$var=a.rel$var and a.codigo=b.ean
 where
-a.lin=1 and a.sublin not in(3,4,5) and a.codigo>0 and b.cod_rel$var>0 and pub1<>pub and pub>0  and farmacia>0
+a.lin=1 and a.sublin not in(3,4,5) and a.codigo>0 and b.cod_rel$var>0 and round(pub$var+.33)<>pub and pub>0  and farmacia>0
 and b.cod_rel$var not in(0)  and descripcion$var not like  '%$%' and descripcion$var not like '%recarga%'
 and (select codigo from catalogo.cat_empaque_fenix x where x.rel$var=a.rel$var group by x.rel$var) is null
 or
-a.lin>1 and a.codigo>0 and b.cod_rel$var>0 and pub$var<>pub and pub>0 and farmacia>0
+a.lin>1 and a.codigo>0 and b.cod_rel$var>0 and round(pub$var+.33)<>pub and pub>0 and farmacia>0
 and b.cod_rel$var not in(0) and descripcion$var not like '%$%' and descripcion$var not like '%recarga%'
 and (select codigo from catalogo.cat_empaque_fenix x where x.rel$var=a.rel$var group by x.rel$var) is null
 group by cod_rel$var

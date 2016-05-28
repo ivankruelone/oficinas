@@ -12,6 +12,7 @@
 <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                  <tr>
+                                     <th></th>
                                      <th>#</th>
                                      <th>Id orden</th>
                                      <th>Orden</th>
@@ -34,20 +35,28 @@
                                 $num=1;$final=0;$final1=0;
                                 foreach ($q->result() as $r) {
                                 $l2=anchor('orden/com_orden_imp/'.$r->id_orden.'/'.$r->estatus,'Imprimir');
+                                if($r->estatus==0){
+                                    $l1='CANCELADA';
+                                    $color='red';
+                                }else{
+                                   $l1=anchor('orden/borrar_orden_segpop_cerrada/'.$r->id_orden,'Borrar');
+                                   $color='gray'; 
+                                }
                                 ?>
                                         <tr>
+                                        <td><?php echo $l1?></td>
                                         <td><?php echo $num?></td>
-                                        <td style="text-align: right; "><?php echo $r->id_orden?></td>
-                                        <td style="text-align: right; "><?php echo $r->folprv?></td>
-                                        <td style="text-align: right; "><?php echo $r->fecha_envio?></td>
-                                        <td style="text-align: right; "><?php echo $r->prv?></td>
-                                        <td style="text-align: left; "><?php echo $r->razo?></td>
-                                        <td style="text-align: left; "><?php echo $r->recibex?></td>
-                                        <td style="text-align: left; "><?php echo $r->embarcax?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->total,2)?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->pedido,0)?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->aplicado,0)?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->nuvel_surtido,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo $r->id_orden?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo $r->folprv?></td>
+                                        <td style="text-align: right color: <?php echo $color?>;; "><?php echo $r->fecha_envio?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo $r->prv?></td>
+                                        <td style="text-align: left; color: <?php echo $color?>; "><?php echo $r->razo?></td>
+                                        <td style="text-align: left; color: <?php echo $color?>; "><?php echo $r->recibex?></td>
+                                        <td style="text-align: left; color: <?php echo $color?>; "><?php echo $r->embarcax?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo number_format($r->total,2)?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo number_format($r->pedido,0)?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo number_format($r->aplicado,0)?></td>
+                                        <td style="text-align: right; color: <?php echo $color?>; "><?php echo number_format($r->nuvel_surtido,2)?></td>
                                         <td><?php echo $l2?></td>
                                         </tr>
                                         <?php 

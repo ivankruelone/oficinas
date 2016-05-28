@@ -20,6 +20,7 @@
                     echo form_open('pedido/ins_pre_pedido_fenix');
                     echo "<br />";   
                     
+
                      $codigo = array(
                         'name' => 'codigo',
                         'id' => 'codigo',
@@ -196,6 +197,7 @@
                         <th>DESCRIPCION</th>
                         <th>PIEZAS</th>
                         <th>FECHA</th>
+                        <th></th>
                         </tr>
                         </thead>
 
@@ -203,7 +205,10 @@
                                  <?php
                                 $num=0;
                                 foreach ($q1->result()as $r) {
-                                $color ='black';
+                                if($r->activo==1){$var='ESPRA VALIDAR COMPRAS';$color='orange';}
+                                elseif($r->activo==3){$var='PEDIDO VALIDADO';$color='green';}
+                                elseif($r->activo==4){$var='BORRADO';$color='red';}
+                                elseif($r->activo==5){$var='ENVIADO A FANASA';$color='blue';}else{$color='black';}
                                 $num=$num+1;
                                 ?>
                                 <tr>
@@ -212,7 +217,8 @@
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->cod?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->descri?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->piezas?></td>
-                                <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->fecha?></td>                                                 
+                                <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->fecha?></td>
+                                <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $var?></td>
                                 </tr>
                                 <?php
                                 }

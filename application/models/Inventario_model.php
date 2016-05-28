@@ -1521,5 +1521,26 @@ $q = $this->db->query($s);
 return $q;
 
     }
+function inv_segpop_almacenes($tipoprod)
+    {
+        $s="SELECT 'ALMACEN PATENTE'as almacenx,cvearticulo,a.ean,concat(trim(b.susa),ifnull(trim(pres),' '))as susa,
+            concat(trim(b.descripcion))as des,a.cantidad,a.lote,a.caducidad,a.cantidad,
+            case when subdate(caducidad,30) <= date(now()) then a.cantidad else 0 end as caducado,
+            case when subdate(caducidad,30) > date(now()) then a.cantidad else 0 end as existencia
+            FROM patente2.inventario a
+            join patente2.articulos b on b.id=a.id
+            where cantidad>0 and tipoprod=$tipoprod
+                    union all
+            SELECT 'SEGPOP CENTRAL'as almacenx,cvearticulo,a.ean,concat(trim(b.susa),ifnull(trim(pres),' '))as susa,
+            concat(trim(b.descripcion))as des,a.cantidad,a.lote,a.caducidad,a.cantidad,
+            case when subdate(caducidad,30) <= date(now()) then a.cantidad else 0 end as caducado,
+            case when subdate(caducidad,30) > date(now()) then a.cantidad else 0 end as existencia
+            FROM spcentral.inventario a
+            join spcentral.articulos b on b.id=a.id
+            where cantidad>0 and tipoprod=$tipoprod;";
+$q = $this->db->query($s);
+return $q;
+
+    }
 
 }

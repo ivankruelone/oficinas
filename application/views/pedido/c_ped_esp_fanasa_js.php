@@ -74,7 +74,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
 $(document).ready(function() {
     
- var oTable = $('#tabla2').dataTable( {
+ var oTable = $('#tabla1').dataTable( {
       
         "bScrollCollapse": true,
         "bPaginate": false,
@@ -89,7 +89,22 @@ $(document).ready(function() {
             "bJQueryUI": true,
             "bPaginate": false
         });
-
+var oTable = $('#tabla2').dataTable( {
+      
+        "bScrollCollapse": true,
+        "bPaginate": false,
+            "aoColumns": [
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text", "sType": "formatted-num" },
+                { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text" }
+            ],
+            "bJQueryUI": true,
+            "bPaginate": false
+        });
 
 
 

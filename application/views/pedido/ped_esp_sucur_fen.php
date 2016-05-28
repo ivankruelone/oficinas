@@ -2,7 +2,7 @@
 <div class="panel panel-default">
 </div>
   
-<div class="span6">
+<div class="span8">
 
  <!-- BEGIN BLANK PAGE PORTLET-->
     <div class="widget red">
@@ -21,7 +21,10 @@
                         <th>NID</th>
                         <th>SUCURSAL</th>
                         <th>SUPERVISOR</th>
-                        <th style="color:#FF9770;"><CENTER>PEDIDO</CENTER></th>
+                        <th>PRODUCTOS</th>
+                        <th>PIEZAS</th>
+                        <th>IMPORTE</th>
+                        <th style="color:#FF9770; text-align: center;">PEDIDO</th>
                         </tr>
                         </thead>
 
@@ -36,9 +39,10 @@
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->suc?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->nombre?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->nom_sup?></td>
-                                <?php $suc=$r->suc; ?>
-                                                                                               
-                                <td><?php echo anchor('pedido/ver_pedido_sup/'.$suc, 'Ver pedido'); ?></a></td>
+                                <td style="text-align: right; color: <?php echo $color ?>;"><?php echo number_format($r->registros,0)?></td>
+                                <td style="text-align: right; color: <?php echo $color ?>;"><?php echo number_format($r->piezas,0)?></td>
+                                <td style="text-align: right; color: <?php echo $color ?>;"><?php echo number_format($r->imp,2)?></td>
+                                <td><?php echo anchor('pedido/ver_pedido_sup/'.$r->suc, 'Ver pedido'); ?></a></td>
                                   
                                 </tr>
                                 <?php

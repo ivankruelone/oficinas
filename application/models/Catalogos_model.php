@@ -1845,7 +1845,7 @@ FROM catalogo.cat_calendario_nom group by mes";
     function busca_clagob_filtro($clagob, $susa)
     {
 
-        $sql = "SELECT *from catalogo.segpop where claves<>' ' and tip<>'X' group by claves";
+        $sql = "SELECT *from catalogo.segpop  where claves<>' '  and tip<>'X' group by claves";
         $query = $this->db->query($sql);
         $clave = array();
         $clave[$clagob] = $clagob.' '.$susa;
@@ -1857,7 +1857,9 @@ FROM catalogo.cat_calendario_nom group by mes";
         return $clave;
     }
     
-    function busca_clagob_filtro_gral($clagob, $susa, $prv)
+    
+    
+    function busca_clagob_filtro_gral($clagob, $susa, $prv,$codigo)
     {
 
         $sql = "SELECT a.clagob,codigo, lab,concat(trim(susa),' ',trim(gramaje),' ',trim(contenido),trim(presenta))as susa2
@@ -1866,7 +1868,7 @@ FROM catalogo.cat_calendario_nom group by mes";
 
         where a.clagob<>' ' and esp='E'  and prv = ? order by a.clagob * 1";
         $query = $this->db->query($sql, $prv);
-         $clave[$clagob] = $clagob.' '.$susa;
+         $clave[$clagob. '|' . $codigo] = $clagob.' '.$susa;
 
         foreach ($query->result() as $row) {
             $clave[$row->clagob . '|' . $row->codigo] = $row->clagob . ' ('.$row->codigo.') - ' . $row->susa2;
@@ -2327,11 +2329,11 @@ WHERE d.suc = ?;";
         function s_cat_insumos_his_bus($var)
     {
        $s = "SELECT a.id,a.suc,b.nombre,a.fecha_cap,
-(select sum(canp) from papeleria.insumos_d x where x.id_cc=a.id and x.tipo in(1,2,3) group by x.id_cc)as can_ped,
+ifnull((select sum(canp) from papeleria.insumos_d x where x.id_cc=a.id and x.tipo in(1,2,3) group by x.id_cc),0)as can_ped,
 ifnull((select sum(cans) from papeleria.insumos_s x where x.id_cc=a.id and x.tipo in(2,3) group by x.id_cc),0)as can_sur,
 
-round((((ifnull((select sum(cans) from papeleria.insumos_s x where x.id_cc=a.id and x.tipo in(2,3) group by x.id_cc),0))/
-((select sum(canp) from papeleria.insumos_d x where x.id_cc=a.id and x.tipo in(1,2,3) group by x.id_cc)))*100),2)as nivel_surtido
+ifnull(round((((ifnull((select sum(cans) from papeleria.insumos_s x where x.id_cc=a.id and x.tipo in(2,3) group by x.id_cc),0))/
+((select sum(canp) from papeleria.insumos_d x where x.id_cc=a.id and x.tipo in(1,2,3) group by x.id_cc)))*100),2),0)as nivel_surtido
 
 FROM papeleria.insumos_c a
 join catalogo.sucursal b on b.suc=a.suc
@@ -2619,6 +2621,18 @@ function busco_cod_fanasa($cod){
         }  
         return $tabla;  
      }
+     
+     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     
+     ////////////////// Catalogo_modelo////////////////
+function busca_mes_unico($mes)
+    {
+     $sql = "SELECT  mes FROM  catalogo.mes where num = ?";
+    $query = $this->db->query($sql,array($mes));
+    $row= $query->row();
+    $mesx=$row->mes;
+     return $mesx; 
+}
    
 
 

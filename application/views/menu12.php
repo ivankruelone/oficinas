@@ -90,7 +90,6 @@
                           <li id="menu_desplazamientos_s_nivel_surtido"><?php echo  anchor('desplazamientos/s_nivel_surtido', 'Nivel de surtido'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_ofertas_gen"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen', 'Desplazamiento Ofertas Catalogo DOctor Ahorro'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_ofertas_gen_in"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen_in', 'Desplazamiento Productos con Insentivos'); ?></li>
-                          <li id="menu_desplazamientos_s_desplaza_ofertas_gen_in"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen_in', 'Desplazamiento Productos PAQUETES'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_fenix"><?php echo  anchor('desplazamientos/s_desplaza_fenix', 'Desplazamiento Fenix'); ?></li>
                           <li id="menu_desplazamientos_a_desplaza_fenix_contado_pat"><?php echo anchor('desplazamientos/a_desplaza_fenix_contado_pat', 'Desplazamientos venta_contado'); ?></li>
                           

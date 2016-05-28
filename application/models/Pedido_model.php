@@ -947,7 +947,7 @@ return $q;
      function desc_pre_pedido_fen($id_plaza){
 
             $s = "select a.*,b.nombre, b.superv from compras.pre_pedido_fenix a,catalogo.sucursal b
-                    where a.activo=1 and a.fecha=curdate() and a.suc=b.suc and b.superv=$id_plaza";
+                    where a.activo in(1,3) and a.fecha=curdate() and a.suc=b.suc and b.superv=$id_plaza";
             $q = $this->db->query($s);
         return $q;
         }
@@ -997,9 +997,10 @@ return $q;
 
     function sol_pedido_sup(){
 
-         $s = "select a.fecha,a.suc,b.nombre,b.superv,c.nombre as nom_sup, a.activo
-                 from compras.pre_pedido_fenix a,catalogo.sucursal b , compras.usuarios c
-                    where a.suc=b.suc and b.superv=c.id_plaza and a.activo =1 and a.fecha=curdate()
+         $s = "select a.fecha,a.suc,b.nombre,b.superv,c.nombre as nom_sup, a.activo,sum(case when d.iva>0 then ((piezas*costo)*(b.iva+1)) else (piezas*costo) end)as imp,
+                sum(piezas)as piezas, count(*) as registros
+                 from compras.pre_pedido_fenix a,catalogo.sucursal b , compras.usuarios c,catalogo.cat_fanasa d
+                    where a.cod=d.codigo and a.suc=b.suc and b.superv=c.id_plaza and a.activo =1 and a.fecha=curdate()
                       group by fecha,suc";
             $q = $this->db->query($s);
         return $q;
@@ -1007,7 +1008,9 @@ return $q;
 
 
     function ver_pedido_suc_f($suc){
-        $s = "select * FROM compras.pre_pedido_fenix  where fecha=curdate() and suc=$suc and activo=1";
+        $s = "select a.*, b.costo,case when b.iva>0 then ((a.piezas*b.costo)*(b.iva+1)) else (a.piezas*b.costo) end as imp
+                 FROM compras.pre_pedido_fenix a, catalogo.cat_fanasa b
+                     where  a.cod=b.codigo and fecha=curdate() and suc=$suc and activo=1";
             $q = $this->db->query($s);
         
         if($q->num_rows() <= 0){

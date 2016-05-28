@@ -162,7 +162,7 @@
                                         <td style="text-align: left; "><?php echo $r->susa1.'<br />'.$r->susa2?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->canp,0)?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->canr,0)?></td>
-                                        <td style="text-align: right; "><?php echo number_format($r->costo,0)?></td>
+                                        <td style="text-align: right; "><?php echo number_format($r->costo,2)?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->descuento,2)?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->imp,2)?></td>
                                         <td style="text-align: right; "><?php echo number_format($r->imp_descu,2)?></td>

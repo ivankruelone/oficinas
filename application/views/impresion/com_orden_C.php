@@ -80,7 +80,7 @@ NINGUN PEDIDO VENCIADO.';
 $e='';
 $f='';
      $fec=date('Y-m-d H:i:s');
-    $s="select ifnull(h.estado,' ') as edoxx,g.domicilio,a.estatus,f.id as alma,f.estado as destino, fecha_limite as fechaee, a.*,b.*,c.razon as razonx, c.razon as razonx,
+    $s="select ifnull(h.estado,' ') as edoxx,gm.domicilio,a.estatus,f.id as alma,f.estado as destino, fecha_limite as fechaee, a.*,b.*,c.razon as razonx,
     c.dire as direx, c.col,c.pobla as poblax,c.cp as cpx,c.rfc as rfcx,case when a.licita <>' ' then a.licita else f.licitacion end as licita,
     ifnull(f.estado,' ')as estado,
     ifnull(d.id_firma,'0')as id_firma,ifnull(e.completo,' ')as completo,ifnull(g.completo,' ')as capturax
@@ -92,7 +92,7 @@ $f='';
     left join catalogo.cat_empleado g on g.nomina=d.nomina and g.tipo=1
     left join compras.numero_de_licitaciones f on f.id=a.id_estado
     left join compras.numero_de_licitaciones h on h.licitacion=a.licita and  h.licitacion<>''
-    left join almacen.consigna g on g.consigna=a.consigna
+    left join compras.consigna gm on gm.suc=a.recibe
     where a.id_orden=$id";
     $q=$this->db->query($s);
     if($q->num_rows()>0){
@@ -208,8 +208,9 @@ $f='';
                              <td style=\"text-align: right;color: royalblue;\">".number_format($t1,0)."</td>
                              <td style=\"text-align: right;color: royalblue;\">".number_format($t11,0)."</td>
                              <td style=\"text-align: right;color: royalblue;\"></td>
-                             <td style=\"text-align: right;color: royalblue;\">".number_format($t2,2)."</td>
                              <td style=\"text-align: right;color: royalblue;\"></td>
+                             <td style=\"text-align: right;color: royalblue;\">".number_format($t2,2)."</td>
+                             
                              <td style=\"text-align: right;color: royalblue;\"></td>
                              <td style=\"text-align: right;color: royalblue;\">".number_format($t6,2)."</td>
                              <td style=\"text-align: right;color: royalblue;\">".number_format($t4,2)."</td>

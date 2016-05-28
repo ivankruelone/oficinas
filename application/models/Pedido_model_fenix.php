@@ -162,7 +162,7 @@ a.fecha, a.suc, a.cod, a.descri, piezas, 0, 0,  c.costo, a.prv, c.rel2, farmacia
 FROM compras.pre_pedido_fenix a
 join catalogo.sucursal b on a.suc=b.suc and back=2
 join catalogo.cat_fanasa c on c.codigo=a.cod and rel2>0 and fecha_modificado>=date(now())
-where fecha=date(now()) and 
+where fecha=date(now()) and activo=3 and 
 (select rel2 from compras.bloqueados_x_mes_todas x where x.codigo=a.cod and date(now()) between fecha1 and fecha2) is null)";
 $q=$this->db->query($s1);
 
@@ -173,9 +173,13 @@ a.fecha, a.suc, a.cod, a.descri, piezas, 0, 0,  c.costo, a.prv, c.rel1, farmacia
 FROM compras.pre_pedido_fenix a
 join catalogo.sucursal b on a.suc=b.suc and back=1
 join catalogo.cat_fanasa c on c.codigo=a.cod  and rel1>0 and fecha_modificado>=date(now())
-where fecha=date(now()) and  
+where fecha=date(now()) and activo=3 and  
 (select rel2 from compras.bloqueados_x_mes_todas x where x.codigo=a.cod and date(now()) between fecha1 and fecha2) is null)";
 $q=$this->db->query($s2);
+$s2x="update compras.pre_pedido_fenix a
+set activo=5
+where activo=3 and fecha=date(now())";
+$q=$this->db->query($s2x);
 
 $s3="update compras.pre_pedido_fenix_for
 set fol=((select max(fol) from compras.pre_pedido_fenix_ctl)+1)

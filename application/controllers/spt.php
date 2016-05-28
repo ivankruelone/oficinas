@@ -97,6 +97,7 @@ class Spt extends CI_Controller
     {
         $data['titulo'] = "Consulta Depositos Medicos";
         $data['quincena'] = $this->spt_model->busca_quincena();
+        $data['quincena2'] = $this->spt_model->busca_quincena2();
         $this->load->view('main', $data);
     }
     
@@ -106,8 +107,30 @@ class Spt extends CI_Controller
         set_time_limit(0);
         $data['titulo'] = "Depositos de Salud para Todos";
         $quincena= $this->input->post('quincena');
+        //$periodo= $this->input->post('periodo');
+       // if($periodo<>0){
+            //$data['s2'] = $this->spt_model->consulta_depositos2($periodo);
+        //}else{
+            //$data['s2'] = 0;
+            
+        //}
         $data['s'] = $this->spt_model->consulta_depositos($quincena);
+        
         $data['js'] = 'spt/depositos_submit_js';
+        $this->load->view('main', $data);
+
+    }
+
+
+
+    function depositos2_submit()
+    {
+        ini_set('memory_limit', '2000M');
+        set_time_limit(0);
+        $data['titulo'] = "Depositos de Salud para Todos";
+        $periodo= $this->input->post('periodo');
+        $data['s'] = $this->spt_model->consulta_depositos2($periodo);
+        $data['js'] = 'spt/depositos2_submit_js';
         $this->load->view('main', $data);
 
     }

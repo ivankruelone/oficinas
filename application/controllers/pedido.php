@@ -499,14 +499,24 @@ function s_val_pedido_ins_his_glo()
 
 
     function c_ped_esp_fanasa(){
-        $id_plaza=$this->session->userdata('id_plaza');
+
+    $time = time();
+    if( date("H:i:s", $time)>="15:00:00"){ 
+    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 15:00 hrs.');</script>";
+    redirect('welcome', 'refresh');
+    }else{
+        
+       $id_plaza=$this->session->userdata('id_plaza');
         $data['titulo'] = "Pedido Especial fanasa ";
         $data['suc'] = $this->Pedido_model->busca_sucursal_feni($id_plaza);
         $data['q'] = $this->Pedido_model->desc_pend_pre_pedido($id_plaza);
         $data['q1'] = $this->Pedido_model->desc_pre_pedido_fen($id_plaza);
         $data['js'] = 'pedido/c_ped_esp_fanasa_js';
         $this->load->view('main', $data);
+
     }
+      
+}
 
     function ins_pre_pedido_fenix(){
 
@@ -562,18 +572,32 @@ function s_val_pedido_ins_his_glo()
    }
 
    function ped_esp_sucur_fen(){
+    $time = time();
+    if( date("H:i:s", $time)>="16:00:00"){ 
+    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:00 hrs.');</script>";
+    redirect('welcome', 'refresh');
+    }else{
 
     $data['q'] = $this->Pedido_model->sol_pedido_sup();
     $data['q1'] = $this->Pedido_model->ped_autoriza_compr();
     $this->load->view('main', $data);
+    }
    }
   
     function generar_pedido_f(){
+
+    $time = time();
+    if( date("H:i:s", $time)>="16:00:00"){ 
+    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:00 hrs.');</script>";
+    redirect('welcome', 'refresh');
+    }else{
+        
     $data['suc'] = $this->Pedido_model->buscar_suc_fen_act();
     $data['js'] = 'pedido/generar_pedido_f_js';
     $data['q'] = $this->Pedido_model->desc_ppedido_f_com();
     $data['q1'] = $this->Pedido_model->pp_act_compras();
     $this->load->view('main', $data);
+    }
 
     }
 

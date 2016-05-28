@@ -97,19 +97,47 @@ return $q;
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
     
+    function cuenta_control_tar(){
     
+    $s="SELECT count(*) as cuenta
+          from vtadc.tarjetas_suc a
+          left join catalogo.sucursal d on d.suc=a.suc
+          where a.tipo=1
+          order by a.suc";
+          
+    $query = $this->db->query($s);
+        $r = $query->row();
+        return $r->cuenta;
     
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
 }
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function control_tar($inicio,$fin) 
+{
+    
+    $s="SELECT a.*,(a.fol2-a.fol1+1)as tar ,d.nombre as sucx,d.tipo2,c.venta
+          from vtadc.tarjetas_suc a
+          left join catalogo.sucursal d on d.suc=a.suc
+          join vtadc.tarjetas c on c.suc=a.suc and a.fol1 = c.codigo
+          where a.tipo=1 and c.venta between '$inicio' and '$fin'
+          order by suc";
+          
+            $q=$this->db->query($s);
+            return $q;
+       } 
+    
+    function detalle_tar_med($suc,$fol1,$fol2,$inicio,$fin) 
+{
+    
+    $s="SELECT a.codigo,a.tipo,a.nombre,a.dire,a.vigencia,a.venta,a.nomina,b.completo
+        from vtadc.tarjetas a
+        join catalogo.cat_empleado b on b.nomina = a.nomina
+        where a.tipo=1 and a.suc=$suc and a.codigo>=$fol1 and a.codigo<=$fol2
+        and a.venta between '$inicio' and '$fin'";
+          
+            $q=$this->db->query($s);
+            return $q;
+       } 
+}
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

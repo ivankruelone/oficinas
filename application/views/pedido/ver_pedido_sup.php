@@ -21,7 +21,9 @@
                         <th>SUCURSAL</th>
                         <th>CODIGO</th>
                         <th>DESCRIPCION</th>
+                        <th>COSTO</th>
                         <th>PIEZAS</th>
+                        <th>IMPORTE</th>
                         <th style="color:#FF9770;"><CENTER>CANCELAR</CENTER></th>
                         </tr>
                         </thead>
@@ -39,7 +41,9 @@
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->suc?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->cod?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->descri?></td>
+                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->costo?></td>
                                 <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->piezas?></td>
+                                <td style="text-align: left; color: <?php echo $color ?>;"><?php echo $r->imp?></td>
                                
                                 <?php $suc=$r->suc; $cod=$r->cod; ?>  
 

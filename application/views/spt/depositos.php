@@ -23,6 +23,7 @@
 	<td align="left" ><font size="+1"><strong>Quincena: </strong></font></td>
 	<td align="left"><?php echo form_dropdown('quincena', $quincena, '', 'id="quincena"') ;?> </td>
  </tr>
+
 <tr>
 	<td colspan="2" align="center"><?php echo form_submit('envio', 'Enviar');?></td>
 </tr>
@@ -30,6 +31,28 @@
   <?php
 	echo form_close();
   ?>
+  
+  <?php
+	$atributos = array('periodo' => '#motivo');
+    echo form_open('spt/depositos2_submit');
+  ?>
+  
+  <table>
+<tr>
+	<td align="left" ><font size="+1"><strong>Quincena: </strong></font></td>
+	<td align="left"><?php echo form_dropdown('periodo', $quincena2, '', 'id="periodo"') ;?> </td>
+ </tr>
+<tr>
+	<td colspan="2" align="center"><?php echo form_submit('envio', 'Enviar');?></td>
+</tr>
+</table>
+  <?php
+	echo form_close();
+  ?>
+
+
+
+
 
                        
                          </div>

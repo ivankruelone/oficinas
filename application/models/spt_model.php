@@ -147,6 +147,23 @@ class Spt_model extends CI_Model
         return $quincena;  
     }
     
+    
+     function busca_quincena2()
+    {
+        
+        $sql = "SELECT * FROM vtadc.venta_medico_periodo v order by periodo";
+        $query = $this->db->query($sql);
+        
+        $quincena = array();
+        $quincena[0] = "Selecciona Quincena";
+        
+        foreach($query->result() as $row){
+            $quincena[$row->periodo] = $row->fecha1 ." al ".$row->fecha2;
+        }
+        
+        return $quincena;  
+    }
+    
     public function comparativo_consultas()
     {
         $s="SELECT s.suc, s.nombre
@@ -181,6 +198,21 @@ public function consulta_depositos($quincena)
             left join vtadc.ticket_quincena_deposito d on t.quincena=d.quincena and t.sucursal=d.sucursal
             left join catalogo.sucursal s on t.sucursal=s.suc
             where t.quincena=$quincena";
+        $q=$this->db->query($s);
+        //echo $this->db->last_query();
+        //die();
+        return $q;
+    }
+    
+    public function consulta_depositos2($periodo)
+    {
+        $s="SELECT (select sum(x.impFundacion) from vtadc.venta_medico_concentrado_periodo x where x.periodo = b.periodo and x.suc = b.suc) as fundacion,(select sum(x.monto) from vtadc.venta_medico_deposito x where x.periodo = b.periodo and x.suc = b.suc) as deposito,
+            a.periodo,b.suc,a.sucursal
+            FROM vtadc.venta_medico_concentrado_periodo a
+            join vtadc.venta_medico_deposito b on b.periodo = a.periodo and a.suc = b.suc
+            where b.periodo = $periodo
+            group by suc,periodo
+            order by b.suc";
         $q=$this->db->query($s);
         //echo $this->db->last_query();
         //die();
