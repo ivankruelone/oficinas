@@ -12,6 +12,7 @@
                          <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
                                  <tr>
+                                 <th>#</th>
                                  <th style="text-align: left">Almacen</th>
                                  <th style="text-align: left">Cia</th>
                                  <th style="text-align: left">Compa&ntilde;ia</th>
@@ -28,7 +29,7 @@
                              <tbody>
                              
                                  <?php
-                                $fec_actual=date('Y-m-d');
+                                $fec_actual=date('Y-m-d');$num=0;
                                 foreach ($a->result()as $row) {
                                 if($row->estatus==1 and $row->aplica==0 ){
                                 $color='gray';
@@ -36,9 +37,11 @@
                                     $color='red';
                                 }
                                 $l3 = anchor('orden/com_orden_imp/'.$row->id_orden.'/'.$row->estatus, 'Imprime', array('title' => 'Haz Click aqui para Cambiar productos!', 'class' => 'encabezado')); 
-                                 ?>
+                                $num=$num+1;
+                                ?>
                                 
                                  <tr>
+                                    <td style="color: <?php echo $color?>;text-align: left;"><?php echo $num?></td>
                                     <td style="color: <?php echo $color?>;text-align: left;"><?php echo $row->estado?></td>
                                     <td style="color: <?php echo $color?>;text-align: left;"><?php echo $row->cia?></td>
                                     <td style="color: <?php echo $color?>;text-align: left;"><?php echo $row->ciax?></td>

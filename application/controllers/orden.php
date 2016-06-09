@@ -972,7 +972,7 @@ class Orden extends CI_Controller
         $data['titulo'] = "Historico de orden de compra del mes de " . $mes . " del " .
             $aaa;
         $data['a'] = $this->orden_model->order_cambia($aaa, $mes);
-        $data['js'] = 'orden/s_orden_cambia_js';
+        $data['js'] = 'orden/a_orden_mes_glo_det_js';
         $this->load->view('main', $data);
     }
 
