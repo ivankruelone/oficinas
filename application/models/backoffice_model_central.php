@@ -676,12 +676,10 @@ from
 case when venta_pub<publico then
 case when cx.lin in(2,5,9,10) then round((cx.venta_pub/1.16),4) else round(cx.venta_pub+.33) end
 else
-case when cx.lin in(2,5,9,10) then round((dx.publico/1.16),4) else round(dx.publico+.33) end
-end)as lidia from
-catalogo.cat_fenix_sec_cod ax,
-catalogo.cod_rel bx,
-catalogo.cat_almacen_clasifica cx,
-catalogo.almacen dx
+case when cx.lin in(2,5,9,10) then round((cx.venta_pub/1.16),4) else round(cx.venta_pub+.33) end
+end)as lidia 
+from
+catalogo.cat_fenix_sec_cod ax,catalogo.cod_rel bx,catalogo.cat_almacen_clasifica cx,catalogo.almacen dx
 where dx.codigo=ax.cod and ax.sec between 1 and 1999 and ax.cod=bx.ean and  cx.sec=ax.sec and cod_rel$var>0 and
 ax.cod not in(7501590211232,7501590233043,7501836002686,7501289511469,7501125102929) and ax.sec not in(154,3102,1026) and venta_pub>0
 and
@@ -981,7 +979,7 @@ $this->db->query($sr);
 
 $nivel_surtido="update compras.pre_pedido_fenix_det a, compras.pre_factura_fenix b
 set a.sur=b.can, b.pedido=a.fol, cos_fac=((((can*far)-descuento)-adicional)/can),a.factura=b.fac
-where a.suc=b.suc and a.cod=b.cod and b.fecha=adddate(a.fecha,1) and  a.fecha>=subdate(date(now()),4)
+where a.suc=b.suc and a.cod=b.cod and b.fecha=adddate(a.fecha,1) and  a.fecha>=subdate(date(now()),15)
 and pedido=0";
 $this->db->query($nivel_surtido);
 $nivel_surtido_ctl="insert compras.pre_pedido_fenix_ctl(fecha, suc, prv, importe, fol, tipo, canp,
@@ -992,7 +990,10 @@ from compras.pre_pedido_fenix_det where fecha>=subdate(date(now()),4) group by f
 on duplicate key update
 importe=values(importe),imp_facturado=values(imp_facturado),cans=values(cans),pro_ped=values(pro_ped),pro_fac=values(pro_fac)";
 $this->db->query($nivel_surtido_ctl);
-
+$surtido_especiales_fenix="update  compras.pre_pedido_fenix a, compras.pre_factura_fenix b
+set facturado=b.can
+where  b.cod=a.cod and b.suc=a.suc and a.fecha=b.fec_pedido and activo=5";
+$this->db->query($surtido_especiales_fenix);
 
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -1205,7 +1206,7 @@ $this->db->query($rel2);
 
 function poliza_inv()
 {
-$s="select fecha_act,a.suc,a.nombre,sum(cantidad)as exis,obser
+$s="select fecha_act,a.suc,a.nombre,ifnull(sum(cantidad),0)as exis,obser
 from catalogo.sucursal a
 left join desarrollo.inv b on b.suc=a.suc and fechai>=subdate(date(now()),2) and mov in(3,7)
 where tlid=1 and tipo3 in('DA','FE','FA','MO') and a.suc<>194 and fecha_act='0000-00-00'
@@ -1306,7 +1307,7 @@ $this->db->query($s8);
 function respaldo_poliza_inv($sem,$aaa)
 {
 $sf1="insert ignore into inventarios.inv_cosvta(cia, suc, sem, aaa, mes, dia, lin, plaza, succ, importe, piezas)
-(select cia, suc, sem, aaa, mes, dia, lin, 0, 0, sum(piezas), sum(piezas*costo)
+(select cia, suc, sem, aaa, mes, dia, lin, 0, 0,  sum(piezas*costo),sum(piezas)
 from inventarios.inv_mes_suc_det where sem=$sem and aaa=$aaa group by sem,suc,lin)";
 $this->db->query($sf1);
 
@@ -1331,6 +1332,14 @@ $q=$this->db->query($s);
 $r=$q->row();
 $sem=$r->sem;
 return $sem;
+}
+function poliza_cosvta($aaa)
+{
+$s="SELECT sem,aaa,mes,dia,sum(piezas)as piezas,sum(importe) as imp
+FROM inventarios.inv_cosvta where aaa=$aaa
+group by sem  order by sem desc";    
+$q=$this->db->query($s);
+return $q;
 }
 function poliza_34_almacen($aaa,$mes)
 {

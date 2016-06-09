@@ -13,7 +13,6 @@
             </div>
              <div class="widget-body">
                  
-              
                     <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                         <thead>
                         <tr>

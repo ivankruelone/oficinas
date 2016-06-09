@@ -131,7 +131,7 @@ class Pedido extends CI_Controller
     }
     function com_generar_sumit()
     {
-        if ($this->input->post('pass') == 'unico') {
+        if ($this->input->post('pass') == 'unico_bren') {
             $por = $this->catalogos_model->busca_almacen_por($this->input->post('alm'));
             $cia = $this->input->post('cia');
             //die();
@@ -520,14 +520,17 @@ function s_val_pedido_ins_his_glo()
 
     function ins_pre_pedido_fenix(){
 
-         $data = array (
+         
+        $registros=$this->Pedido_model->busca_registros_pedido($this->input->post('suc')); 
+        if($registros==1){
+        $data = array (
         'suc' => $this->input->post('suc'),
         'codigo' => $this->input->post('codigo'),
         'piezas' => $this->input->post('piezas'),
         'activo' => 0
          );
         $code= $this->input->post('codigo');
-
+        
         $satisfactorio= $this->Pedido_model->ins_pre_pedido($data,$code);
         $id_plaza=$this->session->userdata('id_plaza');
 
@@ -538,7 +541,14 @@ function s_val_pedido_ins_his_glo()
     }else {
          redirect('pedido/c_ped_esp_fanasa/');
     }
+    
+    }else{
+        echo 'YA ESTAN CAPTURADOS TUS 20 PRODUCTOS';
+    }
 
+        
+        
+        
         }
 
      function aplic_cod_pre_pedido($suc,$cod){
@@ -573,7 +583,7 @@ function s_val_pedido_ins_his_glo()
 
    function ped_esp_sucur_fen(){
     $time = time();
-    if( date("H:i:s", $time)>="16:00:00"){ 
+    if( date("H:i:s", $time)>="16:30:00"){ 
     echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:00 hrs.');</script>";
     redirect('welcome', 'refresh');
     }else{
@@ -587,7 +597,7 @@ function s_val_pedido_ins_his_glo()
     function generar_pedido_f(){
 
     $time = time();
-    if( date("H:i:s", $time)>="16:00:00"){ 
+    if( date("H:i:s", $time)>="18:30:00"){ 
     echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:00 hrs.');</script>";
     redirect('welcome', 'refresh');
     }else{
@@ -638,16 +648,17 @@ function s_val_pedido_ins_his_glo()
          );
         $code= $this->input->post('codigo');
 
-        $satisfactorio= $this->Pedido_model->ins_pre_pedido($data,$code);
-        $id_plaza=$this->session->userdata('id_plaza');
-
-        if($satisfactorio){
-
-               echo 'incorrecto';
-       
-    }else {
-         redirect('pedido/generar_pedido_f/');
-    }
+        if($data['suc']==0){
+            redirect('pedido/generar_pedido_f/');
+        }else{
+            $satisfactorio= $this->Pedido_model->ins_pre_pedido($data,$code);
+            $id_plaza=$this->session->userdata('id_plaza');
+            if($satisfactorio){
+               echo 'incorrecto';   
+            }else {
+                 redirect('pedido/generar_pedido_f/');
+            }
+                }
 
         }
 
@@ -665,6 +676,21 @@ function s_val_pedido_ins_his_glo()
 
     }
 
+
+///////////////////////////////Pedidos almacen ///////////////////////////////////
+
+    function can_pedido_alm(){
+          $data['q'] = $this->Pedido_model->can_pedido_almacen();
+          $data['js'] = 'pedido/can_pedido_alm_js';
+          $this->load->view('main',$data); 
+
+    }
+
+     function borrar_pedidos_alm($fol,$suc)
+    {
+     $this->pedidos_model->delete_pedido_alm($fol,$suc);
+    redirect('pedido/can_pedido_alm');
+    }
 
 
 

@@ -249,10 +249,13 @@ class backoffice extends CI_Controller
 
     function a_poliza_inv()
     {
+        $aaa = date('Y');
         $data['titulo'] = 'GENERA POLIZA DE INVENTARIO';
         $data['sem_corrida'] = $this->backoffice_model_central->semana_corrida();
         $data['sem_respal'] = $this->backoffice_model_central->semana_respaldada();
         $data['q'] = $this->backoffice_model_central->poliza_inv();
+        $data['q1'] = $this->backoffice_model_central->poliza_cosvta($aaa);
+        $data['js'] = 'backoffice/a_poliza_inv_js';
         $this->load->view('main', $data);
     }
     function a_poliza_inv_det()
@@ -267,14 +270,15 @@ class backoffice extends CI_Controller
         $this->backoffice_model_central->respaldo_poliza_inv($sem, $aaa);
         redirect('backoffice/a_poliza_inv');
     }
+    
     function envia_inv_as400_archivo($aaa, $sem)
     {
         $this->Envio_model_as400_fin->envia_inv_as400($aaa, $sem);
-        redirect('backoffice/s_inventario_semanal/7');
+        redirect('backoffice/a_poliza_inv');
     }
     function envia_inv_as400_archivo_sol()
     {
-        $aaa=2016;$sem=13;
+        $aaa=2016;$sem=17;
         $this->Envio_model_as400_fin->envia_inv_as400($aaa, $sem);
         //redirect('backoffice/s_inventario_semanal/7');
     }

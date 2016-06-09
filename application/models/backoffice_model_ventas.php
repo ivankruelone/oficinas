@@ -551,7 +551,10 @@ $x3="update vtadc.venta_ctl a
 set a.tic=ifnull((select count(tiket) from vtadc.venta_detalle_tic_dia x where x.suc=a.suc and x.fecha=a.fecha group by suc,fecha),0)
 where fecha>=(subdate(date(now()),interval 15 day))";
 $this->db->query($x3);
-
+$x3con="update vtadc.venta_ctl a
+set a.tic_contado=ifnull((select count(tiket) from vtadc.venta_detalle_tic_dia_contado x where x.suc=a.suc and x.fecha=a.fecha group by suc,fecha),0)
+where fecha>=(subdate(date(now()),interval 15 day))";
+$this->db->query($x3con);
 $cortes="insert into cortes_resp.cortes_venta_diaria(mes, dia, suc, a2012, a2013, a2014, a2015, a2016, prome)
 (select month(a.fechacorte),day(a.fechacorte),a.suc,0,0,0,0,ifnull(sum(d.siniva),0),0
 from desarrollo.cortes_c a

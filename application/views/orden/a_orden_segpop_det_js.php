@@ -65,6 +65,7 @@ $(document).ready(function() {
 
                 $("#costo").val($arr.costo);
                 $("#codigo").val($arr.codigo);
+                
 
             });
     }

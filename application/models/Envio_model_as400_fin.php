@@ -21,9 +21,10 @@ if($queryx->num_rows() > 0){//cia, suc, sem, aaaa, mes, lin, plaza, succ, import
     
     $File = "./txt/cosvta.txt";
     $Handle = fopen($File, 'w');
-
+$imp=0;
 foreach($queryx->result() as $rowx)  
 {
+  $imp= round(($rowx->importe*100),0);
     $Data=
          str_pad($rowx->cia,2,"0",STR_PAD_LEFT)
         .str_pad($rowx->suc,8,"0",STR_PAD_LEFT)
@@ -33,14 +34,15 @@ foreach($queryx->result() as $rowx)
         .str_pad($rowx->lin,5,"0",STR_PAD_LEFT)
         .str_pad($rowx->plaza,2,"0",STR_PAD_LEFT)
         .str_pad($rowx->succ,4,"0",STR_PAD_LEFT)
-        .str_pad(round($rowx->importe*100,2),11,"0",STR_PAD_LEFT)
+        .str_pad(number_format($imp, 0, '', ''),11,"0",STR_PAD_LEFT)
         ."\r\n";
     //echo $linea;
     fwrite($Handle, $Data);
+    
 }
 fclose($Handle); 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+$mensaje='Hola';
 $servidor_ftp    = '192.168.1.3';
 $ftp_nombre_usuario = "lidia";
 $ftp_contrasenya = "puepue19";

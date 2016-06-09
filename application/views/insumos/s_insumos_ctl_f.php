@@ -24,6 +24,7 @@
                                      <th>Dif</th>
                                      <th>Nivel Surtido</th>
                                      <th></th>
+                                     <th></th>
                                      
                                   </tr>
                              </thead>
@@ -31,6 +32,7 @@
                                 <?php  $color='blue';$num=1;$tot=0;$totc=0;$dif=0;
                                      foreach ($q1->result() as $r1) {
   $l1 = anchor('insumos/s_insumos_det_f/'.$r1->id_cc.'/'.$r1->suc,'Detalle</a>', array('title' => 'Haz Click aqui para Ver Detalle!', 'class' => 'encabezado'));
+  $l2 = anchor('insumos/s_insumos_det_f_excel/'.$r1->id_cc.'/'.$r1->suc, '<i class="icon-save"></i>Excel', array('class' => 'btn btn-success btn-app'));
                                         ?>
                                         <tr>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $num?></td>
@@ -43,6 +45,7 @@
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo number_format($r1->ped-$r1->sur,0)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo number_format($r1->nivel_sur,0)?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $l1?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $l2?></td>
                                         </tr>
                                         <?php $num=$num+1;
                                         $dif=$dif+($r1->ped-$r1->sur);
@@ -91,6 +94,7 @@
                                      <th>Dif</th>
                                      <th>Nivel Surtido</th>
                                      <th></th>
+                                     <th></th>
                                      
                                   </tr>
                              </thead>
@@ -98,7 +102,7 @@
                                 <?php  $color='blue';$num=1;$tot=0;$totc=0;$dif=0;
                                      foreach ($q2->result() as $r2) {
   $l1 = anchor('insumos/s_insumos_det_f/'.$r2->id_cc.'/'.$r2->suc,'Detalle</a>', array('title' => 'Haz Click aqui para Ver Detalle!', 'class' => 'encabezado'));
-                                          
+  $l2 = anchor('insumos/s_insumos_det_f_excel/'.$r2->id_cc.'/'.$r2->suc, '<i class="icon-save"></i>Excel', array('class' => 'btn btn-success btn-app'));                                        
                                         ?>
                                         <tr>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $num?></td>
@@ -111,6 +115,7 @@
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo number_format($r2->ped-$r2->sur,0)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo number_format($r2->nivel_sur,0)?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $l1?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $l2?></td>
                                         </tr>
                                         <?php $num=$num+1;
                                         $dif=$dif+($r2->ped-$r2->sur);
@@ -159,13 +164,14 @@
                                      <th>Dif</th>
                                      <th>Nivel Surtido</th>
                                      <th></th>
-                                     
+                                     <th></th>
                                   </tr>
                              </thead>
                              <tbody>
                                 <?php  $color='blue';$num=1;$tot=0;$totc=0;$dif=0;
                                      foreach ($q3->result() as $r3) {
   $l1 = anchor('insumos/s_insumos_det_f/'.$r3->id_cc.'/'.$r3->suc,'Detalle</a>', array('title' => 'Haz Click aqui para Ver Detalle!', 'class' => 'encabezado'));
+  $l2 = anchor('insumos/s_insumos_det_f_excel/'.$r3->id_cc.'/'.$r3->suc, '<i class="icon-save"></i>Excel', array('class' => 'btn btn-success btn-app'));
                                         ?>
                                         <tr>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $num?></td>
@@ -178,6 +184,7 @@
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo number_format($r3->ped-$r3->sur,0)?></td>
                                         <td style="text-align: right; color: <?php echo $color ?>"><?php echo number_format($r3->nivel_sur,0)?></td>
                                         <td style="text-align: left; color: <?php echo $color ?>"><?php echo $l1?></td>
+                                        <td style="text-align: left; color: <?php echo $color ?>"><?php echo $l2?></td>
                                         </tr>
                                         <?php $num=$num+1;
                                         $dif=$dif+($r3->ped-$r3->sur);

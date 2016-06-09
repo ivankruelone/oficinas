@@ -55,6 +55,7 @@
                           <li id="menu_ventas_s_depositos_diarios_bor"><?php echo anchor('ventas/s_depositos_diarios_bor', 'Borrar depositos diarios'); ?></li>
                           <li id="menu_ventas_s_ventas_comparativas_historicas_nac"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>  
                           <li id="menu_ventas_s_descuentos_mes"><?php echo anchor('ventas/s_descuentos_mes', 'Descuentos, Optimos y Ventas'); ?></li>
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/ticket_por_mes', 'Tickets por sucursal'); ?></li>
                       </ul>
                   </li>
                    <li class="sub-menu" id="menu_Inventarios">

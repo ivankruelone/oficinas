@@ -63,6 +63,18 @@ public function genericos_fenix()
         $q = $this->db->query($s);
         return $q;
     }
+    public function cat_fanasa_activos()
+    {
+        $s = "select codigo as CODIGO,descripcion as DESCRIPCION
+From catalogo.cat_fanasa, catalogo.sucursal b
+where
+tipo3='FE' and fecha_modificado>=date(now()) and rel1>0  or
+tipo3='FE' and fecha_modificado>=date(now()) and rel2>0
+group by codigo
+";
+        $q = $this->db->query($s);
+        return $q;
+    }
     public function metro1()
     {
         $s = "SELECT SEC,CLAVES,TSEC,CODIGO,SUSA1,SUSA2,PRV,PRVX,COSTO,PUBLICO,SIM,VTAGEN,VTADDR,LIN,SUBLIN,PERSONA
@@ -2429,7 +2441,7 @@ where i.id = ?;";
 
     public function cat_bloq_cod($data,$code){
 
-   $s = "select rel1,rel2 from catalogo.cat_fanasa where codigo= $code";
+        $s = "select rel1,rel2 from catalogo.cat_fanasa where codigo= $code";
         $q = $this->db->query($s);
         
         foreach ($q->result() as $r) {
@@ -2491,7 +2503,7 @@ where i.id = ?;";
 
       }
 
-      public function busca_suc_bloq($id_plaza)
+    public function busca_suc_bloq($id_plaza)
       {
         $sql = "select suc,nombre from catalogo.sucursal where tipo3='FE' and tlid=1 and superv=$id_plaza";
         $query = $this->db->query($sql);
@@ -2512,44 +2524,45 @@ where i.id = ?;";
         $query2 = $this->db->query($sql);        
          if($query2->num_rows() == 0){
             $tabla = 0;
-         }else{
-        $tabla = "<option value=\"-\">Seleccione un producto</option>";
-        foreach($query2->result() as $row){
-             $tabla.="<option value =\"".$row->codigo."\">".$row->codigo." - ".$row->descripcion."</option>
-            ";
-         } 
+             }else{
+               $tabla = "<option value=\"-\">Seleccione un producto</option>";
+             foreach($query2->result() as $row){
+              $tabla.="<option value =\"".$row->codigo."\">".$row->codigo." - ".$row->descripcion."</option>
+              ";
+             } 
         }  
         return $tabla;  
-     }
+    }
      
-     function busca_bloq_cla($cla,$prv){
+    function busca_bloq_cla($cla,$prv){
         $sql = " SELECT id as id_cat,claves,codigo,susa1,susa2,costo,prv 
-        FROM catalogo.segpop where 
-        claves = '$cla' and prv=$prv and tip<>'X' or
-        susa1 like '%$cla%' and prv=$prv and tip<>'X'
-        ";
-        $query = $this->db->query($sql); 
-         if($query->num_rows() == 0){
-            $tabla = 0;
-         }else{
-        $tabla = "<option value=\" \">Seleccione una producto</option>";
-        foreach($query->result() as $row){
-             $tabla.="<option value =\"".$row->id_cat."\">".$row->claves."-".$row->codigo."-".$row->susa1."-".$row->susa2."-".$row->costo."</option>
-            ";
-         } 
-        }  
-        return $tabla;  
-     }
+                    FROM catalogo.segpop 
+                        where claves = '$cla' and prv=$prv and tip<>'X' or susa1 like '%$cla%' and prv=$prv and tip<>'X'";
+        
+            $query = $this->db->query($sql); 
+                
+                if($query->num_rows() == 0){
+                        $tabla = 0;
+                }else{
+                      $tabla = "<option value=\" \">Seleccione una producto</option>";
+                      foreach($query->result() as $row){
+                      $tabla.="<option value =\"".$row->id_cat."\">".$row->claves."-".$row->codigo."-".$row->susa1."-".$row->susa2."-".$row->costo."-".$row->cos1."-".$row->cos2."</option>
+                        ";
+                     } 
+                }  
+             return $tabla;  
+    }
     
      function busca_id_cat($id_cat,$id_orden)
      {
-        $sql = "select claves, susa1, susa2, a.prv,  costo,  codigo,
+        $sql = "select claves, susa1, susa2, a.prv,    
 case
 when embarca=12000 and cos1>0 then cos1
 when embarca=19000 and cos2>0 then cos2
 when embarca=12000 and cos1=0 then costo
 when embarca=19000 and cos2=0 then costo
-else costo end
+else costo end as costo,
+codigo
  from catalogo.segpop a,compras.orden_c b where b.id_orden=? and a.id = ?;";
 
         $query = $this->db->query($sql, array($id_orden,$id_cat));
@@ -2625,17 +2638,59 @@ function busco_cod_fanasa($cod){
      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
      
      ////////////////// Catalogo_modelo////////////////
-function busca_mes_unico($mes)
-    {
-     $sql = "SELECT  mes FROM  catalogo.mes where num = ?";
-    $query = $this->db->query($sql,array($mes));
-    $row= $query->row();
-    $mesx=$row->mes;
-     return $mesx; 
-}
+        function busca_mes_unico($mes)
+            {
+             $sql = "SELECT  mes FROM  catalogo.mes where num = ?";
+            $query = $this->db->query($sql,array($mes));
+            $row= $query->row();
+            $mesx=$row->mes;
+             return $mesx; 
+        }
    
 
+     /************************Maximo sucursal*************************/
 
+        function ins_max_suc($sec, $can){
+
+           $sql = "select b.sec,  a.suc, b.susa , 0,0,0,0 , case when b.sec = $sec then $can end as final,0,0,0,0,0,0,0,0
+                      from catalogo.sucursal a, catalogo.cat_almacen_clasifica b
+                       where a.tlid = 1 and a.tipo3='da' and b.sec = $sec and
+                         (select x.suc from almacen.max_sucursal x where x.suc=a.suc and x.sec=b.sec) is null";
+
+            $q = $this->db->query($sql); 
+                if($q->num_rows() == 0){
+                   
+                   return null;   //retorna un valor nulo para disparar el mensaje de aviso
+
+                }else{       
+
+                    foreach ($q->result() as $r) {
+
+                        $datos =array(
+                        'sec'=>$r->sec,
+                        'suc'=>$r->suc,
+                        'susa'=>$r->susa,
+                        'm2011'=>0,
+                        'm2012'=>0,
+                        'm2013'=>0,
+                        'm2014'=>0,
+                        'final'=>$r->final,
+                        'paquete'=>0,
+                        'obser'=>0,
+                        'correcto'=>0,
+                        'costo'=>0,
+                        'uno'=>0,
+                        'dos'=>0,
+                        'tres'=>0,
+                        'cuatro'=>0 );
+                           
+
+                        $this->db->insert('almacen.max_sucursal',$datos);
+                 
+                        return $q;
+                    }
+                }
+        }
 
 
 

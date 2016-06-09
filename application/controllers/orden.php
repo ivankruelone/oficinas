@@ -105,7 +105,6 @@ class Orden extends CI_Controller
             $r->aaa;
         $data['titulo1'] = "Folio " . $r->folprv;
         $data['folprv'] = $r->folprv;
-        $data['consigna'] =$this->catalogos_model->busca_consigna($r->consigna);
         $data['edo'] = $r->edo;
         $data['id_orden'] = $id_orden;
         $data['base'] = $r->base;
@@ -126,7 +125,7 @@ class Orden extends CI_Controller
         $a = $this->orden_model->update_orden_cambia_ctl($this->input->post('id_orden'),
             $this->input->post('prv'), $this->input->post('cia'), $this->input->post('id_estado'),
             $this->input->post('fecha'), $this->input->post('folprv'), $this->input->post('edo'),
-            $this->input->post('base'), $this->input->post('licitacion'), $this->input->post('consigna'));
+            $this->input->post('base'), $this->input->post('licitacion'));
         redirect('orden/s_orden_cambia/' . substr($this->input->post('fecha'), 0, 4) .
             '/' . substr($this->input->post('fecha'), 5, 2));
     }
@@ -556,7 +555,7 @@ class Orden extends CI_Controller
                     'recibe'=>$recibe,
                     'fecha_envio' => '0000-00-00',
                     'fecha_limite' => '0000-00-00',
-                    'base'=>2,
+                    'base'=>5,
                     'tipo'=> 0);
                 $this->db->insert('compras.orden_c', $data);
                 
@@ -959,8 +958,23 @@ class Orden extends CI_Controller
         $id_orden = $this->input->post('id_orden');
         echo $this->catalogos_model->busca_id_cat_especialidad($id_cat,$id_orden);
     }
+    function a_orden_mes_glo()
+    {
 
+        $data['titulo'] = "Historico de orden de compra";
+        $data['a'] = $this->orden_model->order_mes();
+        $data['js'] = 'orden/s_orden_cambia_js';
+        $this->load->view('main', $data);
+    }  
+    function a_orden_mes_glo_det($aaa, $mes)
+    {
 
+        $data['titulo'] = "Historico de orden de compra del mes de " . $mes . " del " .
+            $aaa;
+        $data['a'] = $this->orden_model->order_cambia($aaa, $mes);
+        $data['js'] = 'orden/s_orden_cambia_js';
+        $this->load->view('main', $data);
+    }
 
 
 }

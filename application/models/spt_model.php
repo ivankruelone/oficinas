@@ -519,16 +519,19 @@ order by suc, nomina
 
     function medicos_nov15()
     {
-        $sql = "select * from vtadc.venta_medico_global;";
+        $sql = "SELECT group_concat(periodo) as periodo,group_concat(periodoStatus) as periodoStatus, fecha1, fecha2, sum(consultas) as consultas, sum(recetasSurtidas) as recetasSurtidas, sum(importe) as importe, sum(costo) as costo, sum(impDoctor) as impDoctor, sum(impFundacion) as impFundacion, sum(recaudado) as recaudado, extract(year from fecha1) as anio, extract(month from fecha1) as mes
+                FROM vtadc.venta_medico_global v group by anio, mes;";//"select * from vtadc.venta_medico_global;";
 
         $query = $this->db->query($sql);
         
         return $query;
     }
     
-    function detalle_medicos_nov15($periodo)
+    function detalle_medicos_nov15($anio,$mes)//$periodo
     {
-        $sql = "select * from vtadc.venta_medico_final v where periodo = $periodo;";
+        $sql = "select * from vtadc.venta_medico_final v
+                where periodo in(select periodo from vtadc.venta_medico_global 
+                where extract(year from fecha1) = 2015 and extract(month from fecha1) = 11)";//"select * from vtadc.venta_medico_final v where periodo = $periodo;";
 
         $query = $this->db->query($sql);
         

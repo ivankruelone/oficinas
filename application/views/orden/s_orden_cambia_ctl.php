@@ -36,10 +36,7 @@
 	<td align="left" ><font size="+1"><strong>Licitacion: </strong></font></td>
 	<td align="left"><?php echo form_dropdown('licitacion', $licitacion, '', 'id="licitacion"') ;?> </td>
  </tr>
- </tr>
-    <td align="left" ><font size="+1"><strong>Domicilio: </strong></font></td>
-	<td align="left"><?php echo form_dropdown('consigna', $consigna, '', 'id="consigna"') ;?> </td>
-</tr>
+ 
  <tr>
     <td align="left" ><font size="+1"><strong>Cia: </strong></font></td>
 	<td align="left"><?php echo form_dropdown('cia', $cia, '', 'id="cia"') ;?> </td>

@@ -31,6 +31,7 @@
                       </a>
                       <ul class="sub">
                           <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/s_ventas_captura_nac', 'Ventas Capturadas_diarias'); ?></li>
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/ticket_por_mes', 'Tickets por sucursal'); ?></li>
                       </ul>
                   </li>
                  <li class="sub-menu" id="menu_finanzas">

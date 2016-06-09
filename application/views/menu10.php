@@ -21,6 +21,8 @@
                           <li id="menu_tarjetas"><?php echo anchor('tarjetas/tarjetas_historicas', 'Tarjetas historicas'); ?></li>  
                           <li id="menu_tarjetas_concentrado"><?php echo anchor('ventas/ventas_tcp_mes', 'Relacion TCP Excel'); ?></li>
                           <li id="menu_tarjetas_empleado"><?php echo anchor('ventas/ventas_tarjetas_mes', 'Tarjetas x Empleado'); ?></li>
+                          
+                          
                       </ul>
                   </li>
                   <li class="sub-menu" id="menu_ventas">
@@ -62,7 +64,7 @@
                           <li id="menu_salud_ejercicio"><?php echo anchor('spt/ejercicio', 'Ejercicio Medico'); ?></li>
                           <li id="menu_salud_codigo"><?php echo anchor('spt/codigo', 'Codigo de Vestir'); ?></li>
                           <li id="menu_salud_consultas_dia"><?php echo anchor('spt/consultas_dia', 'Consultas y Servicios'); ?></li>
-                          <li id="menu_reportes"><?php echo anchor('spt/reporte_med_nov15', 'Reporte Medicos Noviembre 2015'); ?></li>
+                          <li id="menu_reportes"><?php echo anchor('spt/reporte_med_nov15', 'Reporte Mensual M&eacute;dicos'); ?></li>
                           <li id="menu_saluds_ventas_comparativas_historicas_nac"><?php echo anchor('ventas/s_ventas_comparativas_historicas_nac', 'Meta'); ?></li>
                       </ul>
                   </li>

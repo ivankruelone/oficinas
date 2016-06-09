@@ -28,7 +28,7 @@
                           <li id="menu_catalogos_mod_generico"><?php echo anchor('catalogos/mod_generico', 'Sec Cedis'); ?></li>
                           <li id="menu_catalogos_seguro_popular"><?php echo anchor('catalogos/seguro_popular', 'Seguros Populares'); ?></li>
                           <li id="menu_catalogos_especialidad"><?php echo anchor('catalogos/especialidad', 'Especialidad'); ?></li>
-                            
+                          <li id="menu_max_sucursal"><?php echo anchor('catalogos/max_sucursal', 'Maximo Sucursal'); ?></li>
 
 
 

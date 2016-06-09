@@ -192,6 +192,14 @@ class Insumos extends CI_Controller
         $this->load->view('main', $data);
     }
     
+     function s_insumos_det_f_excel($id,$suc)
+    {
+        $data['id'] = $id;
+        $data['suc'] = $suc;
+        $this->load->view('excel/s_insumos_det_excel2', $data);
+    }
+    
+    
       
     function s_insumos_ctl_his_f_sec($id_comprar)
     {
@@ -1434,4 +1442,3 @@ function s_inv_insumos_medicos_det($suc)
      
 
 }
-?>

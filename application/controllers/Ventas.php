@@ -1074,7 +1074,15 @@ $a1="<strong>SUCURSALES</strong>";
         $this->load->view('excel/ventas_tipo_excel', $data);
     }
     
-    
+    function ticket_por_mes()
+    {
+        $this->load->dbutil();
+        $this->load->helper('download');
+        $a = $this->Ventas_model->ticket_mes_suc();
+        $csv = $this->dbutil->csv_from_result($a);
+        $name = 'Tickets_'.date('Ymd_His').'.csv';
+        force_download($name, $csv);
+    }
 //////VER Y BORRAR
 //////VER Y BORRAR
 //////VER Y BORRAR

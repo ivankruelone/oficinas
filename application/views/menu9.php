@@ -23,6 +23,7 @@
                           <li id="menu_orden"><?php echo anchor('orden/a_orden_segpop_his_esp', 'Historico de Orden'); ?></li>
                           <li id="menu_orden"><?php echo anchor('orden/a_orden_segpop_his_global', 'Historico de Orden Global'); ?></li>
                           <li id="menu_orden"><?php echo anchor('orden/a_orden_segpop_nivel_s_prv', 'Nivel de surtido por Proveedor'); ?></li>
+                          <li id="menu_orden"><?php echo anchor('orden/a_orden_mes_glo', 'Orden de Compra Mensual General'); ?></li>
                       </ul>
                   </li>                  
                   

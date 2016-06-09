@@ -1,4 +1,4 @@
-                 <div class="span12">
+ <div class="span12">
                      <!-- BEGIN BLANK PAGE PORTLET-->
                      <div class="widget blue">
                          <div class="widget-title">
@@ -19,7 +19,7 @@ $atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
               'maxlength'   => '40',
               'size'        => '40'
             );
-	$atributos = array('id' => 's_orden_especial_det_agrega');
+  $atributos = array('id' => 's_orden_especial_det_agrega');
     echo form_open('orden/s_orden_especial_det_agrega', $atributos);
     $data_cod = array(
               'name'        => 'cod',
@@ -53,43 +53,43 @@ $atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
  <div>
  <table>
  <tr>
-	<td align="left" ><font size="+1">Facturas...: </font></td>
-	<td><?php echo form_input($data_fac, "", 'required');?><span id="mensaje"></span></td>
+  <td align="left" ><font size="+1">Facturas...: </font></td>
+  <td><?php echo form_input($data_fac, "", 'required');?><span id="mensaje"></span></td>
     <td colspan="2" align="center"><?php echo form_submit('envio', 'Agregar Facturas');?></td>
 </tr>
  </table>
 <input type="hidden" value="<?php echo $id_orden?>" name="id_orden" id="id_orden" />
 <input type="hidden" value="<?php echo $prv?>" name="prv" id="prv" />
   <?php
-	echo form_close();
+  echo form_close();
   ?>
   </div>
   
   <table>
 <tr>
 <tr>
-	<td align="left" ><font size="+1">Codigo: </font></td>
-	<td><?php echo form_input($data_cod, "", 'required');?><span id="mensaje"></span></td>
+  <td align="left" ><font size="+1">Codigo: </font></td>
+  <td><?php echo form_input($data_cod, "", 'required');?><span id="mensaje"></span></td>
 </tr>
 <tr>
-	<td align="left" ><font size="+1">Cantidad: </font></td>
-	<td><?php echo form_input($data_can, "", 'required');?></td>
+  <td align="left" ><font size="+1">Cantidad: </font></td>
+  <td><?php echo form_input($data_can, "", 'required');?></td>
 </tr>
 <tr>
-	<td align="left" ><font size="+1">Descuento: </font></td>
-	<td><?php echo form_input($data_des, "", 'required');?></td>
+  <td align="left" ><font size="+1">Descuento: </font></td>
+  <td><?php echo form_input($data_des, "", 'required');?></td>
 </tr>
 <tr>
-	<td align="left" ><font size="+1">Costo: </font></td>
-	<td><?php echo form_input($data_cos, "", 'required');?></td>
+  <td align="left" ><font size="+1">Costo: </font></td>
+  <td><?php echo form_input($data_cos, "", 'required');?></td>
 </tr>
-	<td colspan="2" align="center"><?php echo form_submit('envio', 'aceptar');?></td>
+  <td colspan="2" align="center"><?php echo form_submit('envio', 'aceptar');?></td>
 </tr>
 </table>
 <input type="hidden" value="<?php echo $id_orden?>" name="id_orden" id="id_orden" />
 <input type="hidden" value="<?php echo $prv?>" name="prv" id="prv" />
   <?php
-	echo form_close();
+  echo form_close();
   ?>
 <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>

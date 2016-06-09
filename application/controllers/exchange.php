@@ -472,6 +472,16 @@ class Exchange extends REST_Controller
         $this->response(array('status' => 'ok'));
     }
 
+    function traspaso_post()
+    {
+        $json = $this->post('json');
+        $arr = json_decode($json);
+        
+        $this->exchange_model->actualizaAplicadasTraspaso($arr);
+        
+        $this->response(array('status' => 'ok'));
+    }
+
     function catAhorro_get()
     {
 
@@ -564,6 +574,26 @@ class Exchange extends REST_Controller
         }
 
         $data = $this->exchange_model->getTransitoByClvsucursal( $this->get('clvsucursal') );
+        
+        if($data)
+        {
+            $this->response($data, 200); // 200 being the HTTP response code
+        }
+
+        else
+        {
+            $this->response(array('error' => 'No data'), 404);
+        }
+    } 
+
+    function traspasos_validados_get()
+    {
+        if(!$this->get('clvsucursal'))
+        {
+            $this->response(NULL, 400);
+        }
+
+        $data = $this->exchange_model->getTraspasosValidadosByClvsucursal( $this->get('clvsucursal') );
         
         if($data)
         {

@@ -352,7 +352,7 @@ left join desarrollo.inv b on b.suc=a.suc and mov=07
 where a.tlid=1 and a.dia='$dia' and
 (select count(*) from catalogo.folio_pedidos_cedis where fechas=date(now()) and suc=a.suc and tid<>'X')=0
 and 
-(select sum(cantidad) from desarrollo.inv xx where  xx.suc=a.suc and fechai>=subdate(date(now()),2))>0
+(select sum(cantidad) from desarrollo.inv xx where xx.mov=7 and xx.suc=a.suc and fechai>=subdate(date(now()),2))>0
 
 group by a.suc order by pedido";
         $q1=$this->db->query($x1);
@@ -384,13 +384,8 @@ group by a.suc order by pedido";
         $b = substr($b, 0, -1) . ";";
      $this->db->query($b);
 ///////////////////////////////////////////////////////////////////////////////// pedido que remplace los datos.
-$ff=date('Ymd');
-if($ff<201407226){
-$adicional="update desarrollo.pedido_formulado a,borrar.suc_esp b
-set a.ped=b.cantidad
-where a.suc=b.suc and a.sec=b.clave and a.suc=$suc";
-$this->db->query($adicional);
-}
+
+
 
 $adicional="update desarrollo.pedido_formulado xx
 set xx.ped=((select
@@ -418,6 +413,7 @@ set a.ped=(round((ped/b.can))*b.can)
 where a.sec=b.sec and ped>0";
 $this->db->query($adicional1);
 
+//die();
 /////////////////////////////////////////////////////////////////////////////////
 
 $sx8="insert into catalogo.folio_pedidos_cedis (suc, fechas, tid, fechasur, id_user, id_captura, id_surtido, id_empaque)

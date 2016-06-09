@@ -35,6 +35,7 @@
               'maxlength'   => '255',
               'disabled'     => 'disabled'
             );
+    
     $data_cod = array(
               'name'        => 'codigo',
               'id'          => 'codigo',

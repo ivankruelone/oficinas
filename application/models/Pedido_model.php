@@ -731,7 +731,7 @@ function val_pedido_ins($id_plaza)
 FROM papeleria.insumos_c a
 join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
 join catalogo.sucursal c on c.suc=a.suc  and superv=$id_plaza
-where tipo=0 and stat_sup='B'";
+where tipo=0 and stat_sup='B' and a.id not in(select id_cc from papeleria.pedido_extra)";
 $q=$this->db->query($s);
 return $q;
 }
@@ -742,7 +742,7 @@ function val_pedido_no_terminados($id_plaza)
 FROM papeleria.insumos_c a
 join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
 join catalogo.sucursal c on c.suc=a.suc  and superv=$id_plaza
-where tipo=0";
+where tipo=0 and a.id not in(select id_cc from papeleria.pedido_extra)";
 $q=$this->db->query($s);
 return $q;
 }
@@ -860,6 +860,18 @@ return $q;
 
 /*****************************Pedidos especial FANASA**************************************/
 
+   function busca_registros_pedido($suc)
+   {
+    if($suc<>100){
+    $s="select *from compras.pre_pedido_fenix where suc=$suc and fecha=date(now())";
+    $q=$this->db->query($s);
+    $num=$q->num_rows();
+    if($num<20){$var=1;}else{$var=0;}
+    }else{
+        $var=1;
+    }
+    return $var;
+   }
    function busca_sucursal_feni($id_plaza)
     {
 
@@ -878,7 +890,7 @@ return $q;
    function ins_pre_pedido($data,$code){
 
         $s = "SELECT * FROM catalogo.cat_fanasa 
-             WHERE Date_format(fecha_modificado,'%Y-%m-%d')=curdate() and codigo=$code";
+             WHERE Date_format(fecha_modificado,'%Y-%m-%d')=curdate() and codigo=$code ";
 
         $q = $this->db->query($s);
 
@@ -963,7 +975,7 @@ return $q;
 
      function bus_cod_fanas($codigo){
 
-        $sql = " SELECT codigo,descripcion FROM catalogo.cat_fanasa where codigo = $codigo order by codigo; ";
+        $sql = " SELECT codigo,descripcion FROM catalogo.cat_fanasa where codigo = $codigo and fecha_modificado>=(date(now())) order by codigo; ";
         $query2 = $this->db->query($sql);        
          if($query2->num_rows() == 0){
             $des_resp = "<font color='orange'>El codigo que usted ingreso no esta disponible </font>";
@@ -1000,7 +1012,7 @@ return $q;
          $s = "select a.fecha,a.suc,b.nombre,b.superv,c.nombre as nom_sup, a.activo,sum(case when d.iva>0 then ((piezas*costo)*(b.iva+1)) else (piezas*costo) end)as imp,
                 sum(piezas)as piezas, count(*) as registros
                  from compras.pre_pedido_fenix a,catalogo.sucursal b , compras.usuarios c,catalogo.cat_fanasa d
-                    where a.cod=d.codigo and a.suc=b.suc and b.superv=c.id_plaza and a.activo =1 and a.fecha=curdate()
+                    where a.cod=d.codigo and a.suc=b.suc and b.superv=c.id_plaza and c.nivel=13 and a.activo =1 and a.fecha=curdate()
                       group by fecha,suc";
             $q = $this->db->query($s);
         return $q;
@@ -1099,6 +1111,68 @@ return $q;
 
 
 
+        //////////////////////////CANCELAR PEDIDO ALMACEN/////////////////////////////
+
+
+    function can_pedido_almacen(){
+        $s = "SELECT a.*,d.nombre as sucx,d.dia,case when b.mue=6 then 'Mueble 6' else 'Mueble 5' end as mueble,sum(b.ped) as ped,b.fechas as trasmitio
+          FROM catalogo.folio_pedidos_cedis a
+          left join desarrollo.pedidos b on b.fol=a.id
+          left join catalogo.sucursal d on d.suc=a.suc
+          where a.fechas= curdate() and (tid='A' or tid='C')
+          group by a.id
+          order by a.id ";
+            $q = $this->db->query($s);
+            return $q;
+    }
+
+
+    function delete_pedido_alm($fol,$suc){
+        $sql = "SELECT * FROM pedidos where fol = ? ";
+        $query = $this->db->query($sql,array($fol));
+        foreach($query->result() as $row)
+        {
+
+     $new_member_insert_data = array(
+        'suc'=>$row->suc, 
+        'fecha'=>$row->fecha, 
+        'sec'=>$row->sec, 
+        'can'=>$row->can, 
+        'fechas'=>$row->fechas, 
+        'id'=>$row->id, 
+        'tipo'=>$row->tipo, 
+        'mue'=>$row->mue, 
+        'susa'=>$row->susa, 
+        'ped'=>$row->ped, 
+        'fol'=>$row->fol, 
+        'bloque'=>$row->bloque, 
+        'tsuc'=>$row->tsuc
+        );
+        $insert = $this->db->insert('desarrollo.pedidos_borrados', $new_member_insert_data);
+        }
+
+         $data = array(
+            'tid'    =>'X'
+        );
+        $this->db->where('id', $fol);
+        $this->db->update('catalogo.folio_pedidos_cedis', $data);
+
+           $datam = array(
+            'tid'    =>'X'
+        );
+        $this->db->where('id', $fol);
+        $this->db->update('catalogo.folio_pedidos_cedis_especial', $datam);
+        
+        
+        $s="delete *from desarrollo.pedido_formulado";
+        $this->query($s);
+        
+        
+        $s1="delete *from formulados.pedido_formulado_resp15 where fecg=date(now()) and suc=$suc";
+        $this->query($s1);
+
+
+    }
 
 
 

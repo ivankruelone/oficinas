@@ -527,5 +527,13 @@ class Inventario extends CI_Controller
             $data['js'] = 'inventario/a_inv_segpop_mat_js';
             $this->load->view('main', $data);  
     }
+    function a_inv_segpop_esp()
+    
+    {
+            $data['titulo'] = "Inventario de Material de curacion";
+            $data['a'] = $this->inventario_model->inv_segpop_almacenes(0);
+            $data['js'] = 'inventario/a_inv_segpop_mat_js';
+            $this->load->view('main', $data);  
+    }
 
 }

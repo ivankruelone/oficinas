@@ -60,6 +60,7 @@
                           <li id="menu_procesos_yucif_procesos_s_zip_gral"><?php echo anchor('procesos/s_zip_gral', 'INV,CORTES,VENTAS YUCIF'); ?></li>
                           <li id="menu_procesos_yucif_tabla_pedidos_formulados"><?php echo anchor('procesos/tabla_pedidos_formulados', 'Pedidos Formulados'); ?></li>
                           <li id="menu_procesos_envio_gral"><?php echo anchor('procesos/s_envio_gral', 'Envio informacion'); ?></li>
+                          <li id="menu_procesos_envio_gral"><?php echo anchor('pedido/can_pedido_alm', 'Pedidos Almacen'); ?></li>
                           <li id="menu_procesos_yucif_tabla_pedidos_formulados"><?php echo anchor('procesos/tabla_pedidos_formulados_especiales', 'Pedidos Formulados ESPECIAlES'); ?></li>
                           
                       </ul>

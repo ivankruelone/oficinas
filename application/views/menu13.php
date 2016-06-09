@@ -13,6 +13,7 @@
                           <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/genericos_fenix', 'Catalogo de genericos para fenix'); ?></li>
                           <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/cat_cambio_precio', 'Cambio de precios'); ?></li>
                           <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/cat_bloq_codigo', 'Codigo Bloqueado Fenix'); ?></li>
+                          <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/a_cat_fanasa_activos', 'Catalogo de FANASA'); ?></li>
                       </ul>
                   </li>
                   
@@ -37,6 +38,7 @@
                       <ul class="sub">
                           <li id="menu_ventas_s_ventas_comparativas_historicas_nac"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>  
                           <li id="menu_ventas_s_descuentos_mes"><?php echo anchor('ventas/s_descuentos_mes', 'Descuentos, Optimos y Ventas'); ?></li>
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/ticket_por_mes', 'Tickets por sucursal'); ?></li>
                       </ul>
                   </li>
                   <li class="sub-menu" id="menu_recursos_humanos">
@@ -58,8 +60,8 @@
                       </a>
                       <ul class="sub">
                           <li id="menu_insumos"><?php echo anchor('pedido/s_val_pedido_ins', 'Pedido de insumos Validacion Sucursal'); ?></li>
-                          <li id="menu_insumos"><?php echo anchor('insumos/s_esp_insumos_sup', 'Pedidos Especiales General'); ?></li> 
-                          <li id="menu_insumos"><?php echo anchor('pedido/c_ped_esp_fanasa', 'Pedido Especial Fenix'); ?></li> 
+                          <li id="menu_insumos"><?php echo anchor('insumos/s_esp_insumos_sup', 'Pedidos Especiales General Insumos'); ?></li> 
+                          <li id="menu_insumos"><?php echo anchor('pedido/c_ped_esp_fanasa', 'Pedido Especial Fenix Patente'); ?></li> 
                           <li id="menu_insumos"><?php echo anchor('pedido/s_val_pedido_ins_his', 'Historico de pedido de insumos '); ?></li>
                           <li id="menu_insumos"><?php echo anchor('pedido/s_val_pedido_ins_his_glo', 'Folios de pedidos globales'); ?></li>
                           

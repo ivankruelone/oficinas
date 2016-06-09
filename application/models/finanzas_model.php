@@ -290,7 +290,7 @@ function objetivo_mes($tipo3,$var,$aaa,$mes,$aaa_a,$mes_a,$aaa_a2,$mes_a2)
 {
     $s="select aa.suc,
 ((sum(aa.costo_venta+aa.renta+aa.nomina+aa.isr_nomina+aa.insumos+aa.agua+aa.luz+aa.tel+aa.otros+
-(select por_suc from finanzas.gasto_oficinas_suc xx where xx.aaa=$aaa and xx.mes=$mes)))*1.4)objetivo_100,
+(select por_suc from finanzas.gasto_oficinas_suc xx where xx.aaa=$aaa and xx.mes=$aaa)))*1.4)objetivo_100,
 
 (((sum(aa.costo_venta+aa.renta+aa.nomina+aa.isr_nomina+aa.insumos+aa.agua+aa.luz+aa.tel+aa.otros+
 (select por_suc from finanzas.gasto_oficinas_suc xx where xx.aaa=$aaa and xx.mes=$mes)))*1.4)*
@@ -299,7 +299,6 @@ ifnull((SELECT ((sum(abasto)/count(*))/100)
 FROM oficinas.nivel_surtido_suc x, catalogo.sucursal z
 where $var abasto>0 and x.suc=z.suc and x.suc=aa.suc and year(x.fecha)=$aaa and month(x.fecha)=$mes
 group by month(fecha),superv),1))as objetivo_mes
-
 
  FROM oficinas.pianel_sucursal aa
 join catalogo.sucursal b on b.suc=aa.suc
@@ -705,19 +704,34 @@ sum(aa.costo_venta+aa.renta+aa.nomina+aa.isr_nomina+aa.insumos+aa.agua+aa.luz+aa
  FROM oficinas.pianel_sucursal aa
 join catalogo.sucursal bb on bb.suc=aa.suc
 where $var aa.suc=a.suc and
-aa.aaa=$aaa_a2 and aa.mes=$mes_a2 and aa.tipo3='$tipo' and year(fecha_act) in(0000,$aaa) and month (fecha_act) in(0,$mes))as punto_equilibrio,
+aa.aaa=$aaa_a2 and aa.mes=$mes_a2 and aa.tipo3='$tipo' 
+and year(fecha_act) in(0000,$aaa) and month (fecha_act) in(0,$mes))as punto_equilibrio,
 
-(select
-((sum(aa.costo_venta+aa.renta+aa.nomina+aa.isr_nomina+aa.insumos+aa.agua+aa.luz+aa.tel+aa.otros+
+(select ((sum(aa.costo_venta+aa.renta+aa.nomina+aa.isr_nomina+aa.insumos+aa.agua+aa.luz+aa.tel+aa.otros+
+(select por_suc from finanzas.gasto_oficinas_suc xx where xx.aaa=$aaa and xx.mes=$mes)))*1.4)
+
+FROM oficinas.pianel_sucursal aa
+join catalogo.sucursal b on b.suc=aa.suc
+where $var aa.suc=a.suc and aa.aaa=$aaa_a2 and aa.mes=$mes_a2 and aa.tipo3='$tipo'
+and year(fecha_act) in(0000,$aaa) and month (fecha_act) in(0,$mes)) as objetivo_mes,
+
+
+(select ((sum(aa.costo_venta+aa.renta+aa.nomina+aa.isr_nomina+aa.insumos+aa.agua+aa.luz+aa.tel+aa.otros+
 (select por_suc from finanzas.gasto_oficinas_suc xx where xx.aaa=$aaa and xx.mes=$mes)))*1.4)*
-(SELECT (round(avg(abasto),5)/100) FROM oficinas.nivel_surtido_suc x
+(SELECT (round(avg(abasto),5)/100)
+FROM oficinas.nivel_surtido_suc x
 where abasto>0 and year(x.fecha)=$aaa and month(x.fecha)=$mes and x.suc=a.suc
 group by month(fecha))
- FROM oficinas.pianel_sucursal aa
-join catalogo.sucursal b on b.suc=aa.suc
-where $var
-aa.suc=a.suc and aa.aaa=$aaa_a2 and aa.mes=$mes_a2 and aa.tipo3='$tipo' and year(fecha_act) in(0000,$aaa) and month (fecha_act) in(0,$mes)) as objetivo_mes,
 
+FROM oficinas.pianel_sucursal aa
+join catalogo.sucursal b on b.suc=aa.suc
+where $var aa.suc=a.suc and aa.aaa=$aaa_a2 and aa.mes=$mes_a2 and aa.tipo3='$tipo'
+and year(fecha_act) in(0000,$aaa) and month (fecha_act) in(0,$mes)) as objetivo_mes_abasto,
+
+(SELECT (round(avg(abasto),5)/100)
+FROM oficinas.nivel_surtido_suc x
+where abasto>0 and year(x.fecha)=$aaa and month(x.fecha)=$mes and x.suc=a.suc
+group by month(fecha))as abasto_act,
 
 (select
 sum(((xa.costo_venta+xa.renta+xa.nomina+xa.isr_nomina+xa.insumos+xa.agua+xa.luz+xa.tel+xa.otros)*1.4)*
@@ -728,7 +742,8 @@ group by month(fecha)))
  FROM oficinas.pianel_sucursal xa
 join catalogo.sucursal b on b.suc=xa.suc
 where $var
-xa.suc=a.suc and xa.aaa=$aaa_a2 and xa.mes=$mes_a2 and  xa.tipo3='$tipo' and year(fecha_act) in(0000,$aaa) and month (fecha_act) in(0,$mes)) as objetivo_mes_sin_oficinas,
+xa.suc=a.suc and xa.aaa=$aaa_a2 and xa.mes=$mes_a2 and  xa.tipo3='$tipo' and year(fecha_act) in(0000,$aaa) 
+and month (fecha_act) in(0,$mes)) as objetivo_mes_sin_oficinas,
 
 (select dos from catalogo.mes x where x.num=month(a.fechacorte)) as dias_mes,
 day(subdate(date(now()),1))as dias_trans,
@@ -753,7 +768,7 @@ where $var year(fechacorte)=$aaa and month(fechacorte)=$mes and tipo3='$tipo' an
 group by month(fechacorte),a.suc
 order by dia_venta";
     $q=$this->db->query($s);
-    return $q;
+return $q;
 }
 
 function proyeccion_venta_detalle_suc($suc,$aaa,$mes)

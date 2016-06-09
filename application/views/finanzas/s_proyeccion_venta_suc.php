@@ -193,7 +193,8 @@
                                      <th style=" color:blue; text-align: center">PROMEDIO<br />DIARIO VENTA</th>
                                      
                                      <th style=" color:blue; text-align: center">PROYECCION<br />VENTA</th>
-                                     
+                                     <th style=" color:blue; text-align: center">OBJETIVO AL<br />100% ABASTO </th>
+                                     <th style=" color:blue; text-align: center">%<br />ABASTO</th>
                                      <th style=" color:blue; text-align: center">OBJETIVO</th>
                                      <th style=" color:blue; text-align: center">% ALCANCE DE<br />PROYECCION VENTA<br /> CONTRA OBJETIVO</th>
                                      <th style=" color:blue; text-align: center">PUNTO DE<br />EQUILIBRIO</th>
@@ -205,12 +206,12 @@
                                  <?php
                                 $color='blue';$colorc='green';
                                 $prom_dia=0;$proyeccion_vta=0;$alcance_obj=0;
-                                $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;$t8=0;
+                                $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;$t8=0;$t4_=0;
                                 foreach ($q4->result()as $r4){
                                 $l1=anchor('finanzas/s_proyeccion_venta_detalle_suc/'.$r4->suc.'/'.$aaa.'/'.$mes,'Det');
                                 $prom_dia=(($r4->venta)/($r4->dia_venta));
                                 $proyeccion_vta=$prom_dia*$r4->dias_mes;
-                                if($r4->objetivo_mes>0){$alcance_obj=($proyeccion_vta/($r4->objetivo_mes))*100;}else{$alcance_obj=0;}
+                                if($r4->objetivo_mes>0){$alcance_obj=($proyeccion_vta/($r4->objetivo_mes_abasto))*100;}else{$alcance_obj=0;}
                                 ?>
                                 <tr>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $l1?></td>
@@ -221,15 +222,18 @@
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo  number_format($prom_dia,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo  number_format($proyeccion_vta,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo  number_format($r4->objetivo_mes,2)?></td>
+                                <td style="color: <?php echo $color?>; text-align: right"><?php echo  '% '.number_format(($r4->abasto_act*100),2)?></td>
+                                <td style="color: <?php echo $color?>; text-align: right"><?php echo  number_format($r4->objetivo_mes_abasto,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo  '% '.number_format($alcance_obj,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo  number_format($r4->punto_equilibrio,2)?></td>
-                                <td></td>
+                                
                                 </tr>
                                <?php 
                                 $t1=$t1+$r4->venta;
                                 $t2=$t2+$prom_dia;
                                 $t3=$t3+$proyeccion_vta;
                                 $t4=$t4+$r4->objetivo_mes;
+                                $t4_=$t4_+$r4->objetivo_mes_abasto;
                                 $t5=$t5+$r4->punto_equilibrio;
                                 $t6=$t6+$r4->dia_venta;
                                 }
@@ -244,6 +248,8 @@
                               <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t2,2)?></strong></td>
                               <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t3,2)?></strong></td>
                               <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t4,2)?></strong></td>
+                              <td></td>
+                              <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t4_,2)?></strong></td>
                               <td></td>
                               <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t5,2)?></strong></td>
                               </tr>

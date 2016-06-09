@@ -373,13 +373,13 @@ where a.id_orden=$id_orden
         return $q;
     }
     function update_orden_cambia_ctl($id_orden, $prv, $cia, $id_estado, $fecha, $folprv,
-        $edo, $base, $licitacion,$consigna)
+        $edo, $base, $licitacion)
     {
 
         $usuario = $this->session->userdata('id');
         if ($base == 1) {
             $an1 = " update almacen.compraped a,compras.numero_de_licitaciones c 
-set prv=$prv,tipo=c.edo,a.consigna=$consigna,
+set prv=$prv,tipo=c.edo,
 aaae=substr('$fecha',1,4),mese=substr('$fecha',6,2),diae=substr('$fecha',9,2),
 aaap=substr('$fecha',1,4),mesp=substr('$fecha',6,2),diap=substr('$fecha',9,2)
 where c.id=$id_estado and  folprv=$folprv and tipo='$edo'";
@@ -396,8 +396,10 @@ where c.id=$id_estado and a.id=b.id_cc and a.folprv=$folprv";
 (select id_orden, id_estado, prv, fecha_captura, fecha_envio, fecha_limite, tipo, id_responsable, id_captura, folprv, cia, $usuario, CURRENT_TIMESTAMP(),base,'$licitacion'
 from compras.orden_c where id_orden=$id_orden)";
         $this->db->query($s1);
-        $s2 = "update compras.orden_c set consigna=$consigna,
-prv=$prv,cia=$cia,id_estado=$id_estado,fecha_envio='$fecha',fecha_limite=date_add('$fecha',interval 20 day),fecha_modi=CURRENT_TIMESTAMP(),licita='$licitacion'
+        $s2 = "update compras.orden_c set
+prv=$prv,cia=$cia,id_estado=$id_estado,fecha_envio='$fecha',fecha_limite=date_add('$fecha',interval 20 day),fecha_modi=CURRENT_TIMESTAMP(),licita='$licitacion',
+recibe=(select num_edo from compras.numero_de_licitaciones x where x.id=$id_estado),
+embarca=(select num_licitacion from compras.numero_de_licitaciones x where x.licitacion='$licitacion') 
 where id_orden=$id_orden ";
         $this->db->query($s2);
         $s3 = "insert into orden_modi.orden_c( id_orden, id_estado, prv, fecha_captura, fecha_envio, fecha_limite, tipo, id_responsable, id_captura, folprv, cia, modifica, fecha_modifica,base,licita)
@@ -1061,7 +1063,7 @@ case when a.iva>0 then 1 else 0 end,
 round((100-((((importe)-(a.ieps+a.iva))/(far*can))*100)),4),can,can,0,'0000-00-00',0,0
  FROM compras.pre_factura_fenix a
 join catalogo.cat_mercadotecnia b on b.codigo=a.cod
-where fac in($fac))";
+where fac in('$fac'))";
     $this->db->query($graba);
     }  
     
@@ -1210,14 +1212,15 @@ sum(cans)as pedido,sum(aplica)as aplicado,
 ((sum(aplica)/sum(cans))*100)as nuvel_surtido
 
 from compras.orden_d a
-join compras.orden_c b on b.id_orden=a.id_orden
-join catalogo.sucursal c on c.suc=b.embarca
-join catalogo.provedor d on d.prov=b.prv
-join compras.numero_de_licitaciones e on e.id=b.id_estado
-join compras.numero_de_licitaciones f on f.num_licitacion=b.embarca
+left join compras.orden_c b on b.id_orden=a.id_orden
+left join catalogo.sucursal c on c.suc=b.embarca
+left join catalogo.provedor d on d.prov=b.prv
+left join compras.numero_de_licitaciones e on e.id=b.id_estado
+left join compras.numero_de_licitaciones f on f.num_licitacion=b.embarca
 where 
-date(now()) between fecha_envio and fecha_limite and id_estado<>7 and b.tipo=1 and id_captura=$id_user or
-date(now()) between fecha_envio and fecha_limite and id_estado<>7 and b.tipo=1 and id_responsable=$id_responsable
+(date(now()) between fecha_envio and fecha_limite and id_estado<>7 and b.tipo=1 and id_captura=$id_user) or
+(date(now()) between fecha_envio and fecha_limite and id_estado<>7 and b.tipo=1 and id_responsable=$id_responsable) or
+(date(now()) between fecha_envio and fecha_limite and id_estado<>7 and b.tipo=1 and id_responsable=0)
 group by b.id_orden desc";
     $q=$this->db->query($s);
     return $q;

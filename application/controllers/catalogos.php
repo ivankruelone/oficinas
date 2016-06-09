@@ -71,7 +71,15 @@ class Catalogos extends CI_Controller
         $name = 'catalogo_genericos_'.date('Ymd_His').'.csv';
         force_download($name, $csv);
     }
-    
+    function a_cat_fanasa_activos()
+    {
+        $this->load->dbutil();
+        $this->load->helper('download');
+        $a = $this->catalogos_model->cat_fanasa_activos();
+        $csv = $this->dbutil->csv_from_result($a);
+        $name = 'catalogo_fanasa_'.date('Ymd_His').'.csv';
+        force_download($name, $csv);
+    }
     function s_metro1()
     {
         $this->load->dbutil();
@@ -582,7 +590,7 @@ class Catalogos extends CI_Controller
          $this->load->view('main', $data);
         }
 
-     function ins_bloq_codigo()
+        function ins_bloq_codigo()
         {
 
          $data = array (
@@ -590,7 +598,7 @@ class Catalogos extends CI_Controller
         'codigo' => $this->input->post('codigo'),
         'activo' => 0
          );
-$code= $this->input->post('codigo');
+        $code= $this->input->post('codigo');
         $this->catalogos_model->cat_bloq_cod($data,$code);
         $id_plaza=$this->session->userdata('id_plaza');
         redirect('catalogos/cat_bloq_codigo/');
@@ -616,6 +624,21 @@ $code= $this->input->post('codigo');
         }
                
 
+
+        /************************ Maximo sucursal DA********************************/
+
+        function max_sucursal(){
+           $this->load->view('main');
+        }
+
+        function inser_max_sucursal(){
+            
+            $sec= $this->input->post('sec');
+            $can =$this->input->post('cant');
+            $data['js'] = 'catalogos/inser_max_sucursal_js';
+            $data['q']=$this->catalogos_model->ins_max_suc($sec,$can);
+            $this->load->view('main',$data);
+        }
 
 
 

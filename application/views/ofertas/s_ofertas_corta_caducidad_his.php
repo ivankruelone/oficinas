@@ -29,6 +29,7 @@
                                 $l0= anchor('ofertas/s_ofertas_corta_caducidad_det_his/'.$r->id,'Detalle', 'class="button-link blue"');
                                 ?>
                                 <tr>
+                                <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->id?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->activox?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $l0?></td>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r->fecha_suc?></td>

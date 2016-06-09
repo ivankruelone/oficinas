@@ -80,7 +80,7 @@ NINGUN PEDIDO VENCIADO.';
 $e='';
 $f='';
      $fec=date('Y-m-d H:i:s');
-    $s="select ifnull(h.estado,' ') as edoxx,gm.domicilio,a.estatus,f.id as alma,f.estado as destino, fecha_limite as fechaee, a.*,b.*,c.razon as razonx,
+    $s="select h.licitacion as licitame,ifnull(h.estado,' ') as edoxx,gm.domicilio,a.estatus,f.id as alma,f.estado as destino, fecha_limite as fechaee, a.*,b.*,c.razon as razonx,
     c.dire as direx, c.col,c.pobla as poblax,c.cp as cpx,c.rfc as rfcx,case when a.licita <>' ' then a.licita else f.licitacion end as licita,
     ifnull(f.estado,' ')as estado,
     ifnull(d.id_firma,'0')as id_firma,ifnull(e.completo,' ')as completo,ifnull(g.completo,' ')as capturax
@@ -91,7 +91,7 @@ $f='';
     left join catalogo.cat_empleado e on e.nomina=a.id_responsable and e.tipo=1
     left join catalogo.cat_empleado g on g.nomina=d.nomina and g.tipo=1
     left join compras.numero_de_licitaciones f on f.id=a.id_estado
-    left join compras.numero_de_licitaciones h on h.licitacion=a.licita and  h.licitacion<>''
+    left join compras.numero_de_licitaciones h on h.num_licitacion=a.embarca 
     left join compras.consigna gm on gm.suc=a.recibe
     where a.id_orden=$id";
     $q=$this->db->query($s);
@@ -100,7 +100,7 @@ $f='';
         $nombre=$r->completo;
         $imagen=$r->id_responsable;
         $captura=$r->capturax;
-        if($r->alma<>7){$lic='No. Licitacion:'.$r->licita.' '.$r->edoxx;}else{$lic='';}
+        if($r->alma<>7){$lic='No. Licitacion:'.$r->licitame.' '.$r->edoxx;}else{$lic='';}
         $l1= "<img style=\"position:relative; width:90px;\", src=\"'.base_url().'../../img/firma/$imagen.png\" />"; //'<img src="'.base_url().'img/firma/'.$imagen.'.png" border="0" width="90px" />';
         if($r->estatus==0){$cancela='CANCELADA';}else{$cancela='';}
         $e.="<table  cellpadding=\"2\">

@@ -201,6 +201,39 @@ FROM catalogo.cat_nuevo_general c where susa like '%$susa%' group by clagob;";
             
         }
     }
+
+    function buscaTraspaso($referencia, $clvsucursal, $cvearticulo)
+    {
+        $sql = "SELECT 'spcentral' as base, movimientoDetalle, aplicadas
+FROM spcentral.movimiento m
+join spcentral.movimiento_detalle d using(movimientoID)
+join spcentral.articulos a using(id)
+where referencia = ? and clvsucursal = ? and cvearticulo = ?
+union all
+SELECT 'controlado' as base, movimientoDetalle, aplicadas
+FROM controlado.movimiento m
+join controlado.movimiento_detalle d using(movimientoID)
+join controlado.articulos a using(id)
+where referencia = ? and clvsucursal = ? and cvearticulo = ?
+;";
+        $query = $this->db->query($sql, array((string)$referencia, (int)$clvsucursal, (string)$cvearticulo, (string)$referencia, (int)$clvsucursal, (string)$cvearticulo));
+
+        return $query;
+    }
+
+    function actualizaAplicadasTraspaso($arr)
+    {
+        foreach ($arr as $a) {
+            $query = $this->buscaTraspaso($a->referencia, $a->clvsucursalReferencia, $a->cvearticulo);
+            if($query->num_rows() > 0)
+            {
+                $row = $query->row();
+
+                $sql_update = "UPDATE " . $row->base . ".movimiento_detalle set aplicadas = aplicadas + ? where movimientoDetalle = ?;";
+                $this->db->query($sql_update, array($a->piezas, $row->movimientoDetalle));
+            }
+        }
+    }
     
     function getTicketBySucTicket($suc, $ticket)
     {
@@ -337,27 +370,64 @@ where (suc between 100 and 2899 and tipo1 = 'A' and tlid =  1) or suc = 0;";
 
     function getTransitoByClvsucursal($clvsucursal)
     {
-        $sql = "SELECT * from (SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as piezas
+        $sql = "SELECT * from (SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as enviadas, sum(aplicadas) as recibidas, sum(cast(piezas as signed) - cast(aplicadas as signed)) as piezas
 FROM spcentral.movimiento m
 join spcentral.movimiento_detalle d using(movimientoID)
 join spcentral.sucursales s using(clvsucursal)
 where tipoMovimiento = 2 and statusMovimiento = 1 and clvsucursalReferencia = $clvsucursal
 group by movimientoID
+having sum(cast(aplicadas as signed)) = 0
 union all
-SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as piezas
+SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as enviadas, sum(aplicadas) as recibidas, sum(cast(piezas as signed) - cast(aplicadas as signed)) as piezas
 FROM patente2.movimiento m
 join patente2.movimiento_detalle d using(movimientoID)
 join patente2.sucursales s using(clvsucursal)
 where tipoMovimiento = 2 and statusMovimiento = 1 and clvsucursalReferencia = $clvsucursal
 group by movimientoID
+having sum(cast(aplicadas as signed)) = 0
 union all
-SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as piezas
+SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as enviadas, sum(aplicadas) as recibidas, sum(cast(piezas as signed) - cast(aplicadas as signed)) as piezas
 FROM controlado.movimiento m
 join controlado.movimiento_detalle d using(movimientoID)
 join controlado.sucursales s using(clvsucursal)
 where tipoMovimiento = 2 and statusMovimiento = 1 and clvsucursalReferencia = $clvsucursal
 group by movimientoID
-) as t order by fechaCierre desc
+having sum(cast(aplicadas as signed)) = 0
+) as t order by fechaCierre desc 
+;";
+        
+        $query = $this->db->query($sql);
+
+        return $query->result();
+
+    }
+
+    function getTraspasosValidadosByClvsucursal($clvsucursal)
+    {
+        $sql = "SELECT * from (SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as enviadas, sum(aplicadas) as recibidas, sum(cast(piezas as signed) - cast(aplicadas as signed)) as piezas
+FROM spcentral.movimiento m
+join spcentral.movimiento_detalle d using(movimientoID)
+join spcentral.sucursales s using(clvsucursal)
+where tipoMovimiento = 2 and statusMovimiento = 1 and clvsucursalReferencia = $clvsucursal
+group by movimientoID
+having sum(cast(aplicadas as signed)) > 0
+union all
+SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as enviadas, sum(aplicadas) as recibidas, sum(cast(piezas as signed) - cast(aplicadas as signed)) as piezas
+FROM patente2.movimiento m
+join patente2.movimiento_detalle d using(movimientoID)
+join patente2.sucursales s using(clvsucursal)
+where tipoMovimiento = 2 and statusMovimiento = 1 and clvsucursalReferencia = $clvsucursal
+group by movimientoID
+having sum(cast(aplicadas as signed)) > 0
+union all
+SELECT movimientoID, referencia, fechaCierre, clvsucursal, descsucursal, observaciones, sum(piezas) as enviadas, sum(aplicadas) as recibidas, sum(cast(piezas as signed) - cast(aplicadas as signed)) as piezas
+FROM controlado.movimiento m
+join controlado.movimiento_detalle d using(movimientoID)
+join controlado.sucursales s using(clvsucursal)
+where tipoMovimiento = 2 and statusMovimiento = 1 and clvsucursalReferencia = $clvsucursal
+group by movimientoID
+having sum(cast(aplicadas as signed)) > 0
+) as t order by fechaCierre desc 
 ;";
         
         $query = $this->db->query($sql);
@@ -368,19 +438,19 @@ group by movimientoID
 
     function getTransitoDetalleByReferencia($referencia)
     {
-        $sql = "SELECT * from (SELECT id, cvearticulo, susa, descripcion, pres, piezas, lote, caducidad, tipoprod, ean, marca, costo, UPPER(comercial) as comercial, movimientoDetalle
+        $sql = "SELECT * from (SELECT id, cvearticulo, susa, descripcion, pres, piezas, aplicadas, lote, caducidad, tipoprod, ean, marca, costo, UPPER(comercial) as comercial, movimientoDetalle
 FROM spcentral.movimiento m
 join spcentral.movimiento_detalle d using(movimientoID)
 join spcentral.articulos a using(id)
 where statusMovimiento = 1 and referencia = '$referencia'
 union all
-SELECT id, cvearticulo, susa, descripcion, pres, piezas, lote, caducidad, tipoprod, ean, marca, costo, UPPER(comercial) as comercial, movimientoDetalle
+SELECT id, cvearticulo, susa, descripcion, pres, piezas, aplicadas, lote, caducidad, tipoprod, ean, marca, costo, UPPER(comercial) as comercial, movimientoDetalle
 FROM controlado.movimiento m
 join controlado.movimiento_detalle d using(movimientoID)
 join controlado.articulos a using(id)
 where statusMovimiento = 1 and referencia = '$referencia'
 union all
-SELECT id, cvearticulo, susa, descripcion, pres, piezas, lote, caducidad, tipoprod, ean, marca, costo, UPPER(comercial) as comercial, movimientoDetalle
+SELECT id, cvearticulo, susa, descripcion, pres, piezas, aplicadas, lote, caducidad, tipoprod, ean, marca, costo, UPPER(comercial) as comercial, movimientoDetalle
 FROM patente2.movimiento m
 join patente2.movimiento_detalle d using(movimientoID)
 join patente2.articulos a using(id)
@@ -434,6 +504,21 @@ order by folprv desc;";
     {
         $sql = "SELECT * FROM compras.orden_d o
 where id_orden = ?;";
+        
+        $query = $this->db->query($sql, $id_orden);
+        return $query->result();
+    }
+
+    function getOrdenCompraPendiente()
+    {
+        $sql = "SELECT id_orden, prv, razo, fecha_envio, fecha_limite, folprv, sum(cans) as cans, sum(aplica) as aplica
+FROM orden_c o
+join orden_d using(id_orden)
+left join catalogo.provedor p on prv = prov
+where embarca = 12000 and recibe = 12000 and fecha_limite >= date(now()) and o.tipo = 1
+group by id_orden
+having cans <> aplica
+order by folprv;";
         
         $query = $this->db->query($sql, $id_orden);
         return $query->result();

@@ -28,9 +28,13 @@
                              
                                  <?php
                                 $color='blue';$colorc='green'; $acumulado=0;
-                                $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;$t8=0;
+                                $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;$t8=0;$fin=0;$tnivel=0;$num=0;
                                 foreach ($q1->result()as $r1){
                                 $acumulado=$acumulado+$r1->venta_contado;
+                                if($r1->nivel_surtido>0){
+                                    $tnivel=$tnivel+$r1->nivel_surtido;
+                                    $num=$num+1;
+                                }
                                 ?>
                                 <tr>
                                 <td style="color:<?php echo $color?>; text-align: left"><?php echo $r1->dia?></td>
@@ -39,14 +43,13 @@
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($acumulado,2)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r1->tic,0)?></td>
                                 <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r1->prome_tic,2)?></td>
-                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r1->nivel_surtido,2)?></td>
+                                <td style="color: <?php echo $color?>; text-align: right"><?php echo number_format($r1->nivel_surtido,4)?></td>
                                 </tr>
                                <?php 
                                $t1=$t1+$r1->venta_contado;
                                $t2=$t2+$r1->tic;
-                               
-                                
                                 }
+                                $fin=$tnivel/$num;
                                ?>
                               </tbody>
                               <tfoot>
@@ -55,11 +58,7 @@
                               <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t1,2)?></strong></td>
                               <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($t2,0)?></strong></td>
                               <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              
+                              <td style="color: <?php echo $color?>; text-align: right"><strong><?php echo number_format($fin,4)?></strong></td>
                               </tr>
                              </tfoot>
                          </table>   

@@ -1234,6 +1234,32 @@ foreach ($q->result()as $r)
         return $q;
     }
 
-
+public function ticket_mes_suc()
+    {
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    $aaa=date('Y');
+    $aaa_a=$aaa-1;
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+    $s="select
+year(date(now())) AS AAA,a.suc AS NID,a.nombre AS SUCURSAL,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-01-01' and '$aaa-01-31'),0)as ENE,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-02-01' and '$aaa-02-29'),0)as FEB,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-03-01' and '$aaa-03-31'),0)as MAR,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-04-01' and '$aaa-04-30'),0)as ABR,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-05-01' and '$aaa-05-31'),0)as MAY,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-06-01' and '$aaa-06-30'),0)as JUN,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-07-01' and '$aaa-07-31'),0)as JUL,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-08-01' and '$aaa-08-31'),0)as AGO,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-09-01' and '$aaa-09-30'),0)as SEP,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-10-01' and '$aaa-10-31'),0)as OCT,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-11-01' and '$aaa-11-30'),0)as NOV,
+ifnull((select sum(tic_contado) from vtadc.venta_ctl x where x.suc=a.suc and fecha between '$aaa-12-01' and '$aaa-12-31'),0)as DIC
+from catalogo.sucursal a
+where $var tipo3 in('DA','FE','FA') AND tlid=1;";
+    $q=$this->db->query($s);
+    return $q;
+    }
 
 }
