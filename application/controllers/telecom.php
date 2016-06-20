@@ -12,7 +12,7 @@ class Telecom extends CI_Controller
  
  function sube_archivo()
  {
-    $aaa=2016;$mes=4;
+    $aaa=2016;$mes=5;
     $this->load->library('ftp');
     $s="delete from telecom.gastos_tel_plano";
     $this->db->query($s);

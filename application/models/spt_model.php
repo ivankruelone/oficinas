@@ -531,7 +531,7 @@ order by suc, nomina
     {
         $sql = "select * from vtadc.venta_medico_final v
                 where periodo in(select periodo from vtadc.venta_medico_global 
-                where extract(year from fecha1) = 2015 and extract(month from fecha1) = 11)";//"select * from vtadc.venta_medico_final v where periodo = $periodo;";
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes)";//"select * from vtadc.venta_medico_final v where periodo = $periodo;";
 
         $query = $this->db->query($sql);
         

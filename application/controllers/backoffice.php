@@ -232,6 +232,12 @@ class backoffice extends CI_Controller
         die();
         redirect('backoffice/a_general/6');
     }
+    function a_pedidos_envio_mayorista_sin_enviar($fol)
+    {        
+        $nom=$this->Pedido_model_fenix->graba_archivo_sin_mandar($fol);
+        echo 'FUE GRABADO SIN ENVIAR';
+        die();
+    }
     
     function addiciona_pedido_esp_for()
     {

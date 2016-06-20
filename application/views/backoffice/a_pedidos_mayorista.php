@@ -75,6 +75,7 @@ $l4=anchor('backoffice/a_pedidos_fenix_a_cedis','PEDIDO DE SUCURSALES FENIX DE M
                          <div class="widget-body">
                          <?php
 $lx=anchor('backoffice/addiciona_pedido_esp_for','ADICIONA PEDIDO ESPECIAL EN FORMULADO'); 
+
 ?>
  <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
@@ -97,6 +98,7 @@ $lx=anchor('backoffice/addiciona_pedido_esp_for','ADICIONA PEDIDO ESPECIAL EN FO
                               foreach($q->result() as $r)
                               {
                                 $l0=anchor('backoffice/a_pedidos_envio_mayorista_bor/'.$r->suc,'BOR');
+                                
                               ?>
                               <tr>
                               <td style="font-size: x-small; color: blue;"><?php echo $r->fecha?></td>
@@ -113,6 +115,7 @@ $lx=anchor('backoffice/addiciona_pedido_esp_for','ADICIONA PEDIDO ESPECIAL EN FO
                               $fol=$r->fol;
                               }
                               $l1=anchor('backoffice/a_pedidos_envio_mayorista/'.$fol,'ENVIAR PEDIDO GENERADO');
+                              $l2=anchor('backoffice/a_pedidos_envio_mayorista_sin_enviar/'.$fol,'GUARDAR PEDIDO SIN ENVIAR');
                               ?>   
                               </tbody>
                               <tfoot>
@@ -121,7 +124,7 @@ $lx=anchor('backoffice/addiciona_pedido_esp_for','ADICIONA PEDIDO ESPECIAL EN FO
                               <td style="text-align: right; color: red; font-size: x-small;"><strong><?php echo number_format($tot,2)?></strong></td>
                               <td></td>
                               <td></td>
-                              </tr>
+                              
                               </tfoot>
                          </table>
 <!----> 
@@ -187,7 +190,7 @@ $l4x=anchor('backoffice/a_pedidos_fenix_a_cedis','PEDIDO DE SUCURSALES FENIX DE 
                      </div>
                      </div>
                      </td>
-                      
+                     <td><?php echo $l2?></td> 
                      <!-- END BLANK PAGE PORTLET-->
                      </tr>
                      </table>

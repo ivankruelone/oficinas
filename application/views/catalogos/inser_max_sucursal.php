@@ -1,103 +1,27 @@
-
-<div class="panel panel-default">
-    </div>
-    <div class="span4">
-
-     <!-- BEGIN BLANK PAGE PORTLET-->
-        <div class="widget blue">
-            <div class="widget-title">
-                <h4><i class="icon-reorder"></i> Maximo Sucursal</h4>
-                <span class="tools">
-                    <a href="javascript:;" class="icon-chevron-down"></a>
-                </span>
-            </div>
-                <div class="widget-body">
-                 
-                  <?php
-                    echo form_open('catalogos/inser_max_sucursal');
-                    echo "<br />";   
-
-                    $sec = array(
-                        'name' => 'sec',
-                        'id' => 'sec',
-                        'size' => '30',              
-                        'value' => set_value('sec') 
-                    );
-
-                    $cant = array(
-                        'name' => 'cant',
-                        'id' => 'cant',
-                        'size' => '30',              
-                        'value' => set_value('cant') 
-                    );
-
-
-                  ?>  
-
-                   <table> 
-
-                     <tr>
-                      
-                        <td align="left" ><font size="+0.5"><strong>Secuencia</strong></font></td>
-                        <td align="left" ><?php echo form_input($sec,"", 'required'); ?></td>
-                   
-                    </tr>
-
-                      <tr>
-                        <td align="left" ><font size="+0.5"><strong>Cantidad</strong></font></td>
-                        <td>
-                        <?php echo form_input($cant,"", 'required'); ?>
-                        </td>
-                     
-                    </tr>
- 
-                   </table>
-              
-                    <center>
-                    <div class="row">
-                       <input type="submit" class="btn btn-primary dropdown-toggle" value="Agregar" />
-                        <?php  
-                            echo "<br />";
-                            echo "<br />";
-                            echo form_close();
-                        ?>
-                    </center>
-                   
-                          
-        </div>
-    </div>
-    <!-- END BLANK PAGE PORTLET-->
-</div>
-
-
-<?php
-//$valor= 1;
-if($q !=null){
-
- ?>
-    
-<div class="panel panel-default">
-    </div>
-    <div class="span8">
-
-     <!-- BEGIN BLANK PAGE PORTLET-->
-        <div class="widget blue">
-            <div class="widget-title">
-                <h4><i class="icon-reorder"></i> Sucursales aplicadas</h4>
-                <span class="tools">
-                    <a href="javascript:;" class="icon-chevron-down"></a>
-                </span>
-                </div>
-                <div class="widget-body">
-                 
+ <div class="span10">
+                     <!-- BEGIN BLANK PAGE PORTLET-->
+                     <div class="widget blue">
+                         <div class="widget-title">
+                             <h4><i class="icon-reorder"></i> Blank Page </h4>
+                           <span class="tools">
+                               <a href="javascript:;" class="icon-chevron-down"></a>
+                           </span>
+                         </div>
+                         <div class="widget-body">
                      <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
 
 
                         <caption></caption> 
                             <thead>
                                 <tr>
-                                    <th>SECUENCIA</th>
+                                <th colspan="6" style="color: blue; font:+3;">EL MAXIMO DE CEDIS ES DE  <?php echo $op_cedis?></th>
+                                </tr>
+                                <tr>
+                                    
+                                    <th>#</th>
+                                    <th>NID</th>
                                     <th>SUCURSAL</th>
+                                    <th>SECUENCIA</th>
                                     <th>DESCRIPCION</th>
                                     <th>CANTIDAD</th>
                                                                        
@@ -110,10 +34,12 @@ if($q !=null){
                                 $num=$num+1;
                                 ?>
                                 <tr>
-                                    <td style="text-align: center; color: <?php echo $color='orange' ?>;"><?php echo $r->sec?></td>
-                                    <td style="text-align: center; color: <?php echo $color='black' ?>;"><?php echo $r->suc?></td>
+                                    <td style="text-align: center; color: <?php echo $color='orange' ?>;"><?php echo $num?></td>
+                                    <td style="text-align: left; color: <?php echo $color='orange' ?>;"><?php echo $r->suc?></td>
+                                    <td style="text-align: left; color: <?php echo $color='black' ?>;"><?php echo $r->nombre?></td>
+                                    <td style="text-align: left; color: <?php echo $color='black' ?>;"><?php echo $r->sec?></td>
                                     <td style="text-align: left; color: <?php echo $color='black' ?>;"><?php echo $r->susa?></td>
-                                    <td style="text-align: center; color: <?php echo $color ='orange'?>;"><?php echo $r->final?></td>
+                                    <td style="text-align: right; color: <?php echo $color ='orange'?>;"><?php echo $r->final?></td>
                                     
                                                                        
                                 </tr>
@@ -126,31 +52,13 @@ if($q !=null){
                      
                    </table>
               
-                    <center>
-                    <div class="row">
-                       
-                       
-                    </center>
-                   
+                    
+
+
+
+
                           
-        </div>
-    </div>
-    <!-- END BLANK PAGE PORTLET-->
-</div>
-
-
-
-
-
-<?php }else{ ?>
-<div class="span11">
-
-</div>
-<div class="span4">
-<div class="alert alert-danger"> NO SE ENCONTRO NINGUNA ACTUALIZACION CON EL NUMERO DE SECUENCIA</div>
-</div>
-
-
-<?php
-}
-?>
+                         </div>
+                     </div>
+                     <!-- END BLANK PAGE PORTLET-->
+                 </div>

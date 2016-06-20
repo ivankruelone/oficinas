@@ -505,16 +505,28 @@ order by b.clagob asc,b.costo";
 
     function mayoristas()
     {
-        $s = "select codigo,descripcion,farmacia,pub,
-cos_saba,cos_nadro,cos_fanasa,cos_marzam,
-ofe_nadro,ofe_saba,ofe_fanasa,ofe_marzam,
-fin_saba,fin_nadro,fin_fanasa,fin_marzam
+        $s = "select codigo,descripcion,farmacia,pub,fecha_archivo,
+cos_fanasa,cos_marzam,cos_dema,
+ofe_fanasa,ofe_marzam,fin_fanasa,fin_marzam,
+case 
+when cos_fanasa>0 and cos_fanasa<=cos_dema and  cos_fanasa<=cos_marzam or
+cos_fanasa>0 and cos_fanasa<=cos_marzam and cos_dema=0 or
+cos_fanasa>0 and cos_fanasa<=cos_dema and cos_marzam=0 or
+cos_fanasa>0 and cos_dema=0 and  cos_marzam=0
+then 'FANASA'
+when cos_dema>0 and cos_dema<cos_fanasa and  cos_dema<cos_marzam or
+cos_dema>0 and cos_dema<=cos_marzam and cos_fanasa=0 or
+cos_dema>0 and cos_dema<=cos_fanasa and cos_marzam=0 or
+cos_dema>0 and cos_fanasa=0 and  cos_marzam=0
+then 'DEMA'
+when cos_marzam>0 and cos_marzam<cos_fanasa and  cos_marzam<cos_dema or
+cos_marzam>0 and cos_marzam<cos_fanasa and cos_dema=0 or
+cos_marzam>0 and cos_fanasa=0 and  cos_dema=0
+then 'MARZAM'
+end as pref
 from catalogo.cat_mercadotecnia
 where
-cos_fanasa<>cos_nadro and cos_fanasa<>cos_saba and cos_saba<>cos_nadro>0 and cos_marzam<>cos_fanasa and cos_fanasa>0 or
-cos_fanasa<>cos_nadro and cos_fanasa<>cos_saba and cos_saba<>cos_nadro>0 and cos_marzam<>cos_fanasa and cos_nadro>0 or
-cos_fanasa<>cos_nadro and cos_fanasa<>cos_saba and cos_saba<>cos_nadro>0 and cos_marzam<>cos_fanasa and cos_marzam>0 or
-cos_fanasa<>cos_nadro and cos_fanasa<>cos_saba and cos_saba<>cos_nadro>0 and cos_marzam<>cos_fanasa and cos_saba>0";
+cos_dema<>cos_fanasa and fecha_archivo>=date(now()) and (cos_dema>0 or cos_marzam>0 or cos_fanasa>0)";
         $q = $this->db->query($s);
         return $q;
     }
@@ -2650,8 +2662,11 @@ function busco_cod_fanasa($cod){
 
      /************************Maximo sucursal*************************/
 
-        function ins_max_suc($sec, $can){
+        function ins_max_suc($sec, $can,$can_cedis){
 
+           $sx="insert ignore into almacen.max_cedis(sec, final, porce, final_act)values($sec,$can_cedis,0,0)";
+           $this->db->query($sx);
+           
            $sql = "select b.sec,  a.suc, b.susa , 0,0,0,0 , case when b.sec = $sec then $can end as final,0,0,0,0,0,0,0,0
                       from catalogo.sucursal a, catalogo.cat_almacen_clasifica b
                        where a.tlid = 1 and a.tipo3='da' and b.sec = $sec and
@@ -2684,13 +2699,35 @@ function busco_cod_fanasa($cod){
                         'tres'=>0,
                         'cuatro'=>0 );
                            
-
                         $this->db->insert('almacen.max_sucursal',$datos);
                  
-                        return $q;
+                                        
                     }
+                        
+                        return $q;
                 }
+        
+        
         }
+         function ver_max_suc($sec){
+
+           $sql = "select a.suc,b.nombre,a.sec,a.susa,a.final FROM almacen.max_sucursal a
+                   join catalogo.sucursal b on b.suc=a.suc 
+                   where tlid=1 and fecha_act='0000-00-00' and tipo3='DA' and sec= $sec ";
+
+            $q = $this->db->query($sql); 
+                      return $q;
+         }
+         function ver_max_cedis($sec){
+
+           $final=0;
+           $sql = "select * FROM almacen.max_cedis a
+                   where sec= $sec ";
+            $q = $this->db->query($sql); 
+            $r=$q->row();
+            $cantidad=$r->final;
+            return $cantidad;
+         }
 
 
 

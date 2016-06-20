@@ -287,6 +287,7 @@ group by a.id_cc, a.clave;";
         $data .= $this->__getCompraSPCentral();
         $data .= $this->__getCompraPatente2();
         $data .= $this->__getCompraped_l();
+        $data .= $this->__getCompraMichoacan2016();
         return $data;
     }
 
@@ -484,6 +485,67 @@ $data .= str_pad('ESP',3)//Tipo
 .str_pad(substr($row->usuario, -1, 3),3,"0",STR_PAD_LEFT)
 .str_pad('',20).str_pad($row->orden,9,"0",STR_PAD_LEFT)
 .str_pad(substr($this->sanitize($row->susa . ' ' . $row->descripcion . ' ' . $row->pres),0,100),100," ",STR_PAD_RIGHT)
+.str_pad(0,4,"0",STR_PAD_LEFT)//cantidad de regalo
+."\r\n";
+            
+        }
+        
+        return $data;
+    }
+
+    function remplaza($in)
+    {
+        $out = preg_replace('/[^A-Z0-9 \/-]/', '', $in);
+        return $out;
+    }
+
+    function __getCompraMichoacan2016()
+    {
+
+        $mich = $this->load->database('michoacan2016', TRUE);
+
+        $sql = "SELECT *, year(m.fecha) as aaae, month(m.fecha) as mese, day(m.fecha) as diae, year(fechaCierre) as aaas, month(fechaCierre) as mess, day(fechaCierre) as dias, case when tipoprod = 0 then 1 else 5 end as lin, cast(round(costo * 100) as char(11)) as costof, sum(piezas) as piezasF
+FROM fenixtch_michoacan.movimiento m
+join fenixtch_michoacan.movimiento_detalle d using(movimientoID)
+join fenixtch_michoacan.articulos a using(id)
+where ((subtipoMovimiento = 1) or (subtipoMovimiento = 3 and asignaFactura = 1 and nuevo_folio > 0)) and statusMovimiento = 1 and nuevo_folio > 0 and fechaCierre >= now() - interval 3 month
+group by nuevo_folio, cvearticulo;";
+        
+        $query = $mich->query($sql);
+
+        $data = null;
+        
+        foreach($query->result() as $row)
+        {
+            
+            if(strlen((string)$row->proveedorID) > 4)
+            {
+                $proveedor = 9998;
+            }else{
+                $proveedor = $row->proveedorID;
+            }
+
+
+$data .= str_pad('MIC',3)//Tipo
+.str_pad($row->nuevo_folio,9,"0",STR_PAD_LEFT)
+.str_pad($proveedor,4,"0",STR_PAD_LEFT)
+.str_pad(substr($row->referencia,0,10),10," ",STR_PAD_RIGHT)
+.str_pad($row->aaae,4,"0",STR_PAD_LEFT)
+.str_pad($row->mese,2,"0",STR_PAD_LEFT)
+.str_pad($row->diae,2,"0",STR_PAD_LEFT)
+.str_pad($row->aaas,4,"0",STR_PAD_LEFT)
+.str_pad($row->mess,2,"0",STR_PAD_LEFT)
+.str_pad($row->dias,2,"0",STR_PAD_LEFT)
+.str_pad(1,2,"0",STR_PAD_LEFT)//cia
+.str_pad($row->orden,9,"0",STR_PAD_LEFT)
+.str_pad($row->cvearticulo,15," ",STR_PAD_RIGHT)
+.str_pad($row->cvearticulo,15," ",STR_PAD_RIGHT)
+.str_pad((double)$row->piezasF,7,"0",STR_PAD_LEFT)
+.str_pad($row->costof,11,"0",STR_PAD_LEFT)
+.str_pad($row->lin,2,"0",STR_PAD_LEFT)
+.str_pad(substr($row->usuario, -1, 3),3,"0",STR_PAD_LEFT)
+.str_pad('',20).str_pad($row->orden,9,"0",STR_PAD_LEFT)
+.str_pad(substr($this->remplaza($this->sanitize($row->susa . ' ' . $row->descripcion . ' ' . $row->pres)),0,100),100," ",STR_PAD_RIGHT)
 .str_pad(0,4,"0",STR_PAD_LEFT)//cantidad de regalo
 ."\r\n";
             

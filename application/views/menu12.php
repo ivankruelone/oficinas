@@ -11,6 +11,7 @@
                           <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/s_oferta_genericos', 'Productos Ofertados'); ?></li>
                           <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/s_cat_naturistas', 'Productos Naturistas'); ?></li>
                           <li id="menu_catalogos_descontin"><?php echo anchor('catalogos/descontin', 'Genericos Descontinuados'); ?></li>
+                          <li id="menu_catalogos_genericos_venta"><?php echo anchor('catalogos/a_cat_fanasa_activos', 'Catalogo de FANASA'); ?></li>
                       </ul>
                   </li>
                   <li class="sub-menu" id="menu_recursos_humanos">

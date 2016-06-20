@@ -930,12 +930,83 @@ order by regional,superv,suc";
     
     
     
+    ////////////////////////Tarjetas con descuento///////////////////////////
+
+    function ventas_desc_suc($suc){
+
+        $s="select vd.suc,cs.nombre as nomb,year(vd.fecha) as ano,cm.mes,ct.nombre, sum(vd.des) as des
+              from vtadc.venta_detalle vd, catalogo.sucursal cs, catalogo.cat_tarjetas ct, catalogo.mes cm
+                where  cs.suc=vd.suc and vd.tipo!=0 and ct.num=vd.tipo and cm.num=month(vd.fecha) and vd.suc=$suc
+                  group by vd.suc ,year(vd.fecha), month(vd.fecha), vd.tipo
+                    order by vd.suc,ct.nombre,month(vd.fecha) asc";
+
+        $q=$this->db->query($s);
+        return $q;
+    } 
+
+
+
+    function ventas_desc_mes_suc(){
+        $s="select vd.suc, cs.nombre, max(vd.fecha) as ult_fechav ,sum(vd.can) as cantida,sum(vd.des*vd.can) as descuento, sum(vd.importe) as importe
+              from vtadc.venta_detalle vd, catalogo.sucursal cs, catalogo.mes cm
+                where cs.suc=vd.suc and month(vd.fecha)=cm.num and cs.tipo3='da' and cs.tlid=1
+                  group by suc";
+                 
+        $q=$this->db->query($s);
+        return $q;
+    } 
+
+
+    function ventas_detalle_des(){
+    
+        $s="select vd.suc,cs.nombre as nomb,year(vd.fecha) as ano,month(vd.fecha) as mes , cm.mes, vd.tipo,ct.nombre, sum(vd.vta) as vta, sum(vd.des) as des, vd.importe
+              from vtadc.venta_detalle vd, catalogo.sucursal cs, catalogo.cat_tarjetas ct, catalogo.mes cm
+                where  cs.suc=vd.suc and vd.tipo!=0 and ct.num=vd.tipo and cm.num=month(vd.fecha)
+                  group by vd.suc ,year(vd.fecha), month(vd.fecha), vd.tipo
+                    order by  month(vd.fecha), vd.tipo, vd.suc asc";
+
+                    $q=$this->db->query($s);
+                    return $q;
+     }
+    
+    
+
+
+    function simulador_comision($var)
+    {
+        $s="SELECT venta as ven_sin,
+
+suc, nom, punto_equi, obj_100, nivel_sur, obj_nivel, (venta*'$var')as venta_act,
+(case
+when (((venta*'$var')/obj_nivel)*100)>=100  and ((venta*$var)-punto_equi)>=8000 then 60
+when (((venta*'$var')/obj_nivel)*100) between 80 and 99.99  and ((venta*'$var')-punto_equi)>=8000  then 30
+else 0 end)as p_rentabili,
+
+p_merma, p_gasto, p_eval,
+((case
+when (((venta*'$var')/obj_nivel)*100)>=100  and ((venta*'$var')-punto_equi)>=8000 then 60
+when (((venta*'$var')/obj_nivel)*100) between 80 and 99.99  and ((venta*'$var')-punto_equi)>=8000  then 30
+else 0 end)+p_merma+p_gasto+p_eval) as tot_puntos,
+
+case when ((case
+when (((venta*$var)/obj_nivel)*100)>=100  and ((venta*$var)-punto_equi)>=8000 then 60
+when (((venta*$var)/obj_nivel)*100) between 80 and 99.99  and ((venta*'$var')-punto_equi)>=8000  then 30
+else 0 end)+p_merma+p_gasto+p_eval)>=80
+then (venta*'$var')*.0005 else 0 end as comision_na
+
+FROM finanzas.sumulado_comision
+order by tot_puntos desc";
+        $q=$this->db->query($s);
+        return $q;
+    }
     
     
     
     
-    
-    
+
+
+
+
 
 
 

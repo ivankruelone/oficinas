@@ -202,7 +202,7 @@ FROM catalogo.cat_nuevo_general c where susa like '%$susa%' group by clagob;";
         }
     }
 
-    function buscaTraspaso($referencia, $clvsucursal, $cvearticulo)
+    function buscaTraspaso($referencia, $clvsucursal, $cvearticulo, $ean)
     {
         $sql = "SELECT 'spcentral' as base, movimientoDetalle, aplicadas
 FROM spcentral.movimiento m
@@ -215,8 +215,14 @@ FROM controlado.movimiento m
 join controlado.movimiento_detalle d using(movimientoID)
 join controlado.articulos a using(id)
 where referencia = ? and clvsucursal = ? and cvearticulo = ?
+union all
+SELECT 'patente2' as base, movimientoDetalle, aplicadas
+FROM patente2.movimiento m
+join patente2.movimiento_detalle d using(movimientoID)
+join patente2.articulos a using(id)
+where referencia = ? and clvsucursal = ? and (cvearticulo = ? or cvearticulo = ?)
 ;";
-        $query = $this->db->query($sql, array((string)$referencia, (int)$clvsucursal, (string)$cvearticulo, (string)$referencia, (int)$clvsucursal, (string)$cvearticulo));
+        $query = $this->db->query($sql, array((string)$referencia, (int)$clvsucursal, (string)$cvearticulo, (string)$referencia, (int)$clvsucursal, (string)$cvearticulo, (string)$referencia, (int)$clvsucursal, (string)$cvearticulo, (string)$ean));
 
         return $query;
     }
@@ -224,7 +230,7 @@ where referencia = ? and clvsucursal = ? and cvearticulo = ?
     function actualizaAplicadasTraspaso($arr)
     {
         foreach ($arr as $a) {
-            $query = $this->buscaTraspaso($a->referencia, $a->clvsucursalReferencia, $a->cvearticulo);
+            $query = $this->buscaTraspaso($a->referencia, $a->clvsucursalReferencia, $a->cvearticulo, $a->ean);
             if($query->num_rows() > 0)
             {
                 $row = $query->row();

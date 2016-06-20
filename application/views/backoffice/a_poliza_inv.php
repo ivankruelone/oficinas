@@ -26,7 +26,7 @@
               'value'       => date('m'),
               'class'       => 'span3',
               'maxlength'   => '2',
-              'size'        => '2'
+              'size'        => '8'
             );
       $data_dia = array(
               'name'        => 'dia',
@@ -34,7 +34,7 @@
               'value'       => date('d'),
               'class'       => 'span3',
               'maxlength'   => '2',
-              'size'        => '2'
+              'size'        => '8'
             );
       $data_sem = array(
               'name'        => 'sem',

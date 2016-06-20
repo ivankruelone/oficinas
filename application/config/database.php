@@ -98,22 +98,39 @@ $db['facturacion']['swap_pre'] = '';
 $db['facturacion']['autoinit'] = TRUE;
 $db['facturacion']['stricton'] = FALSE;
 
-//Aguascalientes
-$db['aguascalientes']['hostname'] = '192.168.0.15';
-$db['aguascalientes']['username'] = 'izuniga';
-$db['aguascalientes']['password'] = 'ivan2';
-$db['aguascalientes']['database'] = 'aguascalientes';
-$db['aguascalientes']['dbdriver'] = 'postgre';
-$db['aguascalientes']['dbprefix'] = '';
-$db['aguascalientes']['pconnect'] = FALSE;
-$db['aguascalientes']['db_debug'] = TRUE;
-$db['aguascalientes']['cache_on'] = FALSE;
-$db['aguascalientes']['cachedir'] = '';
-$db['aguascalientes']['char_set'] = 'utf8';
-$db['aguascalientes']['dbcollat'] = 'utf8_general_ci';
-$db['aguascalientes']['swap_pre'] = '';
-$db['aguascalientes']['autoinit'] = TRUE;
-$db['aguascalientes']['stricton'] = FALSE;
+//Facturacion
+$db['facturacion']['hostname'] = '192.168.1.200';
+$db['facturacion']['username'] = 'desarrolloDB';
+$db['facturacion']['password'] = 'desarrollo';
+$db['facturacion']['database'] = 'facturacion';
+$db['facturacion']['dbdriver'] = 'mysql';
+$db['facturacion']['dbprefix'] = '';
+$db['facturacion']['pconnect'] = FALSE;
+$db['facturacion']['db_debug'] = TRUE;
+$db['facturacion']['cache_on'] = FALSE;
+$db['facturacion']['cachedir'] = '';
+$db['facturacion']['char_set'] = 'utf8';
+$db['facturacion']['dbcollat'] = 'utf8_general_ci';
+$db['facturacion']['swap_pre'] = '';
+$db['facturacion']['autoinit'] = TRUE;
+$db['facturacion']['stricton'] = FALSE;
+
+//Michoacan2016
+$db['michoacan2016']['hostname'] = '162.251.85.134';
+$db['michoacan2016']['username'] = 'fenixtch_mich';
+$db['michoacan2016']['password'] = 'lifana1417#';
+$db['michoacan2016']['database'] = 'fenixtch_michoacan';
+$db['michoacan2016']['dbdriver'] = 'mysqli';
+$db['michoacan2016']['dbprefix'] = '';
+$db['michoacan2016']['pconnect'] = FALSE;
+$db['michoacan2016']['db_debug'] = TRUE;
+$db['michoacan2016']['cache_on'] = FALSE;
+$db['michoacan2016']['cachedir'] = '';
+$db['michoacan2016']['char_set'] = 'utf8';
+$db['michoacan2016']['dbcollat'] = 'utf8_general_ci';
+$db['michoacan2016']['swap_pre'] = '';
+$db['michoacan2016']['autoinit'] = TRUE;
+$db['michoacan2016']['stricton'] = FALSE;
 
 //Zacatecas
 $db['zacatecas']['hostname'] = '192.168.0.7';

@@ -23,12 +23,18 @@
         <th colspan="1">IMPORTE GENERADO</th>
         <th colspan="1">PIEZAS VALIDADAS CEDIS</th>
         <th colspan="1">IMPORTE VALIDADAS CEDIS</th>
+        <td></td>
         </tr>
         </thead>
         <tbody>
          <?php  $num=1;$tot1=0;$tot2=0;$tot3=0;$tot4=0;$tot5=0;$tot6=0;$tot7=0;$color='blue';$tot8=0;
          foreach ($q->result() as $r) {
-         if($r->validados==0){$color='red';}else{$color='black';}
+         if($r->validados==0){$color='red';
+                $l1=anchor('devolucion/borra_producto_dev/'.$aaa.'/'.$mes.'/'.$suc.'/'.$r->devolucionDetalle,'BORRAR PRODUCTO');
+            }else{
+                $l1=' ';
+            $color='black';}
+         
                                         ?>
             <tr>
             <td style="text-align: left; color:<?php echo $color?>"><?php echo $num ?></td>
@@ -41,7 +47,7 @@
             <td style="text-align: right; color:<?php echo $color?>"><?php echo number_format($r->importe_vta,2)?></td>
             <td style="text-align: right; color:<?php echo $color?>"><?php echo number_format($r->validados,0)?></td>
             <td style="text-align: right; color:<?php echo $color?>"><?php echo number_format($r->importe_val,2)?></td>
-            
+            <td><?php echo $l1 ?></td>
             </tr>
             <?php 
             $tot1=$tot1+$r->piezas;
@@ -60,6 +66,7 @@
        <td style="text-align: right;"><?php echo number_format($tot2,2)?></td>
        <td style="text-align: right;"><?php echo number_format($tot3,0)?></td>
        <td style="text-align: right;"><?php echo number_format($tot4,2)?></td>
+       <td></td>
        </tr>
        </tfoot>
        </table>                        

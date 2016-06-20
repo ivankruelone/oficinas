@@ -29,4 +29,12 @@ class Cxp extends CI_Controller
         $this->load->view('main', $data);
     }
 
+    function prueba()
+    {
+        $data = $this->cxp_model->getCompraMichoacan2016();
+        echo "<pre>";
+        echo $data;
+        echo "</pre>";
+    }
+
 }

@@ -347,6 +347,20 @@ order by fecha_modi desc,year(fecha_envio) desc, year(fecha_envio) desc
         $q = $this->db->query($s);
         return $q;
     }
+    function order_cambia_sin_cedis($aaa, $mes)
+    {
+        $s = "SELECT a.id_orden,a.*,b.razo as prvx,c.razon as ciax,d.estado,
+(select sum(aplica) from compras.orden_d x where x.id_orden=a.id_orden)as aplica
+FROM compras.orden_c a
+left join catalogo.provedor b on b.prov=a.prv
+left join catalogo.compa c on c.cia=a.cia
+left join compras.numero_de_licitaciones d on d.id=a.id_estado
+where a.tipo=1 and year(fecha_envio)=$aaa and month(fecha_envio)=$mes and id_estado<>7
+order by fecha_modi desc,year(fecha_envio) desc, year(fecha_envio) desc 
+";
+        $q = $this->db->query($s);
+        return $q;
+    }
     function order_ctl($id_orden)
     {
         $s = "SELECT a.estatus,year(fecha_envio)as aaa,month(fecha_envio)as mes,a.id_orden,a.*,b.corto as prvx,c.razon as ciax,a.id_estado,d.estado,d.edo,d.licitacion,
@@ -638,7 +652,7 @@ concat(trim(marca_comercial),' ',trim(gramaje),' ',trim(contenido),trim(presenta
 //            $this->db->query($an);
         } else {
         
-            if ($estado <> 'alm' and $estado <> 'seg') {
+            if ($estado <> 'alm' and $estado <> 'seg' and $base == 2) {
                 $l = "select nped from almacen.compraped where tipo='$estado' and folprv=$folprv";
                 $qq = $this->db->query($l);
                 $rr = $qq->row();
@@ -1040,6 +1054,16 @@ where a.id_orden=$id_orden order by id_detalle desc";
         ifnull((select iva from catalogo.cat_mercadotecnia x where x.codigo=$cod),0)as iva,
         ifnull((select clave from catalogo.cat_mercadotecnia x where x.codigo=$cod),' ')as clagob 
         fROM catalogo.cat_drogas where codigo = $cod";
+        $q = $this->db->query($s);
+        
+        $sec=0;
+            
+    }
+    if($prv==111111){
+        $s = "SELECT codigo,susa as susa1,descri as susa2,cos as farmacia,
+        ifnull((select iva from catalogo.cat_mercadotecnia x where x.codigo=$cod),0)as iva,
+        ifnull((select clave from catalogo.cat_mercadotecnia x where x.codigo=$cod),' ')as clagob 
+        fROM catalogo.cat_dema where codigo = $cod";
         $q = $this->db->query($s);
         
         $sec=0;

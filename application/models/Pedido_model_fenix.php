@@ -42,7 +42,7 @@ From vtadc.vta_backoffice a
 join catalogo.sucursal b on b.suc=a.suc
 join catalogo.cat_fanasa c on c.rel1=a.rel
 join compras.ofertas_fanasa_especiales d on d.codigo=c.codigo
-where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro1) and
+where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro1) and d.aaa=year(date(now())) and d.mes=month(date(now())) and 
 fecha_modificado>=date(now()) and
 (select rel1 from compras.bloqueados_x_mes_todas x where x.rel1=a.rel and date(now()) between fecha1 and fecha2 group by rel1) is null and
 (select rel1 from catalogo.cat_mercadotecnia x where x.rel1=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel1) is null and
@@ -55,11 +55,12 @@ $this->db->query($central1);
    $central2="insert ignore into compras.pre_pedido_fenix_for(fecha, suc, cod, descri, pedido,venta,inv, costo, prv, rel, far, oferta, financiero,iva)
 (select date(now()),a.suc,c.codigo,c.descripcion,0,sum(cant),
 ifnull((select sum(cantidad) from desarrollo.inv m where m.suc=a.suc and m.rel=a.rel),0)
-,costo,825,a.rel,farmacia,oferta,financiero,c.iva
+,costo,825,a.rel,farmacia,d.oferta,financiero,c.iva
 From vtadc.vta_backoffice a
 join catalogo.sucursal b on b.suc=a.suc
 join catalogo.cat_fanasa c on c.rel2=a.rel
-where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro2) and
+join compras.ofertas_fanasa_especiales d on d.codigo=c.codigo
+where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro2) and d.aaa=year(date(now())) and d.mes=month(date(now())) and
 fecha_modificado>=date(now()) and
 (select rel2 from compras.bloqueados_x_mes_todas x where x.rel2=a.rel and date(now()) between fecha1 and fecha2 group by rel2) is null and
 (select rel2 from catalogo.cat_mercadotecnia x where x.rel2=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel2) is null and
@@ -119,6 +120,7 @@ fecha_modificado>=date(now()) and
 (select rel1 from catalogo.cat_mercadotecnia x where x.rel1=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel1) is null and
 (select rel1 from catalogo.cat_fenix_sec_cod x where x.rel1=a.rel group by rel1)is null and
 (select rel1 from sucursal.codigos_bloqueados_pedido x where x.rel1=a.rel and activo=1 group by rel1)is null and
+(select codigo from compras.ofertas_fanasa_especiales x where x.codigo=a.cod and aaa=year(date(now())) and mes=month(date(now())) group by rel1)is null and
 (select rel1 from compras.ofertas_lab_far x 
 where x.rel1=a.rel and activo=2 and  date(now()) between fecha1 and fecha2 and rel1 not in(3409) group by rel1)is null
 group  by a.suc,rel)";
@@ -136,6 +138,7 @@ fecha_modificado>=date(now()) and
 (select rel2 from catalogo.cat_mercadotecnia x where x.rel2=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel2) is null and
 (select rel2 from catalogo.cat_fenix_sec_cod x where x.rel2=a.rel group by rel2)is null and
 (select rel2 from sucursal.codigos_bloqueados_pedido x where x.rel2=a.rel and activo=1 group by rel2)is null and
+(select codigo from compras.ofertas_fanasa_especiales x where x.codigo=a.cod and aaa=year(date(now())) and mes=month(date(now())))is null and
 (select rel2 from compras.ofertas_lab_far x 
 where x.rel2=a.rel and activo=2 and  date(now()) between fecha1 and fecha2 and rel2 not in(3409) group by rel2)is null
 group  by a.suc,rel)";
@@ -163,6 +166,7 @@ FROM compras.pre_pedido_fenix a
 join catalogo.sucursal b on a.suc=b.suc and back=2
 join catalogo.cat_fanasa c on c.codigo=a.cod and rel2>0 and fecha_modificado>=date(now())
 where fecha=date(now()) and activo=3 and 
+(select codigo from compras.ofertas_fanasa_especiales x where x.codigo=a.cod and aaa=year(date(now())) and mes=month(date(now())))is null and
 (select rel2 from compras.bloqueados_x_mes_todas x where x.codigo=a.cod and date(now()) between fecha1 and fecha2) is null)";
 $q=$this->db->query($s1);
 
@@ -173,8 +177,9 @@ a.fecha, a.suc, a.cod, a.descri, piezas, 0, 0,  c.costo, a.prv, c.rel1, farmacia
 FROM compras.pre_pedido_fenix a
 join catalogo.sucursal b on a.suc=b.suc and back=1
 join catalogo.cat_fanasa c on c.codigo=a.cod  and rel1>0 and fecha_modificado>=date(now())
-where fecha=date(now()) and activo=3 and  
-(select rel2 from compras.bloqueados_x_mes_todas x where x.codigo=a.cod and date(now()) between fecha1 and fecha2) is null)";
+where fecha=date(now()) and activo=3 and
+(select codigo from compras.ofertas_fanasa_especiales x where x.codigo=a.cod and aaa=year(date(now())) and mes=month(date(now())))is null and  
+(select rel1 from compras.bloqueados_x_mes_todas x where x.codigo=a.cod and date(now()) between fecha1 and fecha2) is null)";
 $q=$this->db->query($s2);
 $s2x="update compras.pre_pedido_fenix a
 set activo=5
@@ -201,6 +206,19 @@ $s="delete from compras.pre_pedido_fenix_for where suc=$suc";
 $q=$this->db->query($s);
 }
 
+function graba_archivo_sin_mandar($fol)
+{
+
+$spro2="insert compras.pre_pedido_fenix_ctl(fecha, suc, prv, importe, fol, tipo, canp, imp_facturado, cans,t_pedido,pro_ped)
+(select fecha, suc, prv, round(sum((pedido*costo)*(1+iva)),4), fol, 'A', sum(pedido), 0, 0,'f',count(*) 
+from compras.pre_pedido_fenix_for where pedido>0 and fol=$fol group by suc)";
+$this->db->query($spro2);
+$spro3="insert into compras.pre_pedido_fenix_det
+(fecha, tipo, fol, prv, suc, cod, descri, piezas, costo, sur, cos_fac, factura,iva)
+(select fecha, 'A', fol, prv, suc, cod, descri, pedido,  costo, 0, 0, '',iva 
+from compras.pre_pedido_fenix_for where pedido>0 and fol=$fol)";
+$this->db->query($spro3);
+}
 function graba_archivo($fol)
 {
 

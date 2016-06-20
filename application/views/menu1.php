@@ -32,6 +32,7 @@
                           <li id="menu_finanzas_s_rentabilidad_farmacia"><?php echo anchor('finanzas/s_rentabilidad_farmacia_por', 'Rentabilidad Detalle'); ?></li>
                           <li id="menu_finanzas_ventas_s_ventas_aaa_mes"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>
                           <li id="menu_finanzas_ventas_s_ventas_aaa6"><?php echo anchor('finanzas/s_ventas_aaa6', 'Ventas 6 A&ntilde;os'); ?></li>
+                          <li id="menu_finanzas_ventas_s_ventas_aaa6"><?php echo anchor('finanzas/a_simulador_comision', 'SIMULADOR DE COMISIONES'); ?></li>
                           
                       </ul>
                   </li>    

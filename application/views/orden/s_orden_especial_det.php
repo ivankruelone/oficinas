@@ -1,4 +1,4 @@
- <div class="span12">
+                 <div class="span12">
                      <!-- BEGIN BLANK PAGE PORTLET-->
                      <div class="widget blue">
                          <div class="widget-title">
@@ -9,8 +9,10 @@
                          </div>
                          <div class="widget-body">
 <?php
+/*
 $atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
     echo form_open('orden/s_orden_especial_det_agrega_fac', $atributos1);
+    
     $data_fac = array(
               'name'        => 'fac',
               'id'          => 'fac',
@@ -19,6 +21,8 @@ $atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
               'maxlength'   => '40',
               'size'        => '40'
             );
+            */
+
   $atributos = array('id' => 's_orden_especial_det_agrega');
     echo form_open('orden/s_orden_especial_det_agrega', $atributos);
     $data_cod = array(
@@ -53,16 +57,11 @@ $atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
  <div>
  <table>
  <tr>
-  <td align="left" ><font size="+1">Facturas...: </font></td>
-  <td><?php echo form_input($data_fac, "", 'required');?><span id="mensaje"></span></td>
-    <td colspan="2" align="center"><?php echo form_submit('envio', 'Agregar Facturas');?></td>
-</tr>
+  
  </table>
 <input type="hidden" value="<?php echo $id_orden?>" name="id_orden" id="id_orden" />
 <input type="hidden" value="<?php echo $prv?>" name="prv" id="prv" />
-  <?php
-  echo form_close();
-  ?>
+ 
   </div>
   
   <table>

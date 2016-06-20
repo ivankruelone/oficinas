@@ -100,7 +100,7 @@ $zip->close();
   
 function calcula_rentabilidad()
 {
-$aaa=2016;$mes=4;
+$aaa=2016;$mes=5;
 $an="insert ignore into catalogo.costo_ponderado(aaa, cod, mes, sec, cosf, cosd)
 (select year(a.fechai),codigo,month(a.fechai),sec,0,round((sum(costo*can)/sum(can)),2) from desarrollo.compra_d a
 where costo>0 and year(a.fechai)=$aaa

@@ -46,6 +46,8 @@
                           <li id="menu_finanzas_ventas_s_ventas_aaa_mes"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>
                           <li id="menu_finanzas_ventas_s_ventas_aaa6"><?php echo anchor('finanzas/s_ventas_aaa6', 'Ventas 6 A&ntilde;os'); ?></li>
                           <li id="menu_finanzas_a_venta_90_dias"><?php echo anchor('finanzas/a_venta_90_dias', 'Venta 90 dias'); ?></li>
+                          </li>
+                          <li id="menu_finanzas_a_venta_desc"><?php echo anchor('finanzas/ventas_desc', 'Tarjetas de descuento'); ?></li>
                       </ul>
                   </li>
                   <li class="sub-menu" id="menu_evaluacion">

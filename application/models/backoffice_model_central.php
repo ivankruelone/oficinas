@@ -318,7 +318,7 @@ $sr="LOAD DATA INFILE '/home/central/backoffice/rel2.txt'
 replace into table subir10.cod_rel2 FIELDS TERMINATED BY '||' LINES TERMINATED BY '\r\n'
 (ean, cod_rel, @descripcion, lin, slin, pub, far, cos, iva)
 set descripcion = CONVERT(CAST(@descripcion as BINARY) USING LATIN1)";
-//$this->db->query($sr);
+$this->db->query($sr);
 //}
 $sp2="insert into catalogo.cod_rel
 (ean, cod_rel1, cod_rel2, descripcion1, descripcion2, lin, slin, pub1, far1, cos1, pub2, far2, cos2, nivel, iva)
@@ -986,7 +986,7 @@ $nivel_surtido_ctl="insert compras.pre_pedido_fenix_ctl(fecha, suc, prv, importe
 imp_facturado, cans,t_pedido,pro_ped,pro_fac)
 (select fecha, suc, prv,  round(sum((piezas*costo)*(1+iva)),4), fol, 'A', sum(piezas),
 round(sum((sur*costo)*(1+iva)),4),sum(sur),'f',count(*),sum(case when sur>0 then +1 else +0 end)
-from compras.pre_pedido_fenix_det where fecha>=subdate(date(now()),4) group by fol,suc )
+from compras.pre_pedido_fenix_det where fecha>=subdate(date(now()),5) group by fol,suc )
 on duplicate key update
 importe=values(importe),imp_facturado=values(imp_facturado),cans=values(cans),pro_ped=values(pro_ped),pro_fac=values(pro_fac)";
 $this->db->query($nivel_surtido_ctl);

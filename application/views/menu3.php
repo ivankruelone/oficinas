@@ -1,19 +1,19 @@
               <ul class="sidebar-menu">
               
-                  <li class="sub-menu" id="menu_catalogo">
+                  <li class="sub-menu" id="menu_catalogos">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
                           <span>Catalogos</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                      <li id="menu_catalogo_s_cat_genericos_fenix"><?php echo anchor('catalogos/s_cat_genericos_fenix', 'Genericos Fenix'); ?></li>
-                          <li id="menu_catalogo_mercadotecnia_busqueda1"><?php echo anchor('mercadotecnia/busqueda1', 'Buscar_producto con costos'); ?></li>
-                          <li id="menu_catalogo_solo_busqueda"><?php echo anchor('mercadotecnia/solo_busqueda', 'Buscar Productos'); ?></li>
-                          <li id="menu_catalogo_productos"><?php echo anchor('mercadotecnia/productos', 'Catalogo de Productos'); ?></li>
-                          <li id="menu_catalogo_provedor"><?php echo anchor('mercadotecnia/provedor', 'Catalogo de Provedor'); ?></li>
-                          <li id="menu_catalogo_laboratorios"><?php echo anchor('mercadotecnia/laboratorios', 'Catalogo de Laboratorios'); ?></li>
-                          <li id="menu_catalogo_catalogos_costos_mayoristas"><?php echo anchor('catalogos/costos_mayoristas', 'Costos Mayoristas'); ?></li>
+                      <li id="menu_catalogos_s_cat_genericos_fenix"><?php echo anchor('catalogos/s_cat_genericos_fenix', 'Genericos Fenix'); ?></li>
+                          <li id="menu_catalogos_mercadotecnia_busqueda1"><?php echo anchor('mercadotecnia/busqueda1', 'Buscar_producto con costos'); ?></li>
+                          <li id="menu_catalogos_solo_busqueda"><?php echo anchor('mercadotecnia/solo_busqueda', 'Buscar Productos'); ?></li>
+                          <li id="menu_catalogos_productos"><?php echo anchor('mercadotecnia/productos', 'Catalogo de Productos'); ?></li>
+                          <li id="menu_catalogos_provedor"><?php echo anchor('mercadotecnia/provedor', 'Catalogo de Provedor'); ?></li>
+                          <li id="menu_catalogos_laboratorios"><?php echo anchor('mercadotecnia/laboratorios', 'Catalogo de Laboratorios'); ?></li>
+                          <li id="menu_catalogos_catalogos_costos_mayoristas"><?php echo anchor('catalogos/costos_mayoristas', 'Costos Mayoristas'); ?></li>
                           
                       </ul>
                   </li>
@@ -66,18 +66,6 @@
                       </ul>
                   </li>
                   
-                  <li class="sub-menu" id="menu_mercadotecnia">
-                      <a href="javascript:;" class="">
-                          <i class="icon-book"></i>
-                          <span>Mercadotecnia</span>
-                          <span class="arrow"></span>
-                      </a>
-                      <ul class="sub">
-                          <li id="menu_mercadotecnia_factura"><?php echo anchor('mercadotecnia/factura', 'Recepcion de mercanc&iacute;a'); ?></li>
-                          <li id="menu_mercadotecnia_his_fac"><?php echo anchor('mercadotecnia/his_fac', 'Historico'); ?></li>
-                          
-                      </ul>
-                  </li>
                   <li class="sub-menu" id="menu_inventario">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>

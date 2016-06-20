@@ -629,14 +629,23 @@ class Catalogos extends CI_Controller
 
         function max_sucursal(){
            $this->load->view('main');
+        
         }
-
-        function inser_max_sucursal(){
+        
+        function sumit_max_sucursal(){
             
             $sec= $this->input->post('sec');
             $can =$this->input->post('cant');
+            $can_cedis =$this->input->post('cant_cedis');
+            $this->catalogos_model->ins_max_suc($sec,$can,$can_cedis);
+            redirect('catalogos/inser_max_sucursal/'.$sec);
+            
+        }
+        function inser_max_sucursal($sec){
+            
+            $data['op_cedis']= $this->catalogos_model->ver_max_cedis($sec);
+            $data['q']=$this->catalogos_model->ver_max_suc($sec);
             $data['js'] = 'catalogos/inser_max_sucursal_js';
-            $data['q']=$this->catalogos_model->ins_max_suc($sec,$can);
             $this->load->view('main',$data);
         }
 

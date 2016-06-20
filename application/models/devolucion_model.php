@@ -130,7 +130,7 @@ function devolucion_suc_rrm($aaa,$mes,$suc)
     $nivel=$this->session->userdata('nivel');
     if($nivel==12){$var='regional='.$id_plaza.' and ';}
     elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
-    $s="SELECT fecha_cierre,id_devolucion,d.causa,statusdevolucion,tipo,a.suc,b.nombre as sucx,(cantidad)as piezas,(cantidad*vtagen)as importe_vta,(validado)as validados,
+    $s="SELECT devolucionDetalle,fecha_cierre,id_devolucion,d.causa,statusdevolucion,tipo,a.suc,b.nombre as sucx,(cantidad)as piezas,(cantidad*vtagen)as importe_vta,(validado)as validados,
 (validado*vtagen)as importe_val,
 year(fecha_cierre)as aaa,month(fecha_cierre)as mes,
 aa.sec,aa.descripcion,rrm,lote
@@ -193,4 +193,17 @@ order by rrm
     $q=$this->db->query($s);
     return $q;
 }
+function sumit_borrado_sup($id_devolucion)
+{
+    $id_user=$this->session->userdata('id');
+    $s="insert ignore into desarrollo.devolucion_sucursal_detalle_borrados
+(devolucionDetalle, sec, codigo, descripcion, descripcion2, cantidad, lote, caducidad, id_devolucion, fecha_cierre_cedis, cos_dev, devolucion, validado, lote_original, caducidad_original, id_devolucion_original, fecha_bor, id_borrado)
+(select devolucionDetalle, sec, codigo, descripcion, descripcion2, cantidad, lote, caducidad, id_devolucion, fecha_cierre_cedis, cos_dev, devolucion, validado, lote_original, caducidad_original, id_devolucion_original,now(),$id_user
+from desarrollo.devolucion_sucursal_detalle where devolucionDetalle=$id_devolucion and validado=0)";
+$this->db->query($s);
+ $bor="delete from desarrollo.devolucion_sucursal_detalle where devolucionDetalle=$id_devolucion and validado=0";
+ $this->db->query($bor);
+
+}
+
 }

@@ -351,7 +351,6 @@ class Orden extends CI_Controller
                 $codigo = 0;
             }
         }
-    
         $this->orden_model->insert_order_det($this->input->post('id_orden'), $this->
             input->post('id_estado'), $this->input->post('folprv'), $this->input->post('edo'),
             $sec, $clagob, $this->input->post('canp'), $this->input->
@@ -539,7 +538,7 @@ class Orden extends CI_Controller
             $id_responsable = $this->session->userdata('responsable');
             $embarca = $this->catalogos_model->busca_licitacion_una($this->input->post('lic'));
             $recibe = $this->catalogos_model->busca_alma_uno($this->input->post('alm'));
-        if ($this->input->post('pass') == 'unico') {
+        if ($this->input->post('pass') == 'unico_pat') {
             $por = $this->catalogos_model->busca_almacen_por($this->input->post('alm'));
             
             if ($this->input->post('prv') > 0) {
@@ -963,7 +962,7 @@ class Orden extends CI_Controller
 
         $data['titulo'] = "Historico de orden de compra";
         $data['a'] = $this->orden_model->order_mes();
-        $data['js'] = 'orden/s_orden_cambia_js';
+        $data['js'] = 'orden/a_orden_mes_glo_js';
         $this->load->view('main', $data);
     }  
     function a_orden_mes_glo_det($aaa, $mes)
@@ -971,7 +970,7 @@ class Orden extends CI_Controller
 
         $data['titulo'] = "Historico de orden de compra del mes de " . $mes . " del " .
             $aaa;
-        $data['a'] = $this->orden_model->order_cambia($aaa, $mes);
+        $data['a'] = $this->orden_model->order_cambia_sin_cedis($aaa, $mes);
         $data['js'] = 'orden/a_orden_mes_glo_det_js';
         $this->load->view('main', $data);
     }

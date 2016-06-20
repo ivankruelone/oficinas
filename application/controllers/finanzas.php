@@ -217,9 +217,58 @@ class Finanzas extends CI_Controller
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
    
+        ///////////////////Ventas tarjetas con descuentos//////////////////
+
+    function ventas_desc(){
+        $data['q']=$this->finanzas_model->ventas_desc_mes_suc();
+        $data['js'] = 'finanzas/ventas_desc_js';
+        $this->load->view('main',$data);
+
+     }
+
+    function ventas_des_repor($suc){
+
+        $data['q']=$this->finanzas_model->ventas_desc_suc($suc);
+        $this->load->view('excel/ventas_des_repor', $data);
+
+     }
     
-    
-    
+    function ventas_detalle_des(){
+
+    $data['q']=$this->finanzas_model->ventas_detalle_des();
+    $this->load->view('excel/ventas_detalle_repor', $data);
+
+ }
+
+
+ function a_simulador_comision()
+ {
+        $aaa=date('Y');
+        $data['titulo1'] = 'PROYECCION SIMULADA';
+        $data['q1'] = $this->finanzas_model->simulador_comision('1');
+        $data['q2'] = $this->finanzas_model->simulador_comision('1.25');
+        $data['q3'] = $this->finanzas_model->simulador_comision('1.50');
+        $data['q4'] = $this->finanzas_model->simulador_comision('1.75');
+        $data['q5'] = $this->finanzas_model->simulador_comision('2');
+        $data['js'] = 'finanzas/a_simulador_comision_js';
+        $this->load->view('main', $data);  
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
    }

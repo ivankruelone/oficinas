@@ -52,6 +52,9 @@ class Devolucion extends CI_Controller
     function s_devolucion_suc_rrm($aaa,$mes,$suc)
     {
         $data['titulo'] = "Devolucion de mercancia";
+        $data['aaa'] = $aaa;
+        $data['mes'] = $mes;
+        $data['suc'] = $suc;
         $data['q'] = $this->devolucion_model->devolucion_suc_rrm($aaa,$mes,$suc);
         $data['js'] = 'devolucion/s_devolucion_suc_rrm_js';
         $this->load->view('main', $data);
@@ -71,6 +74,11 @@ class Devolucion extends CI_Controller
         $data['q'] = $this->devolucion_model->devolucion_causa_det($aaa,$mes,$id_devolucion);
         $data['js'] = 'devolucion/s_devolucion_causa_det_js';
         $this->load->view('main', $data);
+    }
+    function borra_producto_dev($aaa,$mes,$suc,$id_devolucion)
+    {
+        $this->devolucion_model->sumit_borrado_sup($id_devolucion);
+        redirect('devolucion/s_devolucion_suc_rrm/'.$aaa.'/'.$mes.'/'.$suc);
     }
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
