@@ -1261,5 +1261,108 @@ where $var tipo3 in('DA','FE','FA') AND tlid=1;";
     $q=$this->db->query($s);
     return $q;
     }
+public function productos_negados()
+    {
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+    $s="SELECT fec, a.suc,c.nombre as sucx,a.codigo,a.descri,count(*)as negado,
+    case when fecha_modificado>=date(now()) then 'FANASA' else 'NO HAY PROVEEDOR' end as status
+FROM sucursal.negados a
+join catalogo.sucursal c on c.suc=a.suc
+left join catalogo.cat_fanasa b on case when back=2 then b.rel2 else b.rel1 end=a.rel and rel>0
 
+where $var fec>=subdate(date(now()),4)
+group by fec,a.suc
+order by fec desc ";
+
+    $q=$this->db->query($s);
+    return $q;
+    }
+public function productos_negados_det($fec,$suc)
+    {
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+    $s="SELECT a.obser,fec , a.suc,c.nombre as sucx,a.codigo,a.descri,count(*)as negado,
+    case when fecha_modificado>=date(now()) then 'FANASA' else 'NO HAY PROVEEDOR' end as status,
+(select sum(cantidad) from desarrollo.inv x,catalogo.sucursal y 
+where $var x.suc=y.suc and x.codigo=a.codigo and fechai>=subdate(date(now()),3))as inv
+FROM sucursal.negados a
+join catalogo.sucursal c on c.suc=a.suc
+left join catalogo.cat_fanasa b on case when back=2 then b.rel2 else b.rel1 end=a.rel and rel>0
+
+where $var fec='$fec' and a.suc=$suc  
+group by a.codigo";
+
+    $q=$this->db->query($s);
+    return $q;
+    }
+    
+    public function productos_negados_cdet($fec,$cod)
+    {
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+    $s="SELECT a.obser,fec, a.suc,c.nombre as sucx,a.codigo,a.descri,count(*)as negado,
+    case when fecha_modificado>=date(now()) then 'FANASA' else 'NO HAY PROVEEDOR' end as status,
+    
+(select sum(cantidad) from desarrollo.inv x,catalogo.sucursal y 
+where $var x.suc=y.suc and x.codigo=a.codigo and fechai>=subdate(date(now()),3))as inv
+FROM sucursal.negados a
+join catalogo.sucursal c on c.suc=a.suc
+left join catalogo.cat_fanasa b on case when back=2 then b.rel2 else b.rel1 end=a.rel and rel>0
+where $var fec='$fec' and a.codigo=$cod  
+group by a.suc";
+
+    $q=$this->db->query($s);
+    return $q;
+    }
+
+public function productos_negados_cod()
+    {
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+    $s="SELECT fec, a.suc,c.nombre as sucx,a.codigo,a.descri,count(*)as negado,
+    case when fecha_modificado>=date(now()) then 'FANASA' else 'NO HAY PROVEEDOR' end as status,
+    case when d.codigo is null then '' else 'DEMA' end as status_dema,
+(select sum(cantidad) from desarrollo.inv x, catalogo.sucursal y
+where $var x.suc=y.suc and x.codigo=a.codigo and fechai>=subdate(date(now()),3))as inv
+
+FROM sucursal.negados a
+join catalogo.sucursal c on c.suc=a.suc
+left join catalogo.cat_fanasa b on case when back=2 then b.rel2 else b.rel1 end=a.rel and rel>0
+left join catalogo.cat_dema d on case when back=2 then d.rel2 else d.rel1 end=a.rel and rel>0
+
+where $var fec>=subdate(date(now()),3)
+group by fec, a.codigo
+order by fec desc";
+
+    $q=$this->db->query($s);
+    return $q;
+    }
+public function productos_negados_det_exis($suc,$cod)
+    {
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+    $s="select $suc as suc_sol,a.suc,b.nombre,a.cantidad,
+ifnull((select sum(cant) from vtadc.vta_backoffice x where x.suc=a.suc and x.rel=a.rel and x.fecha>=subdate(date(now()),30)),0)as vta
+ from desarrollo.inv a
+join catalogo.sucursal b on b.suc=a.suc
+where $var codigo=$cod and fechai>=subdate(date(now()),3)";
+
+    $q=$this->db->query($s);
+    return $q;
+    }
+    
+    
+    
+    
 }

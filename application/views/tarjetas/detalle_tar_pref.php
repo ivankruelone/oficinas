@@ -13,7 +13,7 @@
                          <table class="table">
                             <thead>
                                 <tr>
-
+                                    <th style="text-align: center;"></th>
                                     <th style="text-align: center;">Tarjeta</th>
                                     <th style="text-align: center;">Cliente</th>
                                     <th style="text-align: center;">Fec.Venta</th>
@@ -24,13 +24,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                                <?php $num = 1;
                                 
                                 foreach($query->result() as $row){ 
                                 
                             
                                 ?>
                                 <tr>
+                                    <td style="text-align: center;"><?php echo $num; ?></td>
                                     <td style="text-align: center;"><?php echo $row->codigo; ?></td>
                                     <td style="text-align: center;"><?php echo $row->nombre; ?></td>
                                     <td style="text-align: center;"><?php echo $row->venta; ?></td>
@@ -49,7 +50,7 @@
                                             
                                          }
                                     }
-                                
+                                $num ++;
                                 }
                                         
                                         

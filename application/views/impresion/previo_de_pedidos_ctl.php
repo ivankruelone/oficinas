@@ -129,7 +129,7 @@ $totimp=0;
         </tr>
         
         <tr>
-        <td width=\"680\" align=\"center\">LIC. JORGE NU&Ntilde;EZ SALGADO</td>
+        <td width=\"680\" align=\"center\">ING. AMADO PI&Ntilde;ON DURAN</td>
         </tr>
         <tr>
         <td width=\"680\" align=\"center\">GERENTE DE SISTEMAS</td>

@@ -17,7 +17,7 @@ $s="SELECT b.nombre as sucx,a.*,sum(canp*costo)as impp,b.plantilla,c.id_cc,c.fol
 FROM papeleria.insumos_c a
 join catalogo.sucursal b on b.suc=a.suc
 join papeleria.insumos_s c on c.id_cc=a.id
-where c.tipo=1 and a.tipo in(1,2,3) and id_comprar=$id_comprar and b.tipo3 in('FA','FE','DA','MO') and date_format(a.fecha,'%Y-%m-%d') > subdate(date(now()),28)
+where c.tipo=1 and a.tipo in(1,2,3) and id_comprar=$id_comprar and b.tipo3 in('FA','FE','DA','MO') and date_format(a.fecha,'%Y-%m-%d') > subdate(date(now()),33)
 group by a.id,fol";
 $q=$this->db->query($s);
 return $q;    
@@ -29,7 +29,7 @@ $s="SELECT b.nombre as sucx,a.*,sum(canp*costo)as impp,b.plantilla,c.id_cc,c.fol
 FROM papeleria.insumos_c a
 join catalogo.sucursal b on b.suc=a.suc
 join papeleria.insumos_s c on c.id_cc=a.id
-where c.tipo=1 and a.tipo in(1,2,3) and id_comprar = $id_comprar and b.tipo3 not in('FA','FE','DA','MO') and a.id not in (select x.id_cc from catalogo.bata_rhe x where x.id_cc = a.id) and a.id not in(select x.id_cc from papeleria.pedido_extra x where x.id_cc = a.id) and date_format(a.fecha,'%Y-%m-%d') > subdate(date(now()),28)
+where c.tipo=1 and a.tipo in(1,2,3) and id_comprar = $id_comprar and b.tipo3 not in('FA','FE','DA','MO') and a.id not in (select x.id_cc from catalogo.bata_rhe x where x.id_cc = a.id) and a.id not in(select x.id_cc from papeleria.pedido_extra x where x.id_cc = a.id) and date_format(a.fecha,'%Y-%m-%d') > subdate(date(now()),33)
 group by a.id,fol";
 $q=$this->db->query($s);
 return $q;    

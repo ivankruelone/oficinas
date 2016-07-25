@@ -584,7 +584,7 @@ function s_val_pedido_ins_his_glo()
    function ped_esp_sucur_fen(){
     $time = time();
     if( date("H:i:s", $time)>="16:30:00"){ 
-    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:00 hrs.');</script>";
+    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:30 hrs.');</script>";
     redirect('welcome', 'refresh');
     }else{
 
@@ -597,8 +597,8 @@ function s_val_pedido_ins_his_glo()
     function generar_pedido_f(){
 
     $time = time();
-    if( date("H:i:s", $time)>="18:30:00"){ 
-    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:00 hrs.');</script>";
+    if( date("H:i:s", $time)>="16:30:00"){ 
+    echo "<script>alert('El tiempo de captura se ha terminado, tiempo limite hasta las 16:30 hrs.');</script>";
     redirect('welcome', 'refresh');
     }else{
         
@@ -692,7 +692,142 @@ function s_val_pedido_ins_his_glo()
     redirect('pedido/can_pedido_alm');
     }
 
+///////////////////////////////Pedidos DEMA ///////////////////////////////////
 
+    function a_pedido_dema(){
+          $data['titulo'] ='PEDIDO DEMA';
+          $data['titulo1'] ='PEDIDOS FORMULADOS PARA DEMA';  
+          $data['q'] = $this->Pedido_model->pedido_dema_producto();
+          $data['q1'] = $this->Pedido_model->pedido_dema();
+          $data['js'] = 'pedido/a_pedido_dema_js';
+          $this->load->view('main',$data); 
+
+    }
+     function sumit_pedido_dema(){
+          $dias=$this->input->post('dias');
+          $min=$this->input->post('min');
+          $this->Pedido_model->sumit_pedido_dema($dias,$min);
+          redirect('pedido/a_pedido_dema');
+    }
+    function a_pedido_dema_det($codigo){
+          $des =$this->Pedido_model->pedido_dema_producto_uno($codigo);
+          $data['titulo'] =$codigo.' '.$des;
+          $data['q'] = $this->Pedido_model->pedido_dema_producto_suc($codigo);
+          $data['js'] = 'pedido/a_pedido_dema_det_js';
+          $this->load->view('main',$data); 
+
+    }
+    function actualiza_detalle_pedido_dema()
+    {
+        $id = $this->input->post('id');
+        $pedido = $this->input->post('pedido');
+        echo $this->Pedido_model->actualiza_detalle_pedido_dema($id, $pedido);
+    }
+    function a_excel_pedido_dema()
+    {
+        set_time_limit(0);
+        ini_set("memory_limit","2048M");
+        $this->load->helper('download');
+        $data['query'] = $this->Pedido_model->pedido_dema_producto();
+        $this->load->view('excel/a_excel_pedido_dema',$data);
+    }
+    function guarda_pedido_dema()
+    {
+        $this->Pedido_model->sumit_guarda_pedido_dema($id, $pedido);
+        redirect('pedido/a_pedido_dema');
+    }
+    function a_pedido_dema_bloqueo($id)
+    {
+     $data['titulo'] ='BOQUEO DE CODIGOS'; 
+     $data['id']=$id;
+     $data['q'] = $this->Pedido_model->pedido_dema_prod($id);
+     $data['js'] = 'pedido/a_pedido_dema_bloqueo_js';  
+     $this->load->view('main',$data); 
+    }
+    function sumit_pedido_dema_bloqueo()
+    {
+     $fec1=$this->input->post('fec1');
+     $fec2=$this->input->post('fec2');
+     $id=$this->input->post('id');
+     $this->Pedido_model->aplica_bloqueo($id,$fec1,$fec2);  
+     redirect('pedido/a_pedido_dema');
+    }
+    function sumit_pedido_dema_orden($id)
+    {
+     $this->Pedido_model->pedido_dema_orden($id);
+     redirect('pedido/a_pedido_dema');
+    }
+    
+    function a_excel_pedido_dema_suc()
+    {
+        set_time_limit(0);
+        ini_set("memory_limit","2048M");
+        $this->load->helper('download');
+        $id=1;
+        $data['a'] = $this->Pedido_model->pedido_dema_prod_suc($id);
+        
+        $this->load->view('excel/a_excel_pedido_dema_suc',$data);
+    }
+    
+    
+    
+    
+    
+/*************************************************************************************************************************/  
+function s_val_pedido_uni()
+{
+        $id_plaza=$this->session->userdata('id_plaza');
+        $data['titulo'] = "Pedidos de uniformes para validar";
+        $data['titulo1'] = "Pedidos que la sucursal no valido o que el supervisor los regreso a sucursal";
+        $data['q'] = $this->Pedido_model->val_pedido_uni($id_plaza);
+        $data['q1'] = $this->Pedido_model->val_pedido_no_uni($id_plaza);
+        $data['js'] = 'pedido/pedido_compra_js';
+        $this->load->view('main', $data);  
+} 
+
+function s_val_pedido_uni_det($id_cc)
+{
+        $id_plaza=$this->session->userdata('id_plaza');
+        $data['titulo'] = "Pedidos de insumos para validar del folio ".$id_cc;
+        $data['id_cc'] = $id_cc;
+        $data['q'] = $this->Pedido_model->val_pedido_uni_det($id_cc);
+        $data['js'] = 'pedido/pedido_uni_js';
+        $this->load->view('main', $data);  
+}
+
+function pedido_extra_cero($id_cc,$id_ex,$id)
+{
+   /*echo $id_cc .' id_cc <br />';
+   echo $id_ex .' id_ex <br />';
+   echo $id .' id_d<br />';
+   die(); */
+   $b=array('cantidad' => 0);
+   $this->db->update('papeleria.pedido_extra',$b,array('id_cc' => $id_cc, 'id_ex' => $id_ex)); 
+   $this->Pedido_model->actualiza_ped_cero($id_cc, $id);
+   redirect('pedido/s_val_pedido_uni_det/'.$id_cc);
+}
+
+function sumit_uni_det_cerrar($id_cc)
+{
+ 
+ $this->Pedido_model->inserta_insumos_s($id_cc);
+ $s = "select * from papeleria.insumos_s where id_cc = $id_cc";
+ $q = $this->db->query($s);
+ if($q->num_rows() > 0){
+     $this->Pedido_model->inserta_insumos_uni_s($id_cc);
+ }
+ redirect('pedido/s_val_pedido_uni');  
+}
+  
+function s_val_pedido_det_uni_validar($id_cc)
+{
+        $id_plaza=$this->session->userdata('id_plaza');
+        $data['titulo'] = "Pedidos de insumos para validar del folio ".$id_cc;
+        $data['id_cc'] = $id_cc;
+        $data['q'] = $this->Pedido_model->val_pedido_uni_det($id_cc);
+        $data['js'] = 'pedido/pedido_uni_js';
+        $this->load->view('main', $data);  
+}   
 
 
 

@@ -21,6 +21,7 @@ $l1=anchor('backoffice/a_pedidos_farmacos/1',$var1);
 $l2=anchor('backoffice/a_pedidos_farmacos/2',$var2);
 $l3=anchor('backoffice/a_pedidos_farmacos/3',$var3);
 $l4=anchor('backoffice/a_pedidos_fenix_a_cedis','PEDIDO DE SUCURSALES FENIX DE MEDICAMENTOS GENERICOS');
+$l5=anchor('backoffice/a_pedidos_nadro','PEDIDOS NADRO::::::::....');
 ?>
  <table class="table table-bordered table-condensed table-striped table-hover" id="tabla1">
                              <thead>
@@ -46,6 +47,10 @@ $l4=anchor('backoffice/a_pedidos_fenix_a_cedis','PEDIDO DE SUCURSALES FENIX DE M
                                  <tr>
                                  <td><?php echo 'PEDIDOS GENERICOS'?></td>
                                  <td><?php echo $l4?></td>
+                                 </tr>
+                                 <tr>
+                                 <td><?php echo 'PEDIDO NADRO'?></td>
+                                 <td><?php echo $l5?></td>
                                  </tr>
                               </tbody>
                               <tfoot>

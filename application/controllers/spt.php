@@ -508,7 +508,7 @@ function reporte_med_nov15()
 
 function detalle_medicos_nov15($anio,$mes) //$periodo
     {
-        $data['titulo'] = "Detalle Medicos Noviembre 2015";
+        $data['titulo'] = "Detalle Medicos del mes:  ".$mes." del a&ntilde;o: ".$anio;
         $data['query'] = $this->spt_model->detalle_medicos_nov15($anio,$mes); //$periodo
         $this->load->view('main', $data);
     }

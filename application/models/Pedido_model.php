@@ -1173,7 +1173,271 @@ return $q;
 
 
     }
+    
+    function sumit_pedido_dema($dias,$min)
+    {
+        
+        $s0="delete from compras.pedido_dema";
+        $this->db->query($s0);
+        $s1="insert into compras.pedido_dema(suc, idcat_dema, codigo, descri, susa, pub, cos, fecha, rel1, rel2, venta, inv, ped, fecha_ped)
+(select suc, idcat_dema, codigo, descri, susa, pub, cos, fecha, rel1, rel2,
+ifnull((select sum(cant) from vtadc.vta_backoffice x where x.suc=b.suc and x.cod=a.codigo and vtatip=1 and fecha>=subdate(date(now()),$dias)),0),
+ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0),
 
+case when (case when
+ifnull((select sum(cant) from vtadc.vta_backoffice x where x.suc=b.suc and x.cod=a.codigo and vtatip=1 and fecha>=subdate(date(now()),$dias)),0)=0 and
+ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0)=0
+then $min-ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0)
+else
+(ifnull((select sum(cant) from vtadc.vta_backoffice x where x.suc=b.suc and x.cod=a.codigo and vtatip=1 and fecha>=subdate(date(now()),$dias)),0)-
+ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0))
+end)>0 then
+case when
+ifnull((select sum(cant) from vtadc.vta_backoffice x where x.suc=b.suc and x.cod=a.codigo and vtatip=1 and fecha>=subdate(date(now()),$dias)),0)=0 and
+ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0)=0
+then $min-ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0)
+else
+(ifnull((select sum(cant) from vtadc.vta_backoffice x where x.suc=b.suc and x.cod=a.codigo and vtatip=1 and fecha>=subdate(date(now()),$dias)),0)-
+ifnull((select (cantidad) from desarrollo.inv x where x.suc=b.suc and x.codigo=a.codigo and fecha>=subdate(date(now()),1)),0))
+end else 0 end as ped
+,
+
+now()
+from catalogo.cat_dema a, catalogo.sucursal b where tlid=1 and tipo3='FE' and back in(1,2) and (rel1>0 or rel2>0))";
+    $this->db->query($s1);
+    
+    }
+    function pedido_dema_producto()
+    {
+        
+        $s1="select rel1,rel2,codigo,descri,sum(ped)as ped, sum(ped*cos)as imp,a.cos,
+case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=a.codigo) in(2,5,9,10)
+then sum((ped*cos)*.16) else sum(0) end as iva,
+
+sum(ped*cos)+case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=a.codigo) in(2,5,9,10)
+then sum((ped*cos)*.16) else sum(0) end as total
+        from compras.pedido_dema a group by codigo";
+        $q=$this->db->query($s1);
+        return $q;
+    }
+    function pedido_dema_producto_suc($codigo)
+    {
+        
+        $s1="select a.id,b.nombre,a.*,(cos*ped)as imp, 
+        case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=a.codigo) in(2,5,9,10)
+        then ((ped*cos)*.16) else 0 end as iva,
+
+        (ped*cos)+case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=a.codigo) in(2,5,9,10)
+        then ((ped*cos)*.16) else 0 end as total
+      
+        from compras.pedido_dema a 
+        join catalogo.sucursal b on b.suc=a.suc where codigo=$codigo";
+        $q=$this->db->query($s1);
+        return $q;
+    }
+    function pedido_dema_producto_uno($codigo)
+    {
+        
+        $s1="select *from catalogo.cat_dema where codigo=$codigo";
+        $q=$this->db->query($s1);
+        $r=$q->row();
+        $des=$r->descri;
+        return $des;
+    }
+    public function actualiza_detalle_pedido_dema($id, $pedido)
+    {
+        $this->db->where('id', $id);
+        $this->db->set('ped', $pedido);
+        $this->db->update('compras.pedido_dema');
+        return $this->calcula_importe_dema($id);
+    }
+    function calcula_importe_dema($id)
+    {
+        $sql="select a.id,b.nombre,a.*,(cos*ped)as imp, 
+        case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=a.codigo) in(2,5,9,10)
+        then ((ped*cos)*.16) else 0 end as iva,
+
+        (ped*cos)+case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=a.codigo) in(2,5,9,10)
+        then ((ped*cos)*.16) else 0 end as total
+      
+        from compras.pedido_dema a 
+        join catalogo.sucursal b on b.suc=a.suc where a.id=$id";
+        $query=$tis->db->query($sql);
+        $json = json_encode($query->row());
+
+        return $json;
+        
+    }
+    function sumit_guarda_pedido_dema()
+    {
+        $s1="insert ignore into compras.pedido_dema_d(suc, idcat_dema, codigo, descri, susa, pub, cos, fecha, rel1, rel2, venta, inv, ped, fecha_ped, id,id_cc)
+            (select suc, idcat_dema, codigo, descri, susa, pub, cos, fecha, rel1, rel2, venta, inv, ped, fecha_ped, id,
+            ifnull((select max(id)+1 from compras.pedido_dema_c x),1)
+            from compras.pedido_dema where ped>0)";
+        $this->db->query($s1);
+        $s2="delete from compras.pedido_dema";
+        $this->db->query($s2);
+        $s3="insert ignore into pedido_dema_c(id, fecha1, fecha2, activo, fecha)
+            (SELECT max(id_cc),'0000-00-00','0000-00-00',0,now() FROM pedido_dema_d)";
+        $this->db->query($s3);
+    }
+    function pedido_dema()
+    {
+        $s1="SELECT a.*,sum(ped)as ped,sum(cos*ped)as imp,
+            sum(case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=b.codigo) in(2,5,9,10)
+            then ((cos*ped)*.16) else 0 end)as iva,
+            sum(cos*ped)+
+            sum(case when (select lin from catalogo.cat_mercadotecnia x where x.codigo=b.codigo) in(2,5,9,10)
+            then ((cos*ped)*.16) else 0 end)as total
+            FROM compras.pedido_dema_c a
+            join compras.pedido_dema_d b on b.id_cc=a.id
+            group by a.id order by a.id desc";
+        $q1=$this->db->query($s1);
+        return $q1;
+    }
+    function pedido_dema_prod($id)
+    {
+        $s1="SELECT codigo,descri,a.fecha1,fecha2,rel1,rel2 
+            FROM compras.pedido_dema_c a
+            join compras.pedido_dema_d b on b.id_cc=a.id
+            where a.id=$id group by codigo";
+        $q1=$this->db->query($s1);
+        return $q1;
+    }
+    function aplica_bloqueo($id,$fec1,$fec2)
+    {
+       $s1="insert ignore into compras.bloqueados_x_mes_todas(codigo, descripcion, fecha1, fecha2, rel1, rel2)
+            (SELECT codigo,descri,'$fec1','$fec2',rel1,rel2
+            FROM compras.pedido_dema_c a
+            join compras.pedido_dema_d b on b.id_cc=a.id
+            where a.id=$id group by codigo)";
+        $q1=$this->db->query($s1);
+        $s2="update compras.pedido_dema_c a
+            set fecha1='$fec1', fecha2='$fec2',activo=1 
+            where a.id=$id";
+        $q1=$this->db->query($s2);
+    }
+    function pedido_dema_prod_suc($id)
+    {
+        $s="SELECT a.id,b.suc,c.nombre,codigo,descri,a.fecha1,fecha2,rel1,rel2,sum(ped)as ped 
+            FROM compras.pedido_dema_c a
+            join compras.pedido_dema_d b on b.id_cc=a.id
+            join catalogo.sucursal c on c.suc=b.suc
+            where a.id=$id group by b.suc";
+        $q=$this->db->query($s);
+        $a='';
+        foreach($q->result() as $r)
+        {
+            $a[$r->suc]['id']=$r->id;
+            $a[$r->suc]['suc']=$r->suc;
+            $a[$r->suc]['sucx']=$r->nombre;
+            $a[$r->suc]['ped']=$r->ped;
+        }
+         return $a;
+    }
+    
+function pedido_dema_orden($id)
+    {
+        $id_user=$this->session->userdata('id');
+        $responsable=$this->session->userdata('responsable');
+        $folio="select * from catalogo.foliador1  where clav='osi'";
+        $afolio=$this->db->query($folio);
+        $rfolio=$qfolio->row();
+        
+        $s="insert into compras.orden_c(id_estado, prv, fecha_captura, fecha_envio, fecha_limite, tipo,
+            id_responsable, id_captura, folprv, cia, fecha_modi, base, licita, pre_orden,
+            estatus, fecha_desactivado, consigna, recibe, embarca)
+            (SELECT 11, 1247, date(now()), date(now()), adddate(date(now()),20), 1,
+            '$responsable', '$id_user',$rfolio->num, 1, '0000-00-00', 5, ' ', id,
+            1, '0000-00-00', 1, 100, 100
+            FROM compras.pedido_dema_c where id=$id and 
+            (select pre_orden from compras.orden_c x where id_estado=11 and x.pre_orden=$id)is null )";
+        $this->db->query($s);
+        $act="update catalogo.foliador1 set num=num+1 where clav='osi'";
+        $this->db->query($act);
+        $s1="update compras.pedido_dema_c a, compras.orden_c b
+            set a.id_orden=b.id_orden  
+            where a.id=b.pre_orden and a.id=$id";
+        $this->db->query($s1);
+        $s2="insert into compras.orden_d
+            (id_orden,  codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr, fecha_modi, aplica, ieps)
+            (SELECT
+            b.id_orden, a.codigo, 0, ' ', descri, susa, cos,
+            ifnull((select case when iva>0 then 1 else 0 end from catalogo.cat_mercadotecnia x where x.codigo=a.codigo),0),
+            0, sum(ped), sum(ped), 0, now(), 0, 0
+            FROM compras.pedido_dema_d a join compras.orden_c b on b.pre_orden=a.id_cc
+            where id_cc=$id group by codigo)";
+        $this->db->query($s2);
+    }
+    
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    function val_pedido_uni($id_plaza)
+    {
+     $s="SELECT a.suc,c.nombre as sucx, b.descri, a.id, fecha_cap,
+         (select sum(canp_sup*costo) from papeleria.insumos_d x where x.id_cc=a.id)as imp
+         FROM papeleria.insumos_c a
+         join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
+         join catalogo.sucursal c on c.suc=a.suc
+         where tipo=0 and stat_sup='B' and a.id in(select id_cc from papeleria.pedido_extra)"; //=a.suc and superv=$id_plaza
+    $q=$this->db->query($s);
+    return $q;  
+    }
+    
+    function val_pedido_no_uni($id_plaza)
+    {
+     $s="SELECT a.suc,c.nombre as sucx, b.descri, a.id, fecha_cap,
+         (select sum(canp_sup*costo) from papeleria.insumos_d x where x.id_cc=a.id)as imp
+         FROM papeleria.insumos_c a
+         join catalogo.cat_insumos_compra b on b.id_insumo=a.id_comprar
+         join catalogo.sucursal c on c.suc=a.suc
+         where tipo=0 and a.id in(select id_cc from papeleria.pedido_extra)"; //=a.suc and superv=$id_plaza
+    $q=$this->db->query($s);
+    return $q;  
+    }
+    
+    function val_pedido_uni_det($id_cc)
+    {
+     $s="select a.*,b.descripcion,b.empaque,c.id_ex,c.cantidad, c.nomina,d.completo as name, d.succ as suc, e.nombre, d.puestox
+         from papeleria.insumos_d a
+         join catalogo.cat_insumos b on b.id_insumos=a.id_insumos
+         join papeleria.pedido_extra c on a.id_cc = c.id_cc and c.id_insumos = a.id_insumos
+         left join catalogo.cat_empleado d on c.nomina = d.nomina
+         left join catalogo.sucursal e on d.succ = e.suc
+         where a.id_cc= $id_cc order by d.completo"; //d.nomina and d.tipo = 1
+     $q=$this->db->query($s);
+     return $q;  
+    }
+    
+    function actualiza_ped_cero($id_cc, $id)
+    {
+     $s="update papeleria.insumos_d a,papeleria.pedido_extra b, catalogo.cat_insumos c, papeleria.insumos_c d
+         set a.canp_sup = a.canp_sup - 1
+         where a.id_cc = b.id_cc and a.id_insumos = c.id_insumos and a.id_insumos = b.id_insumos
+         and  d.id_comprar=1 and a.tipo=0 and a.id_cc = $id_cc and a.id = $id";
+     $this->db->query($s); 
+    }
+    
+    function inserta_insumos_uni_s($id_cc)
+    {
+      $s = "insert ignore into papeleria.pedidoextra_s
+           (id_cc, id_ex, nomina, id_inicio, id_insumos, fecha_cap, fecha_sur, can_p, can_s, tipo, folio, id_insumos_s)
+           (SELECT c.id_cc, c.id_ex,c.nomina,c.session, c.id_insumos, c.fecha, '0000-00-00', c.cantidad, c.cans,1,'A',d.id
+           FROM papeleria.insumos_c a, papeleria.insumos_d b, papeleria.pedido_extra c,papeleria.insumos_s d
+           where a.tipo=1 and cantidad>0 and a.id=b.id_cc and a.id = c.id_cc and d.id_insumos = c.id_insumos and a.id= $id_cc and d.id_cc = $id_cc group by c.id_ex)";
+     $this->db->query($s); 
+     
+     $b=array('tipo' => 1);
+     $this->db->where('id_cc',$id_cc);
+     $this->db->update('papeleria.pedido_extra',$b);  
+     
+     $sql_cierre2 = "update papeleria.insumos_d set tipo = 1 where id_cc = ? and canp_sup > 0;";
+     $this->db->query($sql_cierre2, $id_cc);
+    }
+    
 
 
 

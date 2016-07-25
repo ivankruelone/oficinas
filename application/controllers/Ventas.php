@@ -1105,5 +1105,41 @@ function s_ventas_comparativas_historicas_ger()
         $data['js'] = 'ventas/s_ventas_comparativas_historicas_js';
         $this->load->view('main', $data);
     }
+    
+    function a_productos_negados()
+    {
+        
+        $data['titulo']='PRODUCTOS NEGADOS';
+        $data['q'] = $this->Ventas_model->productos_negados();
+        $data['q1'] = $this->Ventas_model->productos_negados_cod();
+        $data['js'] = 'ventas/a_productos_negados_js';
+        $this->load->view('main', $data);
+    }
+    function a_productos_negados_det($fec,$suc)
+    {
+        $sucx=$this->Catalogos_model->busca_suc_una($suc);
+        $data['titulo']='PRODUCTOS NEGADOS DE LA SUCURSAL '.$sucx.' DEL DIA '.$fec;
+        $data['q'] = $this->Ventas_model->productos_negados_det($fec,$suc);
+        $data['js'] = 'ventas/a_productos_negados_det_js';
+        $this->load->view('main', $data);
+    }
+    function a_productos_negados_cdet($fec,$cod)
+    {
+        
+        $data['titulo']='PRODUCTOS NEGADOS DEL CODIGO '.$cod.' DEL DIA '.$fec;
+        $data['q'] = $this->Ventas_model->productos_negados_cdet($fec,$cod);
+        $data['q1'] = $this->Ventas_model->productos_negados_det_exis('0',$cod);
+        $data['js'] = 'ventas/a_productos_negados_cdet_js';
+        $this->load->view('main', $data);
+    }
+    function a_productos_negados_det_exis($fec,$suc,$cod)
+    {
+        $sucx=$this->Catalogos_model->busca_suc_una($suc);
+        $data['titulo']='PRODUCTOS NEGADOS DE LA SUCURSAL '.$sucx.' DEL DIA '.$fec;
+        $data['q'] = $this->Ventas_model->productos_negados_det_exis($suc,$cod);
+        $data['js'] = 'ventas/a_productos_negados_js';
+        $this->load->view('main', $data);
+    }
+    
 
 }

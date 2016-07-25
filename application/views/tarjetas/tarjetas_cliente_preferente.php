@@ -13,7 +13,7 @@
                          <table class="table">
                             <thead>
                                 <tr>
-
+                                    <th style="text-align: center;"></th>
                                     <th style="text-align: center;"># de Sucursal</th>
                                     <th style="text-align: center;">Sucursal</th>
                                     <th style="text-align: center;">Folio Inicial</th>
@@ -27,44 +27,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                                <?php $num = 1;
                                 
                                 foreach($query->result() as $row){ 
-                                $sx = "SELECT * from vtadc.tarjetas where tipo=1 and venta between '$perini' and '$perfin' and suc = $row->suc";
-                                $qx = $this->db->query($sx);
-        
-                                if($qx->num_rows() > 0){
-                                $ventaa=$qx->num_rows();
-                                $inv=(($row->tar)-($ventaa)); 
-                                }else{
-                                $ventaa=0;
-                                $inv=$row->tar;
-                                }
                                 ?>
                                 <tr>
+                                    <td style="text-align: center;"><?php echo $num; ?></td>
                                     <td style="text-align: center;"><?php echo $row->suc; ?></td>
-                                    <td style="text-align: center;"><?php echo $row->sucx; ?></td>
+                                    <td style="text-align: center;"><?php echo $row->sucursal; ?></td>
                                     <td style="text-align: center;"><?php echo $row->fol1; ?></td>
                                     <td style="text-align: center;"><?php echo $row->fol2; ?></td>
-                                    <td style="text-align: center;"><?php echo $row->tar; ?></td>
-                                    <td style="text-align: center;"><?php echo $ventaa; ?></td>
-                                    <td style="text-align: center;"><?php echo $inv; ?></td>
+                                    <td style="text-align: center;"><?php echo $row->tarjetas; ?></td>
+                                    <td style="text-align: center;"><?php echo $row->vendidas; ?></td>
+                                    <td style="text-align: center;"><?php echo $row->inv; ?></td>
                                     <td style="text-align: center;"><?php echo anchor('tarjetas/detalle_tar_pref/'.$row->suc.'/'.$row->fol1.'/'.$row->fol2.'/'.$perini.'/'.$perfin, 'Detalle'); ?></td>                  
                                 </tr>
                                 
                                 <?php 
                                 
-                            
-                                    {
-                                        foreach($query->result() as $row)
-                                        {
-                                            
-                                            
-                                         }
-                                    }
-                                
-                                }
-                                        
+                                    $num ++;
+                               
+                                    }    
                                         
                                 ?>
                                 

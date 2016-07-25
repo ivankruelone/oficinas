@@ -103,7 +103,23 @@ class Desplazamientos extends CI_Controller
         $data['js'] = 'desplazamientos/a_desplaza_paquetes_js';
         $this->load->view('main', $data);
         }
-    
+    function a_desplaza_descontinuados()
+        {
+        set_time_limit(0);
+        ini_set("memory_limit","2048M");
+        $data['titulo1'] = "Desplazamientos de productos descontinuados";
+        $data['q'] = $this->desplazamientos_model->desplaza_descontinuados();
+        $data['js'] = 'desplazamientos/a_desplaza_descontinuados_js';
+        $this->load->view('main', $data);
+        }
+    function a_desplaza_descontinuados_det($sec)
+        {
+        $secx=$this->Catalogos_model->busca_sec_unica($sec);
+        $data['titulo1'] = $secx;
+        $data['q'] = $this->desplazamientos_model->desplaza_descontinuados_det($sec);
+        $data['js'] = 'desplazamientos/a_desplaza_descontinuados_det_js';
+        $this->load->view('main', $data);
+        }
         
         function s_desplaza_ofertas_gen()
         {
@@ -250,8 +266,38 @@ class Desplazamientos extends CI_Controller
         force_download($name, $csv);
         
     }
+    function a_desplaza_fenix_lab()
+    {
+        $aaa=date('Y');
+        $data['titulo'] = "Desplazamiento de productos por laboratorio";
+        $data['q'] = $this->desplazamientos_model->desplaza_fenix_lab($aaa);
+        $data['js'] = 'desplazamientos/a_desplaza_fenix_lab_js';
+        $this->load->view('main', $data);
+        
+    }
+    function a_desplaza_fenix_lab_excel($nlab)
+    {
+        $aaa=date('Y');
+        set_time_limit(0);
+        ini_set("memory_limit","2048M");
+        $this->load->helper('download');
+        $data['query'] = $this->desplazamientos_model->desplaza_fenix_lab_excel_c($aaa,$nlab);
+        $data['query1'] = $this->desplazamientos_model->desplaza_fenix_lab_excel_d($aaa,$nlab);
+        $this->load->view('excel/a_desplaza_fenix_lab_excel',$data);
+    }
     
-    
-    
+     function a_desplaza_fenix_ddr_excel()
+    {
+        $fec1='2016-01-01';
+        $fec2='2016-01-31';
+        $tipo='DA';
+        
+        $this->load->dbutil();
+        $this->load->helper('download');
+        $a = $this->desplazamientos_model->desplaza_fenix_ddr_excel($fec1,$fec2,$tipo);
+        $csv = $this->dbutil->csv_from_result($a);
+        $name = 'desplazamientos_'.date('Ymd_His').'.csv';
+        force_download($name, $csv);
+    }
     
 }

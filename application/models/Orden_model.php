@@ -411,9 +411,10 @@ where c.id=$id_estado and a.id=b.id_cc and a.folprv=$folprv";
 from compras.orden_c where id_orden=$id_orden)";
         $this->db->query($s1);
         $s2 = "update compras.orden_c set
-prv=$prv,cia=$cia,id_estado=$id_estado,fecha_envio='$fecha',fecha_limite=date_add('$fecha',interval 20 day),fecha_modi=CURRENT_TIMESTAMP(),licita='$licitacion',
+prv=$prv,cia=$cia,id_estado=$id_estado,fecha_envio='$fecha',fecha_limite=date_add('$fecha',interval 20 day),fecha_modi=CURRENT_TIMESTAMP(),
+licita=(select licita from compras.numero_de_licitaciones x where x.num_licitacion=$licitacion),
 recibe=(select num_edo from compras.numero_de_licitaciones x where x.id=$id_estado),
-embarca=(select num_licitacion from compras.numero_de_licitaciones x where x.licitacion='$licitacion') 
+embarca=$licitacion 
 where id_orden=$id_orden ";
         $this->db->query($s2);
         $s3 = "insert into orden_modi.orden_c( id_orden, id_estado, prv, fecha_captura, fecha_envio, fecha_limite, tipo, id_responsable, id_captura, folprv, cia, modifica, fecha_modifica,base,licita)
@@ -710,7 +711,7 @@ day('$fecha_envio'),0,0,0,$usuario,0, '$clagob', '$clagob','C',$codigo,0,0,'nop'
     public function com_orden_det_his($id)
     {
         $s = "select a.* From compras.orden_d a
-    where id_orden=$id and cans>0 ";
+    where id_orden=$id and (cans>0  or canr>0)";
         $q = $this->db->query($s);
         return $q;
     }
@@ -885,7 +886,7 @@ FROM compras.orden_a  a
     function orden_historico()
     {
     $responsable=$this->session->userdata('responsable');    
-        $s = "select b.corto,a.*,sum(cans)as can,sum(aplica)as llego from compras.orden_c a
+        $s = "select b.corto,a.*,sum(cans+canr)as can,sum(aplica)as llego from compras.orden_c a
 join catalogo.provedor b on b.prov=a.prv
 join compras.orden_d c on c.id_orden=a.id_orden
 where a.tipo=1 and id_responsable=$responsable
@@ -894,6 +895,7 @@ order by a.fecha_envio desc";
         $q = $this->db->query($s);
         return $q;
     }
+
 
     function busca_orden_almacen($folprv)
     {
@@ -1059,7 +1061,7 @@ where a.id_orden=$id_orden order by id_detalle desc";
         $sec=0;
             
     }
-    if($prv==111111){
+    if($prv==1247){
         $s = "SELECT codigo,susa as susa1,descri as susa2,cos as farmacia,
         ifnull((select iva from catalogo.cat_mercadotecnia x where x.codigo=$cod),0)as iva,
         ifnull((select clave from catalogo.cat_mercadotecnia x where x.codigo=$cod),' ')as clagob 
@@ -1133,16 +1135,16 @@ order by a.fecha_envio desc";
   }
   function sumit_detalle_sec($sec,$can,$canr,$des,$id_orden,$prv)
  {
-        $s = "SELECT sec,codigo,susa1 as susa1,susa2 as susa2,costo,case when lin in(2,5,9,10)then 1 else 0 end iva 
+        $s = "SELECT sec,codigo,susa1 as susa1,susa2 as susa2,costo,case when lin in(2,5,9,10)then 1 else 0 end iva ,ieps
         fROM catalogo.almacen where sec = $sec and prv=$prv and tsec<>'X'";
         $q = $this->db->query($s);
         $clagob=''; 
      if($q->num_rows()>0){   
        $r=$q->row();
        $graba="insert ignore into compras.orden_d
-    (id_orden, codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr, fecha_modi, aplica)
+    (id_orden, codigo, sec, clagob, susa1, susa2, costo, iva, descuento, canp, cans, canr, fecha_modi, aplica,ieps)
     values
-    ($id_orden,$r->codigo,$sec,'$clagob','$r->susa1','$r->susa2','$r->costo',$r->iva,'$des',$can,$can,$canr,date(now()),0)";
+    ($id_orden,$r->codigo,$sec,'$clagob','$r->susa1','$r->susa2','$r->costo',$r->iva,'$des',$can,$can,$canr,date(now()),0,$r->ieps)";
     $this->db->query($graba);
     }
  }

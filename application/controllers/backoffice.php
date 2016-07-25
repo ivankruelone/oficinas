@@ -232,6 +232,7 @@ class backoffice extends CI_Controller
         die();
         redirect('backoffice/a_general/6');
     }
+    
     function a_pedidos_envio_mayorista_sin_enviar($fol)
     {        
         $nom=$this->Pedido_model_fenix->graba_archivo_sin_mandar($fol);
@@ -251,6 +252,16 @@ class backoffice extends CI_Controller
     redirect('backoffice/a_pedidos_mayorista');
     }
     
+    
+    
+    function a_pedidos_nadro()
+    {        
+        ini_set('memory_limit', '20000M');
+        set_time_limit(0);
+         $var="(103,105,106,107,108,109,112,114,116,129,193,201,202,501,504,511,552,806,812)";
+        $this->Pedido_model_fenix->formula_nadro($var);
+     redirect('backoffice/a_pedidos_mayorista');   
+    }
     ////////////////////////////////////////////////////////////////////////////////
 
     function a_poliza_inv()

@@ -28,6 +28,7 @@
                                 $aaa=date('Y');$pro=0;$fal=0;$por=0;$aba=0;$paba=0;
                                 foreach ($q->result()as $r){
                                 $l0 = anchor('evaluacion/eval_cedis_cla/'.$r->tipo,$r->obser.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
+                                $l1 = anchor('evaluacion/eval_cedis_producto/'.$r->tipo,'PRODUCTOS'.'</a>', array('title' => 'Haz Click aqui para ver detalle!', 'class' => 'encabezado'));
                                 ?>
                                 <tr>
                                 <td style="color:<?php echo $color?>; text-align: center"><?php echo $r->tipo?></td>
@@ -37,6 +38,7 @@
                                 <td style="color: <?php echo $color3?>; text-align: right"><?php echo'% '. number_format($r->p_abasto,2)?></td>
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo number_format($r->faltantes,0)?></td>
                                 <td style="color: <?php echo $color2?>; text-align: right"><?php echo'% '. number_format($r->p_faltante,2)?></td>
+                                <td style="color: <?php echo $color2?>; text-align: right"><?php echo $l1?></td>
                                 </tr>
                                <?php 
                                 $pro=$pro+$r->productos;

@@ -24,7 +24,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_Empleados_plantilla_ss"><?php echo anchor('empleados/plantilla_ss/'.$id_plaza, 'Plantilla'); ?></li>
+                          <li id="menu_Empleados_plantilla_s"><?php echo anchor('empleados/a_plantilla_suc/'.$id_plaza, 'Plantilla'); ?></li>
                        <!--   <li id="menu_Empleados_c_valida_plantilla"><?php //echo anchor('empleados/c_valida_plantilla/'.$id_plaza, 'Validar Plantilla'); ?></li> -->
                       </ul>
                   </li> 
@@ -39,6 +39,7 @@
                           <li id="menu_ventas_s_ventas_comparativas_historicas_nac"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>  
                           <li id="menu_ventas_s_descuentos_mes"><?php echo anchor('ventas/s_descuentos_mes', 'Descuentos, Optimos y Ventas'); ?></li>
                           <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/ticket_por_mes', 'Tickets por sucursal'); ?></li>
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/a_productos_negados', 'Productos Negados'); ?></li>
                       </ul>
                   </li>
                   <li class="sub-menu" id="menu_recursos_humanos">
@@ -60,6 +61,9 @@
                       </a>
                       <ul class="sub">
                           <li id="menu_insumos"><?php echo anchor('pedido/s_val_pedido_ins', 'Pedido de insumos Validacion Sucursal'); ?></li>
+                          <?php if($this->session->userdata('id') == 143) { ?>
+                          <li id="menu_insumos"><?php echo anchor('pedido/s_val_pedido_uni', 'Pedido de Uniformes Validacion Sucursal'); ?></li> 
+                          <?php } ?>
                           <li id="menu_insumos"><?php echo anchor('insumos/s_esp_insumos_sup', 'Pedidos Especiales General Insumos'); ?></li> 
                           <li id="menu_insumos"><?php echo anchor('pedido/c_ped_esp_fanasa', 'Pedido Especial Fenix Patente'); ?></li> 
                           <li id="menu_insumos"><?php echo anchor('pedido/s_val_pedido_ins_his', 'Historico de pedido de insumos '); ?></li>
@@ -93,6 +97,7 @@
                           <li id="menu_desplazamientos_s_nivel_surtido"><?php echo  anchor('desplazamientos/s_nivel_surtido', 'Nivel de surtido'); ?></li>
                           <li id="menu_desplazamientos_a_desplaza_fenix_contado_pat"><?php echo anchor('desplazamientos/a_desplaza_fenix_contado_pat', 'Desplazamientos venta_contado'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_ofertas_gen_in"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen_in', 'Desplazamiento Productos con Insentivos'); ?></li>
+                          <li id="menu_a_desplaza_descontinuados"><?php echo anchor('desplazamientos/a_desplaza_descontinuados', 'Desplazamiento de productos descontinuados'); ?></li>
                       </ul>
                   </li>
                   

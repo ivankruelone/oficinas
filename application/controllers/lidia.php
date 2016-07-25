@@ -16,7 +16,32 @@ public function __construct()
         $this->load->model('Evaluacion_model');
         $this->load->model('Catalogos_model');
         $this->load->model('comision_model');
+        $this->load->model('Pedido_model_fenix');
     }   
+
+function prueba_ftp()
+{
+    $fechaf=date('dmY');
+    $this->load->library('ftp');
+    $config2['hostname'] ='fenixcentral01.homeip.net';
+    $config2['username'] ='administrador';
+    $config2['password'] ='PharmaF3n1x';
+    $config2['debug']    = TRUE;
+    $this->ftp->connect($config2);
+    $this->ftp->download('fanasa/FACTURA.txt','./transfer/facFANA'.$fechaf.'.txt');
+}
+function a_pedidos_envio_mayorista_nadro_400()
+    {        
+        $nom=$this->Pedido_model_fenix->graba_archivo_nadro_400();
+        
+    }
+
+function a_pedidos_envio_mayorista_nadro()
+    {        
+        $nom=$this->Pedido_model_fenix->graba_archivo_nadro(169);
+        
+    }
+
 
 function comision_insentivo()
 {
@@ -100,7 +125,7 @@ $zip->close();
   
 function calcula_rentabilidad()
 {
-$aaa=2016;$mes=5;
+$aaa=2016;$mes=6;
 $an="insert ignore into catalogo.costo_ponderado(aaa, cod, mes, sec, cosf, cosd)
 (select year(a.fechai),codigo,month(a.fechai),sec,0,round((sum(costo*can)/sum(can)),2) from desarrollo.compra_d a
 where costo>0 and year(a.fechai)=$aaa

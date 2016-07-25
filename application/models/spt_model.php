@@ -529,10 +529,33 @@ order by suc, nomina
     
     function detalle_medicos_nov15($anio,$mes)//$periodo
     {
-        $sql = "select * from vtadc.venta_medico_final v
+        $sql = "select *,sum(recetasSurtidas) as rSurtidas,sum(consultas) as Consul,sum(importe) as Impt,sum(importePromedio) as ImptProm,sum(importePromedioRecetasSurtidas) as ImptPromRecSur,sum(costo) as CostoTotal,sum(premio) as Prem,avg(rate) as Rat,sum(impDoctor) as ImpDoc,sum(impFundacion) as ImpFun,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678582),0) as c1,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678583),0) as c2,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678584),0) as c3,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678585),0) as c4,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678587),0) as c5,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678588),0) as c6,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678589),0) as c7,
+ifnull((select sum(consultas) from vtadc.venta_medico_final x where x.nomina = v.nomina and periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes) and concepto = 26678590),0) as c8
+                from vtadc.venta_medico_final v
+                where periodo in(select periodo from vtadc.venta_medico_global
+                where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes)
+                group by v.nomina";
+        
+        
+        /*"select * from vtadc.venta_medico_final v
                 where periodo in(select periodo from vtadc.venta_medico_global 
                 where extract(year from fecha1) = $anio and extract(month from fecha1) = $mes)";//"select * from vtadc.venta_medico_final v where periodo = $periodo;";
-
+                */
         $query = $this->db->query($sql);
         
         return $query;

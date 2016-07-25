@@ -339,8 +339,10 @@ $fec=date('dmY');
 $fectime=date('Y-m-d H:i:s');
 $ss0="update catalogo.cat_mercadotecnia a set ofe_saba=0,fin_saba=0,ofe_nadro=0, fin_nadro=0, ofe_fanasa=0, fin_fanasa=0,rel1=0,rel2=0,ofe_marzam=0,fin_marzam=0";
 $this->db->query($ss0);
-$ss0="update catalogo.cat_mercadotecnia a, catalogo.cod_rel b  set a.rel1=cod_rel1, a.rel2=cod_rel2,a.lin=b.lin,a.sublin=b.slin where a.codigo=b.ean";
-$this->db->query($ss0);
+$ss1="update catalogo.cat_mercadotecnia a, catalogo.cod_rel b  set a.rel1=cod_rel1, a.rel2=cod_rel2,a.lin=b.lin,a.sublin=b.slin where a.codigo=b.ean";
+$this->db->query($ss1);
+$ss2="update catalogo.cat_dema a, catalogo.cod_rel b  set a.rel1=cod_rel1, a.rel2=cod_rel2 where a.codigo=b.ean";
+$this->db->query($ss2);
 }
 
 function __proceso_catalogos_mayoristas()
@@ -416,6 +418,10 @@ when a.financiero=0 and a.oferta=0 then  a.farmacia
 else a.farmacia end),2) where a.costo=0";
 $this->db->query($sc2);
 
+$ceros="update catalogo.cat_mercadotecnia
+set cos=0,cos_fanasa=0,cos_dema=0";
+$this->db->query($ceros);
+
 $in_far="insert ignore into catalogo.cat_mercadotecnia
 (codigo, descripcion, lab, iva, farmacia, pub, venta, tipo, registro,
 id, id_user, fecha_archivo, producto, clave, susa, lin, sublin,
@@ -449,7 +455,34 @@ or
 b.rel1=a.rel1 and b.rel2=a.rel2 and a.rel2>0  and fecha_modificado>=date(now())";
 $this->db->query($sfanasa);
 
+$sdema="update catalogo.cat_mercadotecnia a, catalogo.cat_dema b
+set
+a.cos_dema=b.cos,
+a.cos=b.cos,
+a.farmacia=b.cos,
+a.pub=b.pub,
+fecha_archivo=date(now()),
+a.pub_dema=b.pub,
+a.producto='NETO'
 
+where
+a.cos=0 and b.rel1=a.rel1 and b.rel2=a.rel2 and a.rel1>0
+or
+a.cos=0 and b.rel1=a.rel1 and b.rel2=a.rel2 and a.rel2>0";
+$this->db->query($sdema);
+$sdema_cod="update catalogo.cat_mercadotecnia a, catalogo.cat_dema b
+set
+a.cos_dema=b.cos,
+a.cos=b.cos,
+a.farmacia=b.cos,
+a.pub=b.pub,
+fecha_archivo=date(now()),
+a.pub_dema=b.pub,
+a.producto='NETO'
+
+where
+a.cos=0 and b.codigo=a.codigo";
+$this->db->query($sdema_cod);
 ////////////////////////////////////////////////////////////////////tomar como preferencia FANASA.
 ////////////////////////////////////////////////////////////////////tomar como preferencia FANASA.
 
@@ -681,7 +714,7 @@ end)as lidia
 from
 catalogo.cat_fenix_sec_cod ax,catalogo.cod_rel bx,catalogo.cat_almacen_clasifica cx,catalogo.almacen dx
 where dx.codigo=ax.cod and ax.sec between 1 and 1999 and ax.cod=bx.ean and  cx.sec=ax.sec and cod_rel$var>0 and
-ax.cod not in(7501590211232,7501590233043,7501836002686,7501289511469,7501125102929) and ax.sec not in(154,3102,1026) and venta_pub>0
+ax.cod not in(7501590211232,7501590233043,7501836002686,7501289511469,7501125102929) and ax.sec not in(154,3102,1026,3134,3135) and venta_pub>0
 and
 (select cod From catalogo.cat_fanasa x where x.codigo not in(7502004530758,7501493888760)
 and x.rel$var=bx.cod_rel$var group by x.rel$var)is null
@@ -711,9 +744,11 @@ from catalogo.cat_fanasa a
 where
 codigo>0 and rel$var>0 and fecha_modificado>=date(now()) and codigo not in(7502004530758,7501493888760)
 and (select codigo from catalogo.cat_empaque_fenix x where x.rel$var=a.rel$var group by x.rel$var) is null
+and (select codigo from compras.productos_precio_fijo x where x.rel$var=a.rel$var group by x.rel$var) is null
 or
 codigo>0 and rel$var>0 and fecha_alta>=subdate(date(now()),300) and codigo not in(7502004530758)
 and (select codigo from catalogo.cat_empaque_fenix x where x.rel$var=a.rel$var group by x.rel$var) is null
+and (select codigo from compras.productos_precio_fijo x where x.rel$var=a.rel$var group by x.rel$var) is null
 group by rel$var
 
 union all
@@ -743,6 +778,10 @@ end
 from catalogo.cat_fanasa a
 join catalogo.cat_empaque_fenix x on x.rel$var=a.rel$var
 group by a.rel$var
+union all 
+select rel$var, concat(11,'||',rel$var,'||',venta)as lidia
+from compras.productos_precio_fijo
+group by rel$var
 ) todo
 group by cod_rel$var
 order by cod_rel$var
@@ -929,6 +968,17 @@ $ad="insert into desarrollo.inv(tsuc, suc, mov, codigo, cantidad, fechai,sec,rel
 (select 'F',suc,3,codigo,piezas,fecha,0,rel from subir10.p_inv_det_bak where fecha=date(now()) and suc=$r4->suc)";
 $this->db->query($ad); 
 }}
+$b1="insert into vtadc.a_prox_det(aaa,nlab,id_prox, suc, inv, venta1, venta2, venta3, venta4, venta5, venta6, venta7, venta8, venta9, venta10, venta11, venta12)
+(SELECT year(date(now())),nlab,a.id,b.suc,b.cantidad,0,0,0,0,0,0,0,0,0,0,0,0 FROM vtadc.a_prox a
+join desarrollo.inv b on b.rel=a.rel1 and fechai>=subdate(date(now()),2)
+where a.rel1>0) on duplicate key update inv=values(inv)";
+$this->db->query($b1);
+
+$b2="insert ignore into vtadc.a_prox_det(aaa,nlab,id_prox, suc, inv, venta1, venta2, venta3, venta4, venta5, venta6, venta7, venta8, venta9, venta10, venta11, venta12)
+(SELECT year(date(now())),nlab,a.id,b.suc,b.cantidad,0,0,0,0,0,0,0,0,0,0,0,0 FROM vtadc.a_prox a
+join desarrollo.inv b on b.rel=a.rel2 and fechai>=subdate(date(now()),2)
+where a.rel2>0) on duplicate key update inv=values(inv)";
+$this->db->query($b2);
 }
 
 function __proceso_facturas()

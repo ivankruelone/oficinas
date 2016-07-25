@@ -18,9 +18,11 @@
                       </a>
                       <ul class="sub">
                           <li id="menu_tarjetas"><?php echo anchor('tarjetas/agrega_tarjetas', 'Agregar tarjetas'); ?></li>
-                          <li id="menu_tarjetas"><?php echo anchor('tarjetas/tarjetas_historicas', 'Tarjetas historicas'); ?></li>  
+                          <li id="menu_tarjetas"><?php echo anchor('tarjetas/tarjetas_historicas', 'Tarjetas historicas'); ?></li> 
+                          <li id="menu_tarjetas"><?php echo anchor('tarjetas/consultas_tarjetas_pref', 'Tarjetas Cliente Preferente'); ?></li> 
                           <li id="menu_tarjetas_concentrado"><?php echo anchor('ventas/ventas_tcp_mes', 'Relacion TCP Excel'); ?></li>
                           <li id="menu_tarjetas_empleado"><?php echo anchor('ventas/ventas_tarjetas_mes', 'Tarjetas x Empleado'); ?></li>
+                          
                           
                           
                       </ul>

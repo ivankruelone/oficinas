@@ -144,7 +144,33 @@ $(document).ready(function() {
             "bJQueryUI": true,
             "bPaginate": false
         });
+    var oTable = $('#tabla5').dataTable( {
+    "sScrollY": "300px",
+		"sScrollX": "100%",
+		"sScrollXInner": "150%",
+		"bScrollCollapse": true,
+		"bPaginate": false,
     
+            "aoColumns": [
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text" },
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"},
+                { "sSortDataType": "dom-text", "sType": "formatted-num"}
+            ],
+            "bJQueryUI": true,
+            "bPaginate": false
+        });
                 
 
                 

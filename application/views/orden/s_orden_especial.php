@@ -60,6 +60,9 @@
                              <thead>
                                  <tr>
                                      <th>Id</th>
+                                     <th></th>
+                                     <th></th>
+                                     
                                      <th>Folio</th>
                                      <th>Fecha</th>
                                      <th>Almacen</th>
@@ -74,12 +77,15 @@
                                   $u1=0;$u2=0;$u3=0;$u4=0;
                                 $num=1;$final=0;$final1=0;
                                 foreach ($q->result() as $r) {
-                                $l1=anchor('orden/s_orden_especial_det/'.$r->id_orden.'/'.$r->prv,$r->id_orden);
+                                $l0=anchor('orden/s_orden_especial_det_fac/'.$r->id_orden.'/'.$r->prv,'POR FACTURA');    
+                                $l1=anchor('orden/s_orden_especial_det/'.$r->id_orden.'/'.$r->prv,'POR PRODUCTO');
                                 $l2=anchor('orden/cerrar_especial/'.$r->id_orden.'/'.$r->prv.'/'.$r->cia,'Cerrar Orden');
                                 ?>
                                         <tr>
                                         <td><?php echo $num?></td>
+                                        <td style="text-align: right; "><?php echo $l0?></td>
                                         <td style="text-align: right; "><?php echo $l1?></td>
+                                        <td style="text-align: right; "><?php echo $r->id_orden?></td>
                                         <td style="text-align: right; "><?php echo $r->fecha_captura?></td>
                                         <td style="text-align: left; "><?php echo $r->almacenx?></td>
                                         <td style="text-align: left; "><?php echo $r->prv?></td>

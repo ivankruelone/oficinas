@@ -20,14 +20,13 @@
                           
                       </ul>
                   </li>
-            <li class="sub-menu" id="menu_servidor">
+                <li class="sub-menu" id="menu_servidor">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
                           <span>Servidores</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                            
                           <li id="menu_servidor_backoffice_s_menus"><?php echo anchor('backoffice/s_menus', 'Procesos de enlace'); ?></li>
                       </ul>
                   </li>
@@ -38,16 +37,12 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
+                          <li id="menu_dieta_dieta_catalogo"><?php echo anchor('desplazamientos/a_desplaza_fenix_ddr_excel', 'Prueba Excel'); ?></li>
+                          <li id="menu_dieta_dieta_catalogo"><?php echo anchor('proveedor/a_eval_prv', 'proveedor'); ?></li>
                           <li id="menu_dieta_dieta_catalogo"><?php echo anchor('dieta/dieta_catalogo', 'Die'); ?></li>
-                          
                           <li id="menu_insumos"><?php echo anchor('catalogos/orden_his', 'Ordenes historicas'); ?></li>
                           <li id="menu_insumos"><?php echo anchor('catalogos/orden_his1', 'Ordenes historicas cia 1'); ?></li>
-                          
-                           
-                          
-                          
-                          
-                      </ul>
+                       </ul>
                   </li>
                   
                 <li class="sub-menu" id="menu_procesos_yucif">

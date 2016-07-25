@@ -7,6 +7,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
+                      <li id="menu_catalogos_s_cat_genericos_fenix"><?php echo anchor('catalogos/subir_cat_dema', 'Subir Catalogo de DEMA'); ?></li>
                       <li id="menu_catalogos_s_cat_genericos_fenix"><?php echo anchor('catalogos/s_cat_genericos_fenix', 'Genericos Fenix'); ?></li>
                           <li id="menu_catalogos_mercadotecnia_busqueda1"><?php echo anchor('mercadotecnia/busqueda1', 'Buscar_producto con costos'); ?></li>
                           <li id="menu_catalogos_solo_busqueda"><?php echo anchor('mercadotecnia/solo_busqueda', 'Buscar Productos'); ?></li>
@@ -66,15 +67,16 @@
                       </ul>
                   </li>
                   
-                  <li class="sub-menu" id="menu_inventario">
+                  <li class="sub-menu" id="menu_pedido">
                       <a href="javascript:;" class="">
                           <i class="icon-book"></i>
                           <span>Pedido</span>
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                      <li id="menu_pedidos"><?php echo anchor('pedido/ped_esp_sucur_fen', 'Pedidos Fenix'); ?></li>
-                      <li id="menu_pedidos"><?php echo anchor('pedido/generar_pedido_f', 'Generar Pedido Fenix'); ?></li>
+                      <li id="menu_pedido_ped_esp_sucur_fen"><?php echo anchor('pedido/ped_esp_sucur_fen', 'Validar Pedidos Fenix'); ?></li>
+                      <li id="menu_pedido_ped_esp_sucur_fen"><?php echo anchor('pedido/generar_pedido_f', 'Generar Pedido Fenix'); ?></li>
+                      <li id="menu_pedido_a_pedido_dema"><?php echo anchor('pedido/a_pedido_dema', 'Generar Pedido DEMA'); ?></li>
                       </ul>
                   </li>
 
@@ -119,13 +121,22 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_desplazamientos_s_diarias"><?php echo anchor('desplazamientos/s_diarias', 'Desplazamiento Diarias'); ?></li>
-                           
+                          <li id="menu_desplazamientos_s_diarias"><?php echo anchor('desplazamientos/a_desplaza_fenix_lab', 'Desplazamiento Laboratorios'); ?></li>
+                          <li id="menu_desplazamientos_s_diarias"><?php echo anchor('desplazamientos/s_diarias', 'Desplazamiento Diario'); ?></li> 
                           
                           <li id="menu_desplazamientos_a_desplaza_fenix_contado_pat"><?php echo anchor('desplazamientos/a_desplaza_fenix_contado_pat', 'Desplazamientos venta_contado'); ?></li>
                           <li id="menu_desplazamientos_a_desplaza_mes_contado_fanasa"><?php echo anchor('desplazamientos/a_desplaza_mes_contado_fanasa', 'Desplazamientos venta_contado FANASA'); ?></li>
                       </ul>
                   </li>  
-
+                  <li class="sub-menu" id="menu_ventas">
+                      <a href="javascript:;" class="">
+                          <i class="icon-book"></i>
+                          <span>Ventas</span>
+                          <span class="arrow"></span>
+                      </a>
+                      <ul class="sub">
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/a_productos_negados', 'Productos Negados'); ?></li>
+                      </ul>
+                  </li>  
 
               </ul>

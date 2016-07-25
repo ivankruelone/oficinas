@@ -156,6 +156,23 @@ from vtadc.vta_backoffice a where year(fecha)=$aaa and month(fecha)=$mes and a.c
 group by a.suc,a.cod)
 on duplicate key update $ven=values($ven), $imp=values($imp)";
 $this->db->query($a2);
+$b="update vtadc.a_producto_mes_suc_contado a,catalogo.cod_rel b
+set rel1=cod_rel1, rel2=cod_Rel2
+where a.codigo=b.ean and (rel1=0 or rel2=0)";
+$this->db->query($b);
+
+$b1="insert into vtadc.a_prox_det
+(aaa,id_prox, nlab,suc, inv, venta1, venta2, venta3, venta4, venta5, venta6, venta7, venta8, venta9, venta10, venta11, venta12)
+(SELECT aaa,a.id,nlab,b.suc,0, sum(venta1), sum(venta2), sum(venta3), sum(venta4), sum(venta5), sum(venta6), sum(venta7), sum(venta8), sum(venta9), sum(venta10), sum(venta11), sum(venta12)
+FROM vtadc.a_prox a,vtadc.a_producto_mes_suc_contado b
+where a.rel1=b.rel1 and a.rel2=b.rel2 and (a.rel1>0 or a.rel2>0)
+group by b.suc,a.codigo)
+on duplicate key update
+venta1=values(venta1), venta2=values(venta2), venta3=values(venta3),
+venta4=values(venta4), venta5=values(venta5), venta6=values(venta6),
+venta7=values(venta7), venta8=values(venta8), venta9=values(venta9),
+venta10=values(venta10), venta11=values(venta11), venta12=values(venta12)";
+$this->db->query($b1);
 $sz2="update vtadc.producto_mes_suc a, catalogo.almacen b
 set a.sec=b.sec,a.costo=b.costo
 where a.codigo=b.codigo and a.sec=0 and b.sec>0 and b.sec<=2000 or

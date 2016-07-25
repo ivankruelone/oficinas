@@ -649,11 +649,82 @@ class Catalogos extends CI_Controller
             $this->load->view('main',$data);
         }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+function subir_cat_dema()
+    {
+        $data['titulo'] = "Subir catalogo de DEMA";
+        $data['q'] = $this->catalogos_model->cat_dema();
+        $data['js'] = 'catalogos/subir_cat_dema_js';
+        $this->load->view('main', $data);
+    }
 
+function subir_cat_dema_sumit()
+    {
+        $target_dir = "uploads/";
+        $target_dir = $target_dir . basename( $_FILES["uploadFile"]["name"]);
+        $uploadOk = 1;
+        
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            //echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["uploadFile"]["tmp_name"], $target_dir)) {
+                //echo "The file ". basename( $_FILES["uploadFile"]["name"]). " has been uploaded.";
+                $this->getFileContent_dema($target_dir);
+                
+                
+            } else {
+                //echo "Sorry, there was an error uploading your file.";
+            }
+        }
+        
+        redirect('catalogos/subir_cat_dema');
+    }
 
+    function getFileContent_dema($file)
+    {
+       
 
-
-
+        $handle = fopen($file, "r");
+        $bor="delete from subir10.p_cat_dema";
+        $this->db->query($bor);
+        if ($handle) {
+            while (($line = fgets($handle)) !== false) {
+                
+                $row = explode('||', $line);
+                print_r($row);
+                //die();
+                if($row[1]>0){
+                //id_cat_dema, codigo, susa, pub, cos
+                    $data = array(
+                    'id_cat_dema' => $row[0], 'codigo' => $row[1], 'descri' => $row[2], 'susa' => $row[3], 'pub' => $row[4], 'cos' => $row[5]);
+                    $this->db->insert('subir10.p_cat_dema', $data);
+                }
+            }
+            ///Escribir codigo siguiente aqui
+            $s0="insert into catalogo.cat_dema(idcat_dema, codigo, descri, susa, pub, cos, fecha, rel1, rel2)
+                (SELECT id_cat_dema, codigo, descri, susa, pub, cos,now(),0,0 from subir10. p_cat_dema)
+                on duplicate key update idcat_dema=values(idcat_dema),descri=values(descri),
+                susa=values(susa),cos=values(cos),pub=values(pub),fecha=values(fecha)";
+            $this->db->query($s0);
+            $s1="update catalogo.cat_dema a, catalogo.cod_rel b
+                set rel1=cod_rel1,rel2=cod_rel2
+                where a.codigo=b.ean";
+            $this->db->query($s1);
+            $s2="insert ignore into catalogo.cat_mercadotecnia(codigo, descripcion, lab, iva, farmacia, pub, venta, tipo, registro,
+                id_user, fecha_archivo, producto, clave, susa, lin, sublin, max, min,antibiotico, labprv, aaa_registro, cos, rel1, rel2,cos_dema,pub_dema)
+                (select codigo, descri,0,0,cos,pub,0,'D',' ',99,now(),' ',' ',' ',0,0,0,0,0,' ',0,cos end,rel1, rel2,cos,pub from catalogo.cat_dema)
+                on duplicate key update cos_dema=values(cos_dema),pub_dema=values(pub_dema)";
+            $this->db->query($s2);
+        } else {
+            echo 'error opening the file.';
+        } 
+        fclose($handle);    
+    
+    }
 
 
 

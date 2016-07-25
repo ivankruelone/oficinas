@@ -34,14 +34,14 @@ sum(case when inv1>=(final/4) then 1 else 0 end)as abasto,
 round(((sum(case when inv1>=(final/4) then 1 else 0 end)/count(*))*100),2) p_abasto,
 sum(case when inv1<(final/4) then 1 else 0 end)as faltantes,
 (100-round(((sum(case when inv1>=(final/4) then 1 else 0 end)/count(*))*100),2))as p_faltante,
-(select prv from catalogo.almacen m where m.sec=aa.sec and tsec='G')as prv,dd.corto as prvx
+(select prv from catalogo.almacen m where m.sec=aa.sec and tsec='G' group by tsec)as prv,dd.corto as prvx
 from almacen.max_cedis aa
 join catalogo.cat_almacen_clasifica bb on bb.sec=aa.sec
 join catalogo.cat_clasifica x on x.var=bb.tipo and x.descontinua=bb.descon
 left join desarrollo.inv_cedis_sec1 cc on cc.sec=aa.sec
-left join catalogo.provedor dd on dd.prov=(select prv from catalogo.almacen m where m.sec=aa.sec and tsec='G')
+left join catalogo.provedor dd on dd.prov=(select prv from catalogo.almacen m where m.sec=aa.sec and tsec='G' group by tsec)
 where bb.descon='N'  and bb.tipo='$var'
-group by bb.tipo,(select prv from catalogo.almacen m where m.sec=aa.sec and tsec='G')";
+group by bb.tipo,(select prv from catalogo.almacen m where m.sec=aa.sec and tsec='G' group by tsec)";
         $q = $this->db->query($s);
         //echo $this->db->last_query();
         //die();
@@ -137,6 +137,18 @@ left join catalogo.almacen b on b.sec=a.sec and tsec='G'
 where descon='N' and a.tipo='$var' and b.prv=$prv and b.sec is not null
 order by exis";
         $q = $this->db->query($s);
+     return $q;  
+    }
+public function eval_cedis_producto($var)
+    {
+if($var=='_'){$var=' ';}
+        $s = "Select a.sec,a.susa,b.final,b.opt_suc
+from catalogo.cat_almacen_clasifica a
+left join almacen.max_cedis b on b.sec=a.sec
+where a.tipo='$var'";
+        $q = $this->db->query($s);
+        //echo $this->db->last_query();
+        //die();
      return $q;  
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,7 +274,7 @@ if($g->num_rows()>0){
 $h=$g->row();
 
 
-$insert="insert ignore into compras.orden_a(id_pre_orden, sec, susa, prv, costo, compra,fecha,fecha_ger,iva,compra_generada,codigo)
+$insert="insert ignore into compras.orden_a(id_pre_orden, sec, susa, prv, costo, compra,fecha,fecha_ger,iva,compra_generada,codigo,ieps)
 (select $h->num,a.sec,a.susa,b.prv,b.costo,
 
 ((round(((case
@@ -284,7 +296,8 @@ when ((round((c.final/30)*$por4,0))-ifnull(inv1,0))>0 and a.tipo='d' then ((roun
 when ((round((c.final/30)*$por5,0))-ifnull(inv1,0))>0 and a.tipo='e' then ((round((c.final/30)*$por5,0))-ifnull(inv1,0))
 else 0 end)/corrugado),0))*corrugado),
 
-ifnull((select codigo from catalogo.sec_unica mm where mm.sec=a.sec),0)
+ifnull((select codigo from catalogo.sec_unica mm where mm.sec=a.sec),0),
+(select ieps from catalogo.almacen x where x.sec=a.sec and x.prv=b.prv group by x.sec)
 
 from catalogo.cat_almacen_clasifica a
 join catalogo.almacen_gs_compra b on b.sec=a.sec

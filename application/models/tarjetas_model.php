@@ -115,12 +115,22 @@ return $q;
 function control_tar($inicio,$fin) 
 {
     
-    $s="SELECT a.*,(a.fol2-a.fol1+1)as tar ,d.nombre as sucx,d.tipo2,c.venta
+    $s="select s.suc, u.nombre as sucursal, fol1, fol2, (fol2 + 1 - fol1) as tarjetas, count(*) as vendidas, (fol2 + 1 - fol1) - count(*) as inv
+        from vtadc.tarjetas_suc s
+        join vtadc.tarjetas t on codigo between fol1 and fol2 and s.suc = t.suc
+        join catalogo.sucursal u on s.suc = u.suc
+        where s.tipo=1 and t.venta between '$inicio' and '$fin'
+        group by s.id
+        order by fol1";
+    
+    /*$s="SELECT a.*,(a.fol2-a.fol1+1)as tar ,d.nombre as sucx,d.tipo2,c.venta
           from vtadc.tarjetas_suc a
           left join catalogo.sucursal d on d.suc=a.suc
           join vtadc.tarjetas c on c.suc=a.suc and a.fol1 = c.codigo 
           where a.tipo=1 and c.venta between '$inicio' and '$fin'
           order by suc";
+          
+          */
           
             $q=$this->db->query($s);
             return $q;
@@ -132,7 +142,7 @@ function control_tar($inicio,$fin)
     
     $s="SELECT a.codigo,a.tipo,a.nombre,a.dire,a.vigencia,a.venta,a.nomina,b.completo
         from vtadc.tarjetas a
-        join catalogo.cat_empleado b on b.nomina = a.nomina
+        left join catalogo.cat_empleado b on b.nomina = a.nomina
         where a.tipo=1 and a.suc=$suc and a.codigo>=$fol1 and a.codigo<=$fol2
         and a.venta between '$inicio' and '$fin' order by a.venta";
           

@@ -18,7 +18,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_Empleados_plantilla"><?php echo anchor('empleados/plantilla', 'Plantilla'); ?></li>
+                          <li id="menu_Empleados_plantilla_ss"><?php echo anchor('empleados/a_plantilla', 'Plantilla'); ?></li>
                           <li id="menu_Empleados_estatus"><?php echo anchor('empleados/estatus', 'Tiempo en Sucursal'); ?></li>
                       </ul>
                   </li>  
@@ -32,6 +32,7 @@
                       <ul class="sub">
                           <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/s_ventas_captura_nac', 'Ventas Capturadas_diarias'); ?></li>
                           <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/ticket_por_mes', 'Tickets por sucursal'); ?></li>
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/a_productos_negados', 'Productos Negados'); ?></li>
                       </ul>
                   </li>
                  <li class="sub-menu" id="menu_finanzas">
@@ -70,6 +71,7 @@
                           <li id="menu_desplazamientos"><?php echo anchor('desplazamientos/a_desplaza_paquetes', 'Desplazamiento de paquetes'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_ofertas_gen"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen', 'Desplazamiento Ofertas Catalogo DOctor Ahorro'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_ofertas_gen_in"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen_in', 'Desplazamiento Productos con Insentivos'); ?></li>
+                          <li id="menu_a_desplaza_descontinuados"><?php echo anchor('desplazamientos/a_desplaza_descontinuados', 'Desplazamiento de productos descontinuados'); ?></li>
                       </ul>
                   </li>
                  <li class="sub-menu" id="menu_examen">

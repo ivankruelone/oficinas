@@ -1,18 +1,27 @@
 <?php
 ini_set('memory_limit', '512M');
 error_reporting(E_ALL);
+date_default_timezone_set('Europe/London');
 /** PHPExcel */
 require_once 'Classes/PHPExcel.php';
-
+// Create new PHPExcel object
 $objPHPExcel = new PHPExcel();
 
-$objPHPExcel->getProperties()->setCreator("IVAN ZUÑIGA PEREZ")
-							 ->setLastModifiedBy("IVAN ZUÑIGA PEREZ")
-							 ->setTitle("Insumos")
-							 ->setSubject("Insumos")
-							 ->setDescription("Insumos")
-							 ->setKeywords("Insumos")
-							 ->setCategory("Insumos");
+// Create new PHPExcel object
+$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
+if (!PHPExcel_Settings::setCacheStorageMethod($cacheMethod)) {
+	die($cacheMethod . " caching method is not available" . EOL);
+}
+// Set document properties
+$objPHPExcel->getProperties()->setCreator("LIDIA VELAZQUEZ")
+							 ->setLastModifiedBy("LIDIA VELAZQUEZ")
+							 ->setTitle("INSUMOS")
+							 ->setSubject("INSUMOS")
+							 ->setDescription("INSUMOS")
+							 ->setKeywords("INSUMOS")
+							 ->setCategory("INSUMOS");
+
+$objPHPExcel->createSheet();
 
 $s2 = "SELECT  a.id,a.suc, x.nombre
 FROM papeleria.insumos_c a
@@ -145,10 +154,11 @@ $objPHPExcel->setActiveSheetIndex(0);
 
 // Redirect output to a client’s web browser (Excel2007)
 //header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Type: application/vnd.ms-excel');
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="InsumosPendientes'.date('Y-m-s').'.xlsx"');
 header('Cache-Control: max-age=0');
 
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 exit;

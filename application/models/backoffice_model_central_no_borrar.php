@@ -96,6 +96,35 @@ fclose($da1);
    $fechatime2=date('Y-m-d H:i:s');
      echo 'Envio archivos a servidor '.$ftp_s.' '.$fechatime.'<br />Finalizo '.$fechatime2;
      }
+
+
+
+
+function envio_pedido_nadro($ftp_s,$usua,$contra,$var,$nom)
+     {
+     $fechatime=date('Y-m-d H:i:s');
+     
+$servidor_ftp    = $ftp_s;
+$ftp_nombre_usuario = $usua;
+$ftp_contrasenya = $contra;
+
+$archivo1 = "./txt/$nom";
+$da1 = fopen($archivo1, 'r');
+$archivo_remoto1 = "nadro/pedidos/$nom";
+
+
+
+$id_con = ftp_connect($servidor_ftp);
+$resultado_login = ftp_login($id_con, $ftp_nombre_usuario, $ftp_contrasenya);
+
+
+if (ftp_put($id_con, $archivo_remoto1, $archivo1, FTP_ASCII)){$mensaje=1;} else {$mensaje=2;}
+
+ftp_close($id_con);
+fclose($da1);
+   $fechatime2=date('Y-m-d H:i:s');
+     echo 'Envio archivos a servidor '.$ftp_s.' '.$fechatime.'<br />Finalizo '.$fechatime2;
+     }
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////

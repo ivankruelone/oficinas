@@ -184,9 +184,10 @@ return $q;
 
 function desplaza_paquetes()/////lo direcciono controlador de ventas
 {
+$nivel=$this->session->userdata('nivel');
 $id_plaza=$this->session->userdata('id_plaza');
-if($id_plaza==12){$var='regional='.$id_plaza.' and';}
-elseif($id_plaza==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
 $s="select a.sec,a.sec_igual,pak,susa,
 ifnull((select inv1 from desarrollo.inv_cedis_sec1 x where x.sec=a.sec),0)as inv_cedis,
 (select sum(cantidad) from desarrollo.inv x where x.sec=a.sec and mov=7 and fechai>=subdate(date(now()),2) group by sec)as inv,
@@ -212,12 +213,57 @@ order by sec_igual,a.sec";
 $q=$this->db->query($s);
 return $q;
 }
+function desplaza_descontinuados()/////lo direcciono controlador de ventas
+{
+$nivel=$this->session->userdata('nivel');
+$id_plaza=$this->session->userdata('id_plaza');
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
+$s="select
+a.sec,a.susa,
+sum(venta1)as venta1,sum(venta2)as venta2,sum(venta3)as venta3,sum(venta4)as venta4,sum(venta5)as venta5,
+sum(venta6)as venta6,sum(venta7)as venta7,sum(venta8)as venta8,sum(venta9)as venta9,sum(venta10)as venta10,
+sum(venta11)as venta11,sum(venta12)as venta12,
+ifnull((select inv1 from desarrollo.inv_cedis_sec1 x where x.sec=a.sec),0)as inv_cedis
 
+From catalogo.cat_almacen_clasifica a
+join catalogo.almacen b on b.sec=a.sec
+join vtadc.producto_mes_suc c on c.codigo=b.codigo
+join catalogo.sucursal d on d.suc=c.suc
+where $var a.descon='S' and a.sec between 1 and 1999
+group by sec";
+$q=$this->db->query($s);
+return $q;
+}
+function desplaza_descontinuados_det($sec)/////lo direcciono controlador de ventas
+{
+$nivel=$this->session->userdata('nivel');
+$id_plaza=$this->session->userdata('id_plaza');
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
+$s="select
+a.sec,a.susa,c.suc,d.nombre,
+sum(venta1)as venta1,sum(venta2)as venta2,sum(venta3)as venta3,sum(venta4)as venta4,sum(venta5)as venta5,
+sum(venta6)as venta6,sum(venta7)as venta7,sum(venta8)as venta8,sum(venta9)as venta9,sum(venta10)as venta10,
+sum(venta11)as venta11,sum(venta12)as venta12,
+ifnull((select inv1 from desarrollo.inv_cedis_sec1 x where x.sec=a.sec),0)as inv_cedis
+
+From catalogo.cat_almacen_clasifica a
+join catalogo.almacen b on b.sec=a.sec
+join vtadc.producto_mes_suc c on c.codigo=b.codigo
+join catalogo.sucursal d on d.suc=c.suc
+where $var a.descon='S' and a.sec between 1 and 1999 and a.sec=$sec
+group by sec,suc";
+$q=$this->db->query($s);
+return $q;
+}
 
 function desplaza_ofertas_gen($aaa)/////lo 
 {
+$nivel=$this->session->userdata('nivel');
 $id_plaza=$this->session->userdata('id_plaza');
-if($id_plaza==0){$var='';}else{$var='c.regional='.$id_plaza.' and';}
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
 $s="SELECT fecha_activos,a.sec,a.codigo,d.susa,
 sum(b.venta1)as venta1,
 sum(b.venta2)as venta2,
@@ -245,8 +291,10 @@ $q=$this->db->query($s);
 return $q;
 }function desplaza_ofertas_gen_det($aaa,$cod)/////lo 
 {
+$nivel=$this->session->userdata('nivel');
 $id_plaza=$this->session->userdata('id_plaza');
-if($id_plaza==0){$var='';}else{$var='c.regional='.$id_plaza.' and';}
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
 $s="SELECT b.suc,c.nombre as sucx, fecha_activos,a.sec,a.codigo,d.susa,
 sum(b.venta1)as venta1,
 sum(b.venta2)as venta2,
@@ -276,8 +324,10 @@ return $q;
 
 function desplaza_ofertas_gen_in($aaa)/////lo 
 {
+$nivel=$this->session->userdata('nivel');
 $id_plaza=$this->session->userdata('id_plaza');
-if($id_plaza==0){$var='';}else{$var='c.regional='.$id_plaza.' and';}
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
 $s="SELECT fecha_activos,a.sec,a.codigo,d.susa,
 sum(b.venta1)as venta1,
 sum(b.venta2)as venta2,
@@ -305,8 +355,10 @@ $q=$this->db->query($s);
 return $q;
 }function desplaza_ofertas_gen_in_det($aaa,$cod)/////lo 
 {
+$nivel=$this->session->userdata('nivel');
 $id_plaza=$this->session->userdata('id_plaza');
-if($id_plaza==0){$var='';}else{$var='c.regional='.$id_plaza.' and';}
+if($nivel==12){$var='regional='.$id_plaza.' and';}
+elseif($nivel==13){$var='superv='.$id_plaza.' and';}else{$var=' ';}
 $s="SELECT b.suc,c.nombre as sucx, fecha_activos,a.sec,a.codigo,d.susa,
 sum(b.venta1)as venta1,
 sum(b.venta2)as venta2,
@@ -550,7 +602,80 @@ group by a.suc,a.rel
         return $q;
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  function desplaza_fenix_lab($aaa)
+ {
+ $s="SELECT nlab,lab,count(*)as pro,
+ifnull((select sum(venta1) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta1,
+ifnull((select sum(venta2) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta2,
+ifnull((select sum(venta3) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta3,
+ifnull((select sum(venta4) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta4,
+ifnull((select sum(venta5) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta5,
+ifnull((select sum(venta6) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta6,
+ifnull((select sum(venta7) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta7,
+ifnull((select sum(venta8) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta8,
+ifnull((select sum(venta9) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta9,
+ifnull((select sum(venta10) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta10,
+ifnull((select sum(venta11) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta11,
+ifnull((select sum(venta12) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as venta12,
+ifnull((select sum(inv) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa),0)as inv
+FROM vtadc.a_prox a 
+group by nlab";
+$q=$this->db->query($s);
+ return $q;  
+ }
+ function desplaza_fenix_lab_excel_c($aaa,$nlab)
+ {
+ $s="SELECT $aaa as aaa,rel1,rel2,nlab,lab,codigo,descri,
+ifnull((select sum(venta1) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta1,
+ifnull((select sum(venta2) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta2,
+ifnull((select sum(venta3) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta3,
+ifnull((select sum(venta4) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta4,
+ifnull((select sum(venta5) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta5,
+ifnull((select sum(venta6) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta6,
+ifnull((select sum(venta7) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta7,
+ifnull((select sum(venta8) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta8,
+ifnull((select sum(venta9) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta9,
+ifnull((select sum(venta10) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta10,
+ifnull((select sum(venta11) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta11,
+ifnull((select sum(venta12) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as venta12,
+ifnull((select sum(inv) from vtadc.a_prox_det x where x.nlab=a.nlab and aaa=$aaa and id_prox=id),0)as inv
+FROM vtadc.a_prox a 
+where nlab=$nlab
+group by codigo";
+$q=$this->db->query($s);
+ return $q;  
+ }
+ 
+  function desplaza_fenix_lab_excel_d($aaa,$nlab)
+ {
+ $aaa=date('Y');
+ $s="SELECT aaa,a.rel1,a.rel2,a.codigo,a.descri,b.suc,c.nombre,b.inv,
+venta1,venta2,venta3,venta4,venta5,venta6,venta7,venta8,venta9,venta10,venta11,venta12
+FROM vtadc.a_prox a
+join vtadc.a_prox_det b on b.id_prox=a.id  and aaa=$aaa
+join catalogo.sucursal c on c.suc=b.suc
+where a.nlab=$nlab
+order by rel1,rel2";
+$q=$this->db->query($s);
+ return $q;  
+ }
 
 
+function desplaza_fenix_ddr_excel($fec1,$fec2,$tipo)
+ {
+ $s="select month(fecha)mes, regional,superv,
+ case when tipo3='DA' then 'DOCTOR AHORRO' when tipo3='FE' then 'FENIX' when tipo3='FA' then 'FARMABODEGA' end as tipox,
+ a.suc,b.nombre,
+(select sec from catalogo.almacen x
+where x.codigo=a.codigo and (x.sec between 1 and 1999  or sec between 3102 and 3102) group by x.codigo)as sec,
+codigo,descri,sum(can)as can, sum(importe)as importe from vtadc.venta_detalle a
+join catalogo.sucursal b on a.suc=b.suc
+where  importe>0 and tlid=1 and tipo3 in('$tipo') and fecha between '$fec1' and '$fec2' AND tventa=1
+group by a.suc,a.codigo";
+$q=$this->db->query($s);
+ return $q;  
+ }
 
 }

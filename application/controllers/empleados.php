@@ -23,58 +23,81 @@ class Empleados extends CI_Controller
         $this->load->view('main', $data);
     }
 
-    function plantilla()
+    function a_plantilla()
     {
         $data['titulo'] = "PLANTILLAS";
-        $data['tit'] = 'PLANTILLA DE PERSONAL EN FARMACIA';
-        $data['a'] = $this->empleados_model->plantilla('');
-        //$data['js'] = 'empleados/plantilla_js';
+        $data['tit'] = 'PLANTILLA DE PERSONAL';
+        $data['q'] = $this->empleados_model->plantilla();
+        $data['js'] = 'empleados/a_plantilla_js';
         $this->load->view('main', $data);
     }
-    
-    function plantilla_s($ger)
+    function a_plantilla_sup($ger)
     {
         $gerx = $this->Catalogos_model->busca_ger_uno($ger);
         $data['titulo'] = "PLANTILLAS";
-        $data['ger'] = $ger;
-        $data['tit'] = 'PLANTILLA DE PERSONAL EN FARMACIA DE ' . trim($gerx);
-        $data['aviso'] = "Empleados asignados a sucursales cerradas o numero de sucursal anterior";
-        $data['a'] = $this->empleados_model->plantilla($ger);
-        $data['q'] = $this->empleados_model->personal_cerradas();
-        $data['js'] = 'empleados/plantilla_s_js';
+        $data['tit'] = 'PLANTILLA DE PERSONAL DE '.$gerx;
+        $data['q'] = $this->empleados_model->plantilla_sup($ger);
+        $data['js'] = 'empleados/a_plantilla_sup_js';
         $this->load->view('main', $data);
     }
-    function plantilla_todos($ger)
+    function a_plantilla_suc($sup)
     {
-        $gerx = $this->Catalogos_model->busca_ger_uno($ger);
-        $data['titulo'] = "PLANTILLAS";
-        $data['ger'] = $ger;
-        $data['tit'] = 'PLANTILLA DE PERSONAL EN FARMACIA DE ' . trim($gerx);
-        $data['aviso'] = "Empleados asignados a sucursales cerradas o numero de sucursal anterior";
-        $data['query'] = $this->empleados_model->plantilla_tod($ger);
-        $data['js'] = 'empleados/plantilla_todos_js';
-        $this->load->view('main', $data);
-    }
-    
-    function plantilla_ss($sup)
-    {
-        //$id_plaza=$this->session->userdata('id_plaza');
         $supx = $this->Catalogos_model->busca_sup_uno($sup);
         $data['titulo'] = "PLANTILLAS";
-        $data['tit'] = 'PLANTILLA DE PERSONAL EN FARMACIA DE ' . trim($supx);
-        $data['a'] = $this->empleados_model->plantilla($sup);
-        //$data['js'] = 'entradas/facturas_suc_js';
+        $data['tit'] = 'PLANTILLA DE PERSONAL DE '.$supx;
+        $data['q'] = $this->empleados_model->plantilla_suc($sup);
+        $data['js'] = 'empleados/a_plantilla_suc_js';
+        $this->load->view('main', $data);
+    }
+    function a_plantilla_det($suc)
+    {
+        $sucx = $this->Catalogos_model->busca_suc_una($suc);
+        $plantilla= $this->Catalogos_model->busca_suc_plantilla($suc);
+        $plantilla_med = $this->Catalogos_model->busca_suc_plantilla_med($suc);
+        $turno = $this->Catalogos_model->busca_suc_turno_med($suc);
+        $data['tit'] = 'PLANTILLA DE PERSONAL DE FARMACIAS '.$sucx.' PARA FARMACIA '.$plantilla;
+        $data['tit1'] = 'PLANTILLA DE PERSONAL DE MEDICOS '.$sucx.' PARA MEDICOS '.$plantilla_med;
+        $data['q'] = $this->empleados_model->plantilla_detfar($suc);
+        $data['q1'] = $this->empleados_model->plantilla_detmed($suc);
+        $data['js'] = 'empleados/a_plantilla_det_js';
+        $this->load->view('main', $data);
+    }
+    function a_plantilla_cambia($suc)
+    {
+        $sucx = $this->Catalogos_model->busca_suc_una($suc);
+        $data['plantilla']= $this->Catalogos_model->busca_suc_plantilla($suc);
+        $data['plantilla_med']= $this->Catalogos_model->busca_suc_plantilla_med($suc);
+        $data['turno'] = $this->Catalogos_model->busca_suc_turno_med($suc);
+        $data['titulo'] = 'PLANTILLA DE PERSONAL DE FARMACIAS '.$sucx;
+        $data['suc'] = $suc;
+        $data['js'] = 'empleados/a_plantilla_det_js';
         $this->load->view('main', $data);
     }
     
-    function plantilla_sse($suc)
+    function sumit_cambia_plantilla()
     {
-        $sucx = $this->Catalogos_model->busca_suc_una($suc);
-        $data['titulo'] = "PLANTILLAS";
-        $data['tit'] = 'PLANTILLA DE PERSONAL EN FARMACIA DE ' . trim($sucx);
-        $data['a'] = $this->empleados_model->plantilla($suc);
-        //$data['js'] = 'entradas/facturas_suc_js';
-        $this->load->view('main', $data);
+        $id_user =$this->session->userdata('id');
+        if($id_user>0)
+        {
+        $a=array(
+        'plantilla'=>$this->input->post('plantilla'),
+        'plantilla_medico'=>$this->input->post('plantilla_med'),
+        'turno'=>$this->input->post('turno')
+        );
+        $this->db->where('suc',$this->input->post('suc'));
+        $this->db->update('catalogo.sucursal',$a);
+        //id, id_user, plantilla, plantilla_med, fecha, suc
+        $b=array(
+        'id_user' => $id_user,
+        'plantilla' => $this->input->post('plantilla'),
+        'plantilla_med' => $this->input->post('plantilla_med'),
+        'fecha' => date('Y-m-d H:i:s'),
+        'suc' => $this->input->post('suc'),
+        'turno' => $this->input->post('turno') 
+        );
+        $this->db->insert('sucursal.cambios_plantilla',$b);
+        }
+        redirect('empleados/a_plantilla_det/'.$this->input->post('suc'));
     }
 
     function evaluacion($suc, $id)

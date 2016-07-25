@@ -992,7 +992,7 @@ case when ((case
 when (((venta*$var)/obj_nivel)*100)>=100  and ((venta*$var)-punto_equi)>=8000 then 60
 when (((venta*$var)/obj_nivel)*100) between 80 and 99.99  and ((venta*'$var')-punto_equi)>=8000  then 30
 else 0 end)+p_merma+p_gasto+p_eval)>=80
-then (venta*'$var')*.0005 else 0 end as comision_na
+then (venta*'$var')*.005 else 0 end as comision_na
 
 FROM finanzas.sumulado_comision
 order by tot_puntos desc";

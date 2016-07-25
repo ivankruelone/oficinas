@@ -32,7 +32,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_Empleados_plantilla_s"><?php echo anchor('empleados/plantilla_s/'.$id_plaza, 'Plantilla'); ?></li>
+                          <li id="menu_Empleados_plantilla_s"><?php echo anchor('empleados/a_plantilla_sup/'.$id_plaza, 'Plantilla'); ?></li>
                       </ul>
                   </li>  
                   <li class="sub-menu" id="menu_finanzas">
@@ -57,6 +57,7 @@
                           <li id="menu_ventas_s_ventas_comparativas_historicas_nac"><?php echo anchor('ventas/s_ventas_aaa_mes', 'Ventas Comparativas'); ?></li>  
                           <li id="menu_ventas_s_descuentos_mes"><?php echo anchor('ventas/s_descuentos_mes', 'Descuentos, Optimos y Ventas'); ?></li>
                           <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/ticket_por_mes', 'Tickets por sucursal'); ?></li>
+                          <li id="menu_ventas_s_ventas_captura_nac"><?php echo anchor('ventas/a_productos_negados', 'Productos Negados'); ?></li>
                       </ul>
                   </li>
                    <li class="sub-menu" id="menu_Inventarios">
@@ -94,6 +95,7 @@
                           <li id="menu_desplazamientos_s_desplaza_ofertas_gen_in"><?php echo  anchor('desplazamientos/s_desplaza_ofertas_gen_in', 'Desplazamiento Productos con Insentivos'); ?></li>
                           <li id="menu_desplazamientos_s_desplaza_fenix"><?php echo  anchor('desplazamientos/s_desplaza_fenix', 'Desplazamiento Fenix'); ?></li>
                           <li id="menu_desplazamientos_a_desplaza_fenix_contado_pat"><?php echo anchor('desplazamientos/a_desplaza_fenix_contado_pat', 'Desplazamientos venta_contado'); ?></li>
+                          <li id="menu_a_desplaza_descontinuados"><?php echo anchor('desplazamientos/a_desplaza_descontinuados', 'Desplazamiento de productos descontinuados'); ?></li>
                           
                       </ul>
                   </li>

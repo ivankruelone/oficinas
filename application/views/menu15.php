@@ -17,7 +17,7 @@
                           <span class="arrow"></span>
                       </a>
                       <ul class="sub">
-                          <li id="menu_Empleados_plantilla"><?php echo anchor('empleados/plantilla', 'Plantilla'); ?></li>
+                          <li id="menu_Empleados_plantilla_ss"><?php echo anchor('empleados/a_plantilla', 'Plantilla'); ?></li>
                           <li id="menu_Empleados_estatus"><?php echo anchor('empleados/estatus', 'Tiempo en Sucursal'); ?></li>
                           <li id="menu_recursos_humanos_s_cap_mov"><?php echo anchor('recursos_humanos/s_cap_mov', 'Cap.Movimientos'); ?></li>
                           <li id="menu_recursos_humanos_s_cap_mov_his"><?php echo anchor('recursos_humanos/s_cap_mov_his', 'Movimientos Capturados'); ?></li>

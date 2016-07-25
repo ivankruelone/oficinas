@@ -250,7 +250,7 @@ class Ofertas extends CI_Controller
     function a_busco_cod()
     {
         $cod=$this->input->post('cod');
-        echo $this->catalogos_model->busco_cod_fanasa($cod);
+        echo $this->catalogos_model->busco_cod_mercadotecnia($cod);
     }
     function borrar_bloqueo_t($id)
     {

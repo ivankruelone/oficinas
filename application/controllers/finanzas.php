@@ -245,6 +245,15 @@ class Finanzas extends CI_Controller
  {
         $aaa=date('Y');
         $data['titulo1'] = 'PROYECCION SIMULADA';
+        $data['titulo2'] = 'PROYECCION SIMULADA CON UN INCREMENTO EN VENTA DEL %25';
+        $data['titulo3'] = 'PROYECCION SIMULADA CON UN INCREMENTO EN VENTA DEL %50';
+        $data['titulo4'] = 'PROYECCION SIMULADA CON UN INCREMENTO EN VENTA DEL %75';
+        $data['titulo5'] = 'PROYECCION SIMULADA CON UN INCREMENTO EN VENTA DEL %100';
+        $data['varr1'] = '0';
+        $data['varr2'] = '25';
+        $data['varr3'] = '50';
+        $data['varr4'] = '75';
+        $data['varr5'] = '100';
         $data['q1'] = $this->finanzas_model->simulador_comision('1');
         $data['q2'] = $this->finanzas_model->simulador_comision('1.25');
         $data['q3'] = $this->finanzas_model->simulador_comision('1.50');

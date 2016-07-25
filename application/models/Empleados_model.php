@@ -7,62 +7,152 @@ class Empleados_model extends CI_Model
         parent::__construct();
     }
 
-    public function plantilla($f1)
+    
+    
+    
+    
+    public function plantilla()
     {
-        $aaa = date('Y');
-        $s = "select a.fecha_act, b.id, b.cia,c.puesto, a.nombre as sucx,a.regional,a.superv,a.tipo2,a.suc,a.nombre,a.plantilla,
-b.nomina,b.completo,b.puestox,d.nombre_e as regionalx,e.nombre as supervx,
-case when f.motivo is null then 'NO' else 'RETENCION' end as motivo
-from catalogo.sucursal a
-join catalogo.cat_empleado b on b.succ=a.suc and tipo=1
-left join catalogo.cat_puesto c on c.puesto=b.puestox and farmacia='S'
-left join catalogo.gerente d on d.ger=a.regional
-left join catalogo.supervisor e on e.zona=a.superv
-left join catalogo.cat_alta_empleado f on f.empleado=b.nomina and f.motivo='RETENCION' and id_causa<>7
-where a.tlid=1 and a.suc>100 and a.suc<=2899  
-and farmacia='S'
-order by puesto";
-$q = $this->db->query($s);
+    $id_plaza=$this->session->userdata('id_plaza');
+    $nivel=$this->session->userdata('nivel');
+    if($nivel==12){$var='regional='.$id_plaza.' and ';}
+    elseif($nivel==13){$var='superv='.$id_plaza.' and ';}else{$var='';}
+        $s = "SELECT regional, count(*)as num_suc,
+(select nombre from compras.usuarios m where m.id_plaza=a.regional and nivel=12 and m.id_plaza>0)as regionalx,        
+superv,
+(select count(m.superv) from catalogo.sucursal_ger_sup1 m where m.regional=a.regional)as num_superv,
+a.suc,a.nombre as sucx, sum(plantilla) as plantilla,
 
-        
-        foreach ($q->result() as $r) {
-            $a[$r->regional]['f1'] = $f1;
-            $a[$r->regional]['regional'] = $r->regional;
-            $a[$r->regional]['regionalx'] = $r->regionalx;
-            $a[$r->regional]['m'][$r->superv]['superv'] = $r->superv;
-            $a[$r->regional]['m'][$r->superv]['supervx'] = $r->supervx;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['fecha_act'] = $r->fecha_act;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['suc'] = $r->suc;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['sucx'] = $r->sucx;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['plantilla'] = $r->plantilla;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['nomina'] = $r->nomina;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['cia'] = $r->cia;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['completo'] = $r->completo;
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['puestox'] = trim($r->puestox);
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['motivo'] = trim($r->motivo);
-            $a[$r->regional]['m'][$r->superv]['segundo'][$r->suc]['tercero'][$r->nomina]['id'] = trim($r->id);
-        }
-        
-        return $a;
-        
-        
+sum((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null)) as actual,
+
+sum(plantilla-ifnull((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null),0))as vac_suc,
+
+
+sum(plantilla_medico)as plantilla_medico,
+
+sum((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null)) as medico_act,
+
+sum(plantilla_medico-ifnull((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null),0))as vac_medico_act
+
+FROM catalogo.sucursal a
+where $var  a.tlid=1 and a.tipo3 in('FE','FA','DA') 
+group by a.regional";
+$q = $this->db->query($s);
+return $q;
     }
 
-public function plantilla_tod($f1)
+public function plantilla_sup($ger)
     {
-        $aaa = date('Y');
-        $s = "select a.suc,a.nombre,b.nomina,trim(b.completo)as completo,puestox,
-ifnull((select motivo from catalogo.cat_alta_empleado x where x.motivo in('RETENCION','INC.INDEFINIDA') and x.empleado=b.nomina),' ')as motivo
-from catalogo.sucursal a
-join catalogo.cat_empleado b on b.succ=a.suc and b.tipo=1
-where 
-a.regional=$f1 and a.tlid=1 or
-a.superv=$f1 and a.tlid=1 
-order by a.suc
+        $s = "SELECT regional, count(*)as num_suc,
+superv,
+(select nombre from compras.usuarios m where m.id_plaza=a.superv and nivel=13 and id_plaza>0 and m.tipo = 1)as supervx,
+a.suc,a.nombre as sucx, sum(plantilla) as plantilla,
+
+sum((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null)) as actual,
+
+sum(plantilla-ifnull((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null),0))as vac_suc,
+
+
+sum(plantilla_medico)as plantilla_medico,
+
+sum((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null)) as medico_act,
+
+sum(plantilla_medico-ifnull((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null),0))as vac_medico_act
+
+FROM catalogo.sucursal a
+where a.tlid=1 and a.tipo3 in('FE','FA','DA') and regional=$ger
+group by a.superv";
+$q = $this->db->query($s);
+return $q;
+    }
+
+public function plantilla_suc($sup)
+    {
+        $s = "SELECT b.turno as turnox,regional, count(*)as num_suc,
+superv,
+(select nombre from compras.usuarios m where m.id_plaza=a.superv and nivel=13 and id_plaza>0 and tipo = 1)as supervx,
+a.suc,a.nombre as sucx, sum(plantilla) as plantilla,
+
+sum((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null)) as actual,
+
+sum(plantilla-ifnull((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null),0))as vac_suc,
+
+
+sum(plantilla_medico)as plantilla_medico,
+
+sum((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null)) as medico_act,
+
+sum(plantilla_medico-ifnull((select count(*) from catalogo.cat_empleado x
+where  x.succ=a.suc and x.tipo=1 and trim(puestox)='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y
+where y.empleado=x.nomina and motivo in('RETENCION','INC.INDEFINIDA') and id_causa<>7) is null),0))as vac_medico_act
+
+FROM catalogo.sucursal a
+join catalogo.cat_turnos b on b.num=a.turno
+where a.tlid=1 and a.tipo3 in('FE','FA','DA') and superv=$sup
+group by a.suc";
+$q = $this->db->query($s);
+return $q;
+    }
+
+public function plantilla_detfar($suc)
+    {
+         $s = "select case when fecha_as400='0000-00-00' then fechaalta else fecha_as400 end as fec_as400, 
+        nomina,trim(completo)as completo,puestox,fechaalta from catalogo.cat_empleado a
+where a.tipo=1 and succ=$suc and puestox<>'MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y where y.empleado=a.nomina and motivo in('RETENCION','INC.INDEFINIDA')
+and id_causa<>7) is null
 ";
 $q = $this->db->query($s);
 return $q;
-}
+    }
+    public function plantilla_detmed($suc)
+    {
+    
+        $s = "select case when fecha_as400='0000-00-00' then fechaalta else fecha_as400 end as fec_as400,
+        nomina,trim(completo)as completo,puestox,fechaalta
+from catalogo.cat_empleado a
+where a.tipo=1 and succ=$suc and puestox='MEDICO' and
+(select y.empleado from catalogo.cat_alta_empleado y where y.empleado=a.nomina and motivo in('RETENCION','INC.INDEFINIDA')
+and id_causa<>7) is null";
+$q = $this->db->query($s);
+return $q;
+    }
+
+
 
     function personal_cerradas()
     {

@@ -321,7 +321,7 @@ $q=$this->db->query($ee,array($id));
 function graba_bloqueo($codigo,$fec1,$fec2)
 {
 $s="insert ignore into compras.bloqueados_x_mes_todas(codigo, descripcion, fecha1, fecha2, rel1, rel2)
-(select codigo, descripcion, '$fec1', '$fec2', rel1, rel2 from catalogo.cat_fanasa where codigo=$codigo)";
+(select codigo, descripcion, '$fec1', '$fec2', rel1, rel2 from catalogo.cat_mercadotecnia where codigo=$codigo)";
 $this->db->query($s);
 }
 function excel_bloqueo()

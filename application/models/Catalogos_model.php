@@ -96,43 +96,47 @@ FROM catalogo.almacen WHERE SEC>5999 AND SEC<=7999 AND SUSA1<>' '";
     {
         $s = "select labprv,rel1,rel2,codigo,descripcion,lin,sublin,producto,cos,farmacia,pub,
 case when pub<case
-when fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
-when fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
-when fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
-when fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
-when fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
-when fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
+when cos_fanasa>0 and fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa=0 and fin_fanasa=0 and ofe_fanasa=0 and cos_dema>0 then round((cos/.80)+.5)
 end then round(pub) else
 case
-when fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
-when fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
-when fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
-when fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
-when fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
-when fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
+when cos_fanasa>0 and fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa=0 and fin_fanasa=0 and ofe_fanasa=0 and cos_dema>0 then round((cos/.80)+.5)
 end
 end as venta,
 100-((cos/(case when pub<case
-when fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
-when fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
-when fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
-when fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
-when fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
-when fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
+when cos_fanasa>0 and fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa=0 and fin_fanasa=0 and ofe_fanasa=0 and cos_dema>0 then round((cos/.80)+.5)
 end then round(pub) else
 case
-when fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
-when fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
-when fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
-when fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
-when fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
-when fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa<=2 and ofe_fanasa=0 then round((cos/.9)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>0 and ofe_fanasa<=10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa=0 and ofe_fanasa>10 then round((cos/.87)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>10 then round((cos/.75)+.5)
+when cos_fanasa>0 and fin_fanasa>2 and ofe_fanasa=0 then round((cos/.85)+.5)
+when cos_fanasa>0 and fin_fanasa>0 and ofe_fanasa>0 then round((cos/.85)+.5)
+when cos_fanasa=0 and fin_fanasa=0 and ofe_fanasa=0 and cos_dema>0 then round((cos/.80)+.5)
 end
 end))*100) as util
  from  catalogo.cat_mercadotecnia a 
  where 
- cos>0 and codigo like '%$var%' and tipo='F' or
- cos>0 and descripcion like '%$var%' and tipo='F'";
+ cos>0 and codigo like '%$var%' and tipo in('F','D') or
+ cos>0 and descripcion like '%$var%' and tipo in('F','D')";
         $q = $this->db->query($s);
         return $q;
     }
@@ -683,8 +687,25 @@ where  fec_entrega='$fec_e' and nombre='$nombre'";
         $query = $this->db->query($sql);
         return $query;
     }
+    function busca_eval_prv()
+    {
+        $sql = "select * from catalogo.cat_evaluacion_prv";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+    function busca_eval_prv_valor()
+    {
+        $sql = "select *from catalogo.cat_evaluacion_valor";
+        $query = $this->db->query($sql);
+        $val = array();
+        $val[0] = "No Cumple";
 
+        foreach ($query->result() as $row) {
+            $val[$row->id] = $row->id .'-'. $row->valor;
+        }
 
+        return $val;
+    }
     function busca_almacen()
     {
 
@@ -1002,6 +1023,20 @@ and b.suc is not null";
 
         return $prv;
     }
+    function busca_licita_embarque($licita)
+    {
+
+        $sql = "SELECT *from compras.numero_de_licitaciones";
+        $query = $this->db->query($sql);
+        $prv = array();
+        $prv[$licita] = '';
+
+        foreach ($query->result() as $row) {
+            $prv[$row->num_licitacion] = $row->licitacion . ' - ' . $row->estado;
+        }
+
+        return $prv;
+    }
     
     function busca_prv_indicado_cedis($prov, $sec)
     {
@@ -1186,6 +1221,46 @@ where prv=$prov and  sec=$sec";
         }
         return $sucx;
     }
+    function busca_suc_plantilla($suc)
+    {
+
+        $sql = "SELECT * FROM  catalogo.sucursal where suc=$suc";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $sucx = $row->plantilla;
+        } else {
+            $sucx = '';
+        }
+        return $sucx;
+    }
+    function busca_suc_plantilla_med($suc)
+    {
+
+        $sql = "SELECT * FROM  catalogo.sucursal where suc=$suc";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $sucx = $row->plantilla_medico;
+        } else {
+            $sucx = '';
+        }
+        return $sucx;
+    }
+    function busca_suc_turno_med()
+    {
+
+        $sql = "SELECT * FROM  catalogo.cat_turnos";
+        $query = $this->db->query($sql);
+        $suc = array();
+        $suc[0] = "SELECCIONE TURNO";
+
+        foreach ($query->result() as $row) {
+            $suc[$row->num] = $row->turno;
+        }
+
+        return $suc;
+    }
     function busca_suc_una_todos_datos($suc)
     {
 
@@ -1325,6 +1400,14 @@ where regional=$id_plaza and tlid=1  and fecha_act='0000-00-00'
         $qq = $this->db->query($l);
 
         return $qq;
+    }
+    public function busca_sec_unica($sec)
+    {
+        $l = "select *from catalogo.cat_almacen_clasifica where sec=$sec";
+        $qq = $this->db->query($l);
+        $rr=$qq->row();
+        $secx=$rr->susa;
+        return $secx;
     }
     
     function busca_lin_uno($l)
@@ -2646,6 +2729,23 @@ function busco_cod_fanasa($cod){
         }  
         return $tabla;  
      }
+     function busco_cod_mercadotecnia($cod){
+        $sql = " SELECT a.* FROM catalogo.cat_mercadotecnia a where 
+        (codigo like '$cod%' or descripcion like '%$cod%') and
+        (cos_fanasa>0 or cos_dema>0)
+        ";
+        $query = $this->db->query($sql); 
+         if($query->num_rows() == 0){
+            $tabla = 0;
+         }else{
+        $tabla = "<option value=\" \">Seleccione una producto</option>";
+        foreach($query->result() as $row){
+             $tabla.="<option value =\"".$row->codigo."\">".$row->codigo."-".$row->descripcion."</option>
+            ";
+         } 
+        }  
+        return $tabla;  
+     }
      
      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
      
@@ -2664,7 +2764,8 @@ function busco_cod_fanasa($cod){
 
         function ins_max_suc($sec, $can,$can_cedis){
 
-           $sx="insert ignore into almacen.max_cedis(sec, final, porce, final_act)values($sec,$can_cedis,0,0)";
+           $sx="insert into almacen.max_cedis(sec, final, porce, exis_cedis)values($sec,$can_cedis,0,0) 
+                on duplicate key update final=values(final)";
            $this->db->query($sx);
            
            $sql = "select b.sec,  a.suc, b.susa , 0,0,0,0 , case when b.sec = $sec then $can end as final,0,0,0,0,0,0,0,0
@@ -2728,7 +2829,12 @@ function busco_cod_fanasa($cod){
             $cantidad=$r->final;
             return $cantidad;
          }
-
+         function cat_dema()
+         {
+              $sql = "select *from catalogo.cat_dema";
+              $q = $this->db->query($sql); 
+              return $q;
+         }
 
 
 

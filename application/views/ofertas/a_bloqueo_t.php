@@ -8,10 +8,11 @@
                            </span>
                          </div>
                          <div class="widget-body">
-<!---->                          
+<!---->
+                         
 <?php
 $l1=anchor('ofertas/a_bloqueos_codigos_excel','Archivo en Excel');
-	$atributos = array('id' => 'sumit_bloqueo_transfer');
+	$atributos = array('id' => 'sumit_pedido_dema_bloqueo');
     echo form_open('ofertas/sumit_bloqueo_transfer', $atributos);
 
 $data_cod = array(
@@ -62,8 +63,8 @@ $data_fec2 = array(
                             <tr>
                             <td colspan="4" align="center"><?php echo form_submit('envio', 'Bloquear producto');?></td>
                             </tr>
-                                    
                                </table>
+                               
 
   <?php
  

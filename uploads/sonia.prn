@@ -1,0 +1,456 @@
+10000 ||   7501125116810 ||AGRIFEN ANTIGRIPAL TAB/10                ||     Cafeina, Clorfenamina, Fenilefrina, Paracetamol     ||         21.25      ||     13.50
+10010 ||   7501088505607 || ALIN 0.5 MG TAB 30 560                  ||     Dexametasona                                        ||         54.10      ||     32.94
+10010 ||   7501088505003 || ALIN 8 MG SOL INY 1X2 ML     251        ||      Dexametasona                                       ||         58.85      ||     34.67
+10010 ||   7501088505256 || ALIN NASAL 20 ML 525                    ||      Dexametasona,  neomicina, fenilefrina              ||        110.48      ||     67.28
+10010 ||   7501088505157 || ALIN-DEPOT 4MG SUSP INY 1X2 ML          ||     Dexametasona                                        ||        144.40      ||     84.01
+10011 ||   7501088505355 || ALIN-OFT 90/3.50MG GTS 5 ML             ||     Dexametasona, Neomicina                             ||         63.50      ||     38.67
+10011 ||   7501088508202 || A-MIGDOBIS INF 22 G SUPS 2              ||     Acido etilhexanoico                                 ||         36.23      ||     22.06
+10011 ||   7501088508929 || ANARA 5MG TAB 20                        ||     Picosulfato de Sodio                                ||         89.10      ||     52.06
+10011 ||   7501088536410 || ANARA JBE 125 ML 3641                   ||     Picosulfato de Sodio                                ||        118.92      ||     69.48
+10011 ||   7501088508912 || ANARA SOL 20 ML                         ||     Picosulfato de Sodio                                ||        103.79      ||     61.35
+10011 ||   7501088509773 || ANTIFLU-DES CAPS 24          025        ||     Amantadina, clorfenamina, paracetamol               ||        124.13      ||     73.37
+10011 ||   7501088509766 || ANTIFLU-DES JR SOL 60 ML     203        ||     Amantadina, clorfenamina, paracetamol               ||         84.70      ||     48.40
+10011 ||   7501088509810 || ANTIFLU-DES PED SOL 30 ML    274        ||     Amantadina, clorfenamina, paracetamol               ||         93.09      ||     53.20
+10012 ||   7501088507878 || GABIROL 1G SOL 120ML                    ||     Rimantadina                                         ||        213.40      ||    126.14
+10012 ||   7501088507861 || GABIROL PED 5G SOL 30 ML                ||     Rimantadina                                         ||        196.88      ||    116.38
+10012 ||   7501088509902 || GITRASEK 33.3/166.6 MG CAPS 12          ||     Itraconazol/Secnidazol                              ||        327.43      ||    199.40
+10012 ||   7501088507915 || KOPTIN 200MG SUSP 22.5ML                ||     Azitromicina                                        ||        249.31      ||    151.82
+10012 ||   7501088507922 || KOPTIN 500 MG TAB 3                     ||     Azitromicina                                        ||        345.03      ||    210.11
+10012 ||   7501088545658 || MYDOCALM-A 50/300 MG CAPS 30            ||     Tolperisona/Paracetamol                             ||        170.28      ||     99.07
+10012 ||   7501088505126 || NEURALIN SOL INY AMP 2       224        ||     Vit B1, Vit B6, Vit B12, Lidocaina, Dexametasona    ||        113.36      ||     67.01
+10013 ||   7501088559112 || SCABISAN PLUS 5 G EML 120 ML            ||     Permetrina                                          ||         91.56      ||     53.27
+10013 ||   7501088559129 || SCABISAN 1 G SH 110 ML                  ||     Permetrina                                          ||        115.56      ||     67.24
+10013 ||   7501088559211 || SCABISAN 5G CRA TB 60G                  ||     Permetrina                                          ||         87.78      ||     51.07
+10013 ||   7501088505409 || SEDEPRON 250 MG TAB 10                  ||     Clonixinato de Lisina                               ||        165.88      ||    101.02
+10013 ||   7501088563423 || SEPTACIN 300 MG SOL 120 ML              ||     Ambroxol                                            ||        127.01      ||     73.90
+10013 ||   7501088563454 || SEPTACIN 750 MG PED GTS 30 ML           ||     Ambroxol                                            ||        107.36      ||     62.46
+10013 ||   7501088562426 || SEPTACIN-AMOXI 250/15MG SUSP90ML        ||     Ambroxol/Amoxicilina                                ||        163.66      ||     95.22
+10013 ||   7501088562433 || SEPTACIN-AMOXI 500/30MG CAPS 12         ||     Ambroxol/Amoxicilina                                ||        174.96      ||    101.80
+10014 ||   7501088579707 || SEVERIN-NF 100 MG TAB 10     577        ||     Nimesulida                                          ||        127.12      ||     72.64
+10014 ||   7501088579752 || SEVERIN-NF 1G SUSP 60 ML                ||     Nimesulida                                          ||        116.63      ||     66.65
+10014 ||   7501088507908 || SUMA-B AMP 5X2ML JGAS DESCH 5           ||     Complejo B                                          ||        239.22      ||    139.18
+10014 ||   7501088505423 || SYNALAR NEOM 0.01% CRA 40G0642          ||     Fluocinolona                                        ||        205.20      ||    130.30
+10014 ||   7501088505478 || SYNALAR OFT 0.015% SOL 15 ML            ||     Fluocinolona,Polimixina B, Neomicina                ||        136.29      ||     84.97
+10014 ||   7501088505485 || SYNALAR OTICO SOL 15 ML                 ||     Fluocinolona,Lidocaina,Neomicina,Polimixina B       ||        165.78      ||    105.27
+10014 ||   7501088505430 || SYNALAR-S 0.01% CRA 20 G 0644           ||     Fluocinolona                                        ||         97.52      ||     61.96
+10014 ||   7501088505447 || SYNALAR SPLE 0.01% CRA 40 G             ||     Fluocinolona                                        ||        182.52      ||    115.90
+10015 ||   7501088505461 || SYNALAR-C 0.01% CRA 40 G 0649           ||     Fluocinolona                                        ||        213.62      ||    133.17
+10015 ||   7501088505416 || SYNALAR NASAL GTS 15 ML                 ||     Fluocinolona,Polimixina B, Neomicina,Fenilefrina    ||        114.45      ||     72.01
+10015 ||   7501088505454 || SYNALAR-S 0.025% CRA 20 G 0645          ||     Fluocinolona                                        ||        133.98      ||     83.53
+10015 ||   7501088575600 || TOPRON ORAL 4.4 G SUSP 120 ML           ||     Nifuroxazida                                        ||        133.86      ||     77.88
+10015 ||   7501088579615 || TOPRON 400 MG CAPS 16                   ||     Nifuroxazida                                        ||        122.47      ||     71.26
+10015 ||   7501088505492 || TOPSYN GEL 0.05% 40 G 0656              ||     Fluocinolona                                        ||        210.21      ||    131.06
+10015 ||   7501088505508 || TOPSYN-Y GEL 0.05% 40 G 0657            ||     Fluocinolona/Clioquinol                             ||        345.82      ||    219.58
+10015 ||   7501088515200 || TRAUMAZOL CLORURO DE ETILO 175ML        ||     Cloruro de Etilo                                    ||        308.45      ||    179.46
+10015 ||   7501088575495 || TROFERIT 30 MG TAB 15                   ||     Dropropizina                                        ||        112.21      ||     65.29
+10015 ||   7501088575396 || TROFERIT 300 MG JBE 120 ML              ||     Dropropizina                                        ||        121.28      ||     69.31
+10016 ||   7501088575594 || TROFERIT INF 20 MG SUSP 8               ||     Dropropizina                                        ||         94.13      ||     54.77
+10016 ||   7501088507854 || GABIROL 100 MG CAPS 14                  ||     Rimantadina                                         ||        190.08      ||    115.75
+10016 ||   7501088508998 || NEURALIN RELIEF TAB 20           N      ||     Ketoprofeno. Piridoxina. Tiamina. Cianocobalamina   ||        341.25      ||    199.37
+11016 ||     75006167    || ADEKON SOL INY 1X3 ML                   ||     Vit A/Vit D                                         ||         35.00      ||     18.55
+11017 ||   7501072350022 || ADEKON SOL INY 5X3 ML                   ||     Vit A/Vit D                                         ||        145.00      ||     76.84
+11017 ||   7501072350039 || ADEKON-C GOTAS 15 ML                    ||     Vit A/Vit D/Vit C                                   ||         90.00      ||     47.70
+11017 ||   7502209710030 || SINOMARIN 125 ML   (IVA incluido)       ||     Agua de Mar                                         ||        200.00      ||    142.62
+11017 ||   7502209710023 || SINOMARIN 100 ML (IVA incluido)         ||     Agua de Mar                                         ||        165.00      ||    117.66
+11017 ||   7502209710078 || SINOMARIN 30 ML   (IVA incluido)        ||     Agua de Mar                                         ||        120.00      ||     85.57
+11017 ||   7501328977737 || MONUROL 3 G                             ||     Fosfomicina                                         ||        420.00      ||    222.58
+11017 ||   7501328977973 || MONUROL 2 G PEDIATRICO                  ||     Fosfomicina                                         ||        295.00      ||    156.34
+11017 ||   7502209710108 || LYSOMUCIL 600 MG 20 TAB EFERV           ||     Acetilcisteina                                      ||        260.00      ||    137.79
+11017 ||   7502209710115 || LYSOMUCIL GRAN 200 MG 30 SOB            ||     Acetilcisteina                                      ||        195.00      ||    103.34
+11018 ||   7502209710122 || LYSOMUCIL SOL 2% 120 ML                 ||     Acetilcisteina                                      ||        190.00      ||    100.69
+12177 ||   7502214982811 ||PRESERV PRUDENCE SABOR,COLOR Y AROMA SURT||                                                         ||         35.72      ||     28.96
+12177 ||   7502214982477 ||PRESERV PRUDENCE SABOR,COLOR Y AROMA FSA ||                                                         ||         24.83      ||     19.51
+12177 ||   7502214980015 ||PRESERV PRUDENCE CLASICO C/3    (IVA incl||                                                         ||         21.43      ||     17.52
+12177 ||   7502214982491 ||PRESERV PRUDENCE SABOR,COLOR Y AROMA UVA ||                                                         ||         24.83      ||     19.51
+12178 ||   7502214982514 ||PRESERV PRUDENCE SABOR,COLOR Y AROMA CHTE||                                                         ||         24.83      ||     19.51
+12178 ||   7502214982439 ||PRESERV PRUDENCE RETARDANTE C/3  (IVA inc||                                                         ||         33.93      ||     26.14
+12178 ||   7502214982507 ||PRESERV PRUDENCE SABOR,COLOR Y AROMA NJA ||                                                         ||         24.83      ||     19.51
+12178 ||   7502214983573 ||PRESERV PRUDENCE   MIX  CARIBBEAN C/5  (I||                                                         ||         35.72      ||     28.96
+12178 ||   7502214982484 ||PRESERV PRUDENCE SABOR, COLOR Y AROMA MTA||                                                         ||         24.83      ||     19.51
+12178 ||   7502214982538 ||PRESERV PRUDENC ANILLO Y PUNTOSC/3 (IVA i||                                                         ||         28.75      ||     22.47
+12178 ||   7502214982415 ||PRESERV PRUDENCE SENSITIVE C/3           ||                                                         ||         28.75      ||     22.47
+12178 ||   7502214982965 ||PRUDENCE VITROLERO CLASICO 100  (IVA incl||                                                         ||        428.57      ||    322.22
+12178 ||   7502214985003 ||PRUDENCE PRUEBA DE EMBARAZO   (IVA inclui||                                                         ||         35.00      ||     22.63
+12179 ||   7502214983634 ||SILDENAFIL TAB     EMPLAY C/3 CONDONES RE||     Sindenafil                                          ||        120.00      ||     35.00
+14177 ||   7501590211232 || POSTINOR 1.5 MG TABS C/1                ||     Levonogestrel                                       ||        150.00      ||     48.89
+14177 ||   7501590233043 || POSTINOR TABS 0.75 MG C/2               ||     Levonogestrel                                       ||        105.00      ||     26.67
+14177 ||   7503012267056 || PRUEBA DE EMBARAZO POSTINOR C/1  (IVA in||                                                         ||        100.00      ||     41.01
+15019 ||   7501385494673 || CLEARMICIN PED 250 MG /5MLSUSP 60 ML    ||     Claritromicina                                      ||        411.00      ||    259.06
+15019 ||   7501385410000 || CUERPO-AMARILLO- AMP 6X2 ML             ||     Progesterona                                        ||        553.00      ||    348.56
+15019 ||   7501385491085 || DANZEN 10 MG GRAG 20                    ||     Serratio Peptidasa                                  ||        247.00      ||    155.69
+15019 ||   7501385420061 || DANZEN 5 MG GRAG 30                     ||     Serratio Peptidasa                                  ||        191.00      ||    120.39
+15020 ||   7501385450068 || HEMOSIN-K 100/30 MG JBE 200 ML          ||     Vitamina K                                          ||        217.00      ||    136.78
+15020 ||   7501385420238 || HEMOSIN-K 25/5 MG TAB 32                ||     Vitamina K                                          ||        217.00      ||    136.79
+15022 ||   7501385493850 || VARITON 450/500 MG TAB 20               ||     Diosmina Hesperidina                                ||        483.00      ||    304.44
+20000 ||   7501022132715 || SH GRISI 3 EN 1 KIDS RIO 2 NIÑO         ||                                                         ||         43.00      ||     15.00
+20000 ||   7501022132708 || SH GRISI 3 EN 1 KIDS RIO 2 NIÑA         ||                                                         ||         43.00      ||     15.00
+20001 ||   7502216802032 || OSIDEA GL GEL 100MG/5G SOB C1      1 + 1||     Sindenafil                                          ||        179.00      ||     80.00
+20001 ||   7501287630124 ||TERRAMICINA OFTALMICA .                  ||     Oxitetraciclina                                     ||        156.97      ||     83.31
+20001 ||   7501287630926 ||TERRAMIMICINA 500 MG CAP 16              ||     Oxitetraciclina                                     ||        222.36      ||    127.66
+20001 ||   7501065060587 ||CONTAC ULTRA TAB 12                      ||     Pseudoefedrina, Clorfenamina, Dextrometorfano,Parace||         46.64      ||     27.33
+20025 ||   7501299306772 || ACLORAL TAB 150 MG CJA 3X20 TAB         ||     Ranitidina                                          ||        150.00      ||     87.59
+20025 ||   7501299306260 ||ANALGEL TAB 220 MG COLICOS C/10          ||     Naproxeno Sodico                                    ||         53.00      ||     28.48
+20025 ||   7501299306277 ||ANALGEN TAB 220 MG C/20                  ||     Naproxeno Sodico                                    ||         91.00      ||     51.61
+20025 ||   7501299300558 ||ANALGEN TAB 220 MG ARTRITIS CJA FCO C/60 ||     Naproxeno Sodico                                    ||        161.00      ||     89.57
+20026 ||   7501299301975 ||CANDIFLUX CAPS 150MG CJA C/1             ||     Triclosan                                           ||        135.00      ||     76.52
+20027 ||   7501299301395 || CICLOFERON SUSP CJA/FCO C/60ML          ||     Aciclovir                                           ||        249.00      ||    145.40
+20027 ||   7501299303047 ||CICLOFERON CRA CJA/TB 2G                 ||     Aciclovir                                           ||         61.00      ||     33.22
+20027 ||   7501299303085 ||CICLOFERON CRA COLOR PIEL CJA/TB 2G      ||     Aciclovir                                           ||         67.00      ||     36.19
+20027 ||   7501299355039 ||CICLOFERON XTRM CRA CJA/TB 2G            ||     Aciclovir/Lidocaina                                 ||         71.00      ||     38.56
+20028 ||   7501299303078 ||CONAZOL CRA C/TB 30G                     ||     Ketoconazol                                         ||         67.00      ||     39.74
+20029 ||   7501299306475 ||CONAZOL TALCO PVO FCO 85 G               ||     Ketoconazol                                         ||         87.00      ||     46.87
+20029 ||   7501299306253 ||CONAZOL SPRAY PVO ENV 85 G               ||     Ketoconazol                                         ||         99.00      ||     52.20
+20029 ||   7501299304525 ||CONAZOL SPRAY PVO ENV 160 G              ||     Ketoconazol                                         ||        137.00      ||     74.74
+20029 ||   7501299304532 ||CONAZOL TALCO SPORT PVO FCO 85 G         ||     Ketoconazol                                         ||         91.00      ||     48.64
+20029 ||   7501299301067 || DAFLOXEN SUSP CJA FCO 100 ML            ||     Naproxeno                                           ||        109.00      ||     63.65
+20030 ||   7501299301074 || ECTAPRIM SUSP CJA FCO 120 ML            ||     Trimetroprima Sulfametoxazol                        ||        117.00      ||     68.32
+20030 ||   7501299306321 || ECTAPRIM TAB 80/400 MG CJA C/30         ||     Trimetroprima Sulfametoxazol                        ||        140.00      ||     81.75
+20030 ||   7501299300763 || ECTAPRIM F TAB 160/800 MG CJA C/14      ||     Trimetroprima Sulfametoxazol                        ||        156.00      ||     91.09
+20031 ||   7501299307687 || EVOCS III TAB 500 MG CJA C/7            ||     Levofloxacino                                       ||        456.00      ||    266.27
+20031 ||   7501299307670 || EVOCS III TAB 750 MG CJA C/5            ||     Levofloxacino                                       ||        519.00      ||    303.05
+20032 ||   7501299302996 ||FACIDEX TOTAL TAB MAST (BLSTER) CJA C/5  ||     Fasmotidina                                         ||         28.00      ||     15.42
+20033 ||   7501299300251 || FLAGENASE TAB 500 MG CJA C/30           ||     Metronidazol                                        ||        114.00      ||     66.57
+20033 ||   7501299301111 || FLAGENASE SUSP 250 FCO 120 ML           ||     Metronidazol                                        ||        119.00      ||     69.49
+20033 ||   7501299302675 || FLAGENASE V OVULOS VAG 500 MG CJA C/10  ||     Metronidazol                                        ||         99.00      ||     57.81
+20033 ||   7501299300275 || FLAGENASE 400 MG CAPS CJA C/30          ||     Metronidazol/Diyohidroxiquinoleina                  ||        134.00      ||     74.52
+20033 ||   7501299301128 || FLAGENASE 400 PED SUSP CJA/ FCO 120 ML  ||     Metronidazol/Diyohidroxiquinoleina                  ||        134.00      ||     78.24
+20034 ||   7501299330180 || GO TAB 50 MG CJA C/1                    ||     Sindenafyl                                          ||         64.00      ||     21.35
+20034 ||   7501299330203 || GO TAB 100 MG CJA C/1                   ||     Sindenafyl                                          ||         79.00      ||     26.36
+20035 ||   7501299306635 ||INHIBITRON DUAL CAPS 20 MG C/7           ||     Omeprazol                                           ||        185.00      ||    109.74
+20035 ||   7501299330012 || INHIBITRON F DUAL CAPS 40 MG CJA/ FCO C/||     Omeprazol                                           ||        477.00      ||    278.53
+20035 ||   7501299307175 || INHIBITRON F DUAL CAPS 40 MG CJA/ FCO C/||     Omeprazol                                           ||        329.00      ||    192.11
+20035 ||   7501299306833 || INHIBITRON SOL INY 40 MG CJA/ FCO VIAL/A||     Omeprazol                                           ||        266.00      ||    136.56
+20036 ||   7501299303542 || LOCOID 0.1G/ 100 G CRA 30 G             ||     Hidrocortisona                                      ||        203.00      ||    118.54
+20036 ||   7501299305386 || LODESTAR TAB 50 MG CJA C/30             ||     Losartan                                            ||        512.00      ||    298.97
+20036 ||   7501299307144 || LODESTAR ZID TAB 50 MG/ 12.5 MG CJA C/30||     Losartran/Hidroclorotiazida                         ||        512.00      ||    298.97
+20036 ||   7501299307168 || LODESTAR ZID TAB 100 MG/ 25 MG CJA C/30 ||     Losartan/Hidroclorotiazida                          ||        757.00      ||    442.02
+20036 ||   7501299302927 ||L-OMBRIX TAB 100 MG CJA C/6              ||     Mebendazol                                          ||         60.00      ||     33.22
+20037 ||   7501299306765 || MACROZIT TAB 500 MG CJA C/3             ||     Azitromicina                                        ||        318.00      ||    185.69
+20037 ||   7501299301579 || MACROZIT TAB 500 MG CJA C/4             ||     Azitromicina                                        ||        364.00      ||    212.55
+20037 ||   7501299306840 || MACROZIT SUSP 15 ML CJA/ FCO/ DILUYENTE ||     Azitromicina                                        ||        204.00      ||    119.12
+20037 ||   7501299301678 || MACROZIT SUSP 30 ML CJA/ FCO/ DILUYENTE ||     Azitromicina                                        ||        259.00      ||    151.23
+20038 ||   7501299301999 || MUCOFLUX SOL CJA FCO 120 ML             ||     Ambroxol/Salbutamol                                 ||        210.00      ||    116.79
+20039 ||   7501299301203 || MUCOVIBROL C SOL CJA FCO C/120 ML       ||     Ambroxol                                            ||        189.00      ||    110.36
+20039 ||   7501299301340 || MUCOVIBROL C SOL GTS CJA FCO C/20 ML    ||     Ambroxol                                            ||        137.00      ||     80.00
+20039 ||   7501299355015 ||MYCELVAN CRA OTC 30 G                    ||     Terbinafina                                         ||         75.00      ||     44.49
+20040 ||   7501299307380 || PARAMIX GRA 500 GM (BLIST/CJA) C/6      ||     Nitazoxanida                                        ||        295.00      ||    172.26
+20040 ||   7501299301401 || PARAMIX SUSP PVO CJA/FCO P/30 ML        ||     Nitazoxanida                                        ||        137.00      ||     80.00
+20040 ||   7501299303443 || PRAZOLAN DUAL TAB 20 MG CJA C/7         ||     Pantoprazol                                         ||        222.00      ||    129.63
+20041 ||   7501299303467 || PRAZOLAN DUAL TAB 40 MG CJA C/7         ||     Pantoprazol                                         ||        352.00      ||    205.54
+20041 ||   7501299303474 || PRAZOLAN DUAL TAB 40 MG CJA C/14        ||     Pantoprazol                                         ||        627.00      ||    366.12
+20041 ||   7501299307519 || PRESONE 1 TAB 5 MG CJA/10               ||     Amlodipino                                          ||        146.00      ||     85.25
+20041 ||   7501299307526 || PRESONE 1 TAB 5 MG CJA C/30             ||     Amlodipino                                          ||        389.00      ||    227.14
+20042 ||   7501299330036 || RADIANCE CPR REC 3MG/0.03 MG CJA C/28   ||     Etinilestradiol/drosperinona                        ||        296.00      ||    172.84
+20042 ||   7501299330029 || RADIANCE 20 CPR REC 3MG/0.02MG CJA C/28 ||     Etinilestradiol/drosperinona                        ||        296.00      ||    172.84
+20042 ||   7501299308172 ||REDUSTAT CAPS 60 MG CJA C/30             ||     Orlistat                                            ||        326.00      ||    193.38
+20043 ||   7501299301364 || SENSIBIT SOL.PED.ALERG CJA FCO GTO 30 ML||     Loratadina                                          ||        117.00      ||     68.32
+20043 ||   7501299307236 ||SENSIBIT D NF TAB CJA C/12               ||     Fenilefrina/loratadina/paracetamol                  ||         55.00      ||     32.63
+20043 ||   7501299307915 ||SENSIBIT D NF PED SOL CJA/FCO 120 ML     ||     Fenilefrina/Loratadina                              ||         98.00      ||     58.13
+20043 ||   7501299307922 ||SENSIBIT D JBE (PRES.INF CJA/FCO 60 ML   ||     Loratadina/Paracetamol                              ||         92.00      ||     54.57
+20044 ||   7501299302286 || SUPRADOL INY IM,IV 30 MG CJA C/3 AMP    ||     Ketorolaco                                          ||        179.00      ||     99.54
+20044 ||   7501299302354 || SUPRADOL INY.IM,IV 60 MG CJA C/3 AMP    ||     Ketorolaco                                          ||        240.00      ||    123.21
+20044 ||   7501299306352 || SUPRADOL (KETOROLACO) TAB 10 MG CJA C/10||     Ketorolaco                                          ||        130.00      ||     72.30
+20044 ||   7501299306734 || SUPRADOL TAB 10 MG CJA C/20             ||     Ketorolaco                                          ||        200.00      ||    116.78
+20045 ||   7501299306123 || SUPRADOL TAB SUBLINGUALES 30 MG CJA C/2 ||     Ketorolaco                                          ||         94.00      ||     52.28
+20045 ||   7501299306130 || SUPRADOL TAB SUBLINGUALES 30 MG CJA C/4 ||     Ketorolaco                                          ||        142.00      ||     78.97
+20045 ||   7501299307212 || SUPRADOL F TAB CJA C/10                 ||     Ketorolaco/cafeina                                  ||        198.00      ||    115.62
+20047 ||   7503017193046 ||ANALGEN GEL CJA/ TB 30 G                 ||     Naproxeno Sodico                                    ||         87.00      ||     48.64
+20047 ||   7503017193077 ||ANALGEN GEL NF CJA/ TB 30 G              ||     Naproxeno Sodico                                    ||         87.00      ||     48.64
+20047 ||   7503017193060 ||ANALGEN FORTE 220/ 300 MG TAB CJA C/12   ||     Naproxeno Sodico/Paracetamol                        ||         84.00      ||     44.50
+20047 ||   7503017193244 ||ANALGEN FORTE COLICOS TAB 12             ||     Naproxeno Sodico                                    ||         84.00      ||     49.83
+20047 ||   7503017193381 || SLENDER-1 120 MG 30 CAPS                ||     Orlistat                                            ||        473.00      ||    276.19
+35090 ||   7501070635596 ||A.S. COR GTS 24 ML 10 ML                 ||     Clorhidrato de Norfenefrina                         ||        314.00      ||    195.44
+35090 ||   7501070618995 ||AEROFLUX JBE 120 ML                      ||     Ambroxol,Salbutamol                                 ||        307.00      ||    176.32
+35090 ||   7501070622152 ||AMOXIBRON CAPS/12 500MG/8                ||     Amoxicilina/Bromhexina                              ||        233.00      ||    147.78
+35090 ||   7501070614461 ||AMOXIBRON SUSP 75 ML 250MG               ||     Amoxicilina/Bromhexina                              ||        222.00      ||    140.80
+35091 ||   7501072340030 ||BIFEBRAL COMP C/12 300/100 MG            ||     Ketoprofeno/ Paracetamol                            ||        211.00      ||    139.00
+35092 ||   7501070612917 ||CLAVULIN SUSP 75 ML 250 MG               ||     Amoxicilina/Ac Clavulanico                          ||        332.00      ||    184.15
+35092 ||   7501070612955 ||CLAVULIN 12H TAB 10 875/125MG            ||     Amoxicilina/Ac Clavulanico                          ||        545.00      ||    341.38
+35092 ||   7501070612771 ||CLAVULIN 12H SUSP 40ML 200/28.5 MG       ||     Amoxicilina/Ac Clavulanico                          ||        190.00      ||    119.01
+35092 ||   7501070612832 ||CLAVULIN 12H SUSP 50 ML 400/75MG         ||     Amoxicilina/Ac Clavulanico                          ||        334.00      ||    209.21
+35092 ||   7501070612856 ||CLAVULIN 12H SUSP 50ML 600/42.9 MG       ||     Amoxicilina/Ac Clavulanico                          ||        337.00      ||    211.09
+35092 ||   7501070615376 ||COVERSYL TAB C/14 4 MG                   ||     Perindropil                                         ||        704.00      ||    440.96
+35092 ||   7501070615277 ||DAFLON GRAG C/20  500MG                  ||     Diosmina Hesperidina                                ||        483.00      ||    302.54
+35093 ||   7501070618650 ||LAXOYA COMP C/20 8.6/50 MG               ||     Seanosidos AB, Ducosoato de Sodio                   ||        156.00      ||     97.71
+35094 ||   7501174603309 ||NEUROFLAX INY 20/4MG C/4 ML 1 FA         ||     Tiocolchicosido/Cobamamida                          ||        359.00      ||    224.78
+35094 ||   7501070635183 ||PENAMOX CAPS C/12 500MG                  ||     Amoxicilina                                         ||        185.00      ||    115.15
+35094 ||   7501070635237 ||PENAMOX SUSP 75 ML 250 MG                ||     Dicloxacilina                                       ||        169.00      ||    105.19
+35095 ||   7501070635350 ||PENAMOX M CAPS C/12 500 MG               ||     Amoxicilina/Bromhexina                              ||        233.00      ||    145.03
+35095 ||   7501070635411 ||PENAMOX M SUSP 75ML 250/8MG              ||     Amoxicilina/Bromhexina                              ||        222.00      ||    138.18
+35095 ||   7501070634810 ||POSIPEN CAPS C/12 500 MG                 ||     Dicloxacilina                                       ||        321.00      ||    201.07
+35095 ||   7501070634698 ||POSIPEN SUSP 90ML 250MG                  ||     Dicloxacilina                                       ||        332.00      ||    207.95
+35096 ||   7501070601171 ||POSIPEN 12H TAB C/10 1 GR                ||     Dicloxacilina                                       ||        350.00      ||    219.23
+35096 ||   7501070615123 ||PRANOSINE TAB C/20 500 MG                ||     Metisoprinol                                        ||        449.00      ||    279.47
+35096 ||   7501070615048 ||PRANOSINE JBE 60 ML 250 MG 5 ML          ||     Metisoprinol                                        ||        362.00      ||    225.32
+35096 ||   7501070635756 ||STADIUM TAB C/10 25 MG                   ||     Desketoprofeno                                      ||        384.00      ||    240.53
+35096 ||   7501070635664 ||VONTROL TAB C/25 25 MG                   ||     Difenidol                                           ||        247.00      ||    153.74
+35097 ||   7501070635718 ||VONTROL INY 2 FA 40 MG                   ||     Difenidol                                           ||        133.00      ||     82.78
+35097 ||   7501070618933 ||ZENTEL 200 MG TAB 10                     ||     Albendazol                                          ||        200.00      ||    126.85
+35097 ||   7501070618919 ||ZENTEL SUSP 400 MG 10 ML                 ||     Albendazol                                          ||        115.00      ||     72.94
+35098 ||   7501070617417 ||BLISTEX CRA 6 G  (iva incluido)          ||     Alcanfor,Dimeticona,Octil Metoxicinamato            ||         69.00      ||     45.47
+35098 ||   7501070617431 ||BLISTEX FRUTAS LAPIZ LABIAL 4.2 G  (iva i||     Alcanfor,Dimeticona,Octil Metoxicinamato            ||         51.00      ||     33.50
+35098 ||   7501070617455 ||BLISTEX MENTA LABIAL 4.2 G  (iva incluido||     Alcanfor,Dimeticona,Octil Metoxicinamato            ||         51.00      ||     33.50
+35098 ||   7501070617479 ||BLISTEX REGULAR LAPÌZ LABIAL 4.2 G  (iva ||     Alcanfor,Dimeticona,Octil Metoxicinamato            ||         51.00      ||     33.50
+35099 ||   7501385491139 ||DEFLAMOX PLUS 275/30 MG TAB 16           ||     Naproxeno/Parcetamol                                ||        177.00      ||    104.59
+35099 ||   7501385491146 ||DEFLAMOX PLUS SUSP 125/100 MG 75 ML      ||     Naproxeno/Parcetamol                                ||        152.00      ||     89.82
+35099 ||   7501159526029 ||EUCALIPTINE INYE 100 MG/1 ML 10 AMP      ||     guyacol                                             ||        230.00      ||    152.48
+35101 ||   7501070600556 ||SYNCOL COMP 500/25/15MG C/24             ||     Paracetamol,Pamabron, Pirilamina                    ||        107.00      ||     60.80
+35101 ||   7501070600709 ||SYNCOL COMP 500/25/15 MG C/12            ||     Paracetamol,Pamabron, Pirilamina                    ||         85.00      ||     48.30
+35101 ||   7501070600617 ||SYNCOL TEEM COMP 500/25 MG C/12          ||     Paracetamol, Pamabron                               ||         68.00      ||     38.64
+35101 ||   7501070600730 ||SYNCOL MAX COMP 650/60 MG C/12           ||     Paracetamol, Cafeina, Pirilamina                    ||        101.00      ||     57.39
+35102 ||   7501070612368 ||TREDA 129/280/30 MG C/20                 ||     Caolin/neomicina                                    ||        164.00      ||    102.08
+35102 ||   7501070612320 ||TREDA SUSP 0.733/10.000/0.7000G 75 ML    ||     Caolin/neomicina                                    ||        154.00      ||     95.85
+50300 ||   7501123013302 ||BEDOYECTA TRI 1/5 JERINGAS               ||     Piridoxina. Tiamina. Cianocobalamina                ||        376.60      ||    127.77
+50300 ||   7501123013340 ||BEDOYECTA MULTIV COMPLE B 1/30 CAP       ||     Piridoxina. Tiamina. Cianocobalamina                ||        253.15      ||    105.00
+56400 ||   650240011351  ||UNESIA UNGUNTO 20 G                      ||     Bifonazol                                           ||         69.90      ||     58.19
+56401 ||   650240015571  ||NASALUB INFANTIL                         ||     Cloruro de Sodio                                    ||         45.90      ||     33.77
+60305 ||   7501165000230 ||NEO-MELUBRINA  500 MG C/10 TAB           ||     Metamizol Sodico                                    ||         78.72      ||     51.11
+  0   ||     75005689    || RESPICIL AD F A 5ML                     ||     Bencilpenicilina Procainica G                       ||         70.00      ||     47.33
+  0   ||     75005702    || RESPICIL INF F A 5 ML #232              ||     Bencilpenicilina Procainica G (400,000 U)           ||         60.00      ||     40.57
+  0   ||     75016951    || FOLIVITAL 400MCG TAB C90                ||     Acido Folico                                        ||        135.00      ||     53.57
+  0   ||     75024659    || FOLIVITAL 400MCG TAB C30                ||     Acido Folico                                        ||         45.00      ||     17.86
+  0   ||   350240010538  ||NEXT TAB C/10                            ||     Cafeina, Clorfenamina, Fenilefrina, Paracetamol     ||         24.90      ||     22.10
+  0   ||   354312225133  || VITACILINA UNG 28 GR                    ||     Neomicina,Vit A                                     ||         35.45      ||     23.50
+  0   ||   650240000973  || ASEPXIA  C/30 CAPS                      ||                                                         ||        299.00      ||    252.88
+  0   ||   650240001635  ||X RAY C/ 40 CAPS                         ||     Condroitina,Glucosamina,Vitamina C                  ||        350.06      ||    252.94
+  0   ||   650240005398  ||SILKA-MEDIC GEL 1% TB 30 G               ||     Terbinafina                                         ||         74.50      ||     62.99
+  0   ||   650240006647  ||ULTRA BENGUE GEL ROJO 35 G               ||     Naproxeno sodico/salicilato de metilo/lidocaina/ment||         64.90      ||     56.00
+  0   ||   650240007040  ||ASEPXIA GEL TB 20 G                      ||                                                         ||         65.10      ||     47.89
+  0   ||   650240007408  ||SILKA MEDIC GEL 15 GR                    ||     Terbinafina                                         ||         49.40      ||     41.00
+  0   ||   650240010507  ||ULTRA BENGUE  GEL AZUL 35 G              ||     Naproxeno sodico/salicilato de metilo/mentol        ||         64.90      ||     56.00
+  0   ||   650240010712  ||TUKOL-D JBE FCO 125 ML                   ||                                                         ||         62.00      ||     52.50
+  0   ||   650240011139  ||QG 5 TAB C/30                            ||     psidium guayava                                     ||        249.00      ||    150.00
+  0   ||   650240015366  ||NASALUB ADULTO                           ||     Cloruro de Sodio                                    ||         45.90      ||     33.77
+  0   ||   650240017100  ||XL-3 VR TAB C/24                         ||     Clorfenamina,Fenilefrina,Paracetamol                ||         59.00      ||     50.00
+  0   ||   650240017117  ||XL-3 C/8  NORMAL                         ||     Clorfenamina,Fenilefrina,Paracetamol                ||         22.90      ||     19.90
+  0   ||   650240031700  ||NEXT TAB C/20                            ||     Cafeina, Clorfenamina, Fenilefrina, Paracetamol     ||         44.90      ||     38.00
+  0   ||   750240013805  || ALLIVIAX 550 MG C/10                    ||     Naproxeno Sodico                                    ||         53.80      ||     45.61
+  0   ||   887725000016  ||ELECTROLIT 625 ML MANZANA                ||     Electrolitos orales                                 ||         31.70      ||     14.30
+  0   ||   887725000030  ||ELECTROLIT FRESA 625 ML                  ||     Electrolitos orales                                 ||         31.70      ||     14.30
+  0   ||   891671002277  || NORFLEX PLUS C50 TABLETAS 4J120         ||     orfenadrina/paracetamol                             ||        433.00      ||    273.90
+  0   ||   7500326424205 ||GO PLUS 150 G 60 CAPS  (iva incluido)    ||                                                         ||        335.24      ||    208.80
+  0   ||   7500326424212 ||GO PLUS GEL SPORT 100G (iva incluido)    ||                                                         ||         90.48      ||     52.81
+  0   ||   7500326424229 ||GO PLUS CINTA DEPORTIVA ROSA ROLLO 5 M  (||                                                         ||        245.00      ||    200.00
+  0   ||   7500326424236 ||GO PLUS CINTA DEPORTIVA AZUL ROLLO 5 M  (||                                                         ||        245.00      ||    200.00
+  0   ||   7501008497340 ||FLANAX 550 MG C/12 TAB                   ||     Naproxeno Sodico                                    ||        204.20      ||    134.80
+  0   ||   7501050610629 ||(IV)GARAMICINA G.U. 160MG HYPAK C1       ||     Gentamicina                                         ||        228.00      ||    146.98
+  0   ||   7501050611039 ||DIPROSONE 0.05% CRA 30 G 3YTFB002        ||     dipropionato de betametasona                        ||        227.00      ||    144.46
+  0   ||   7501050623629 ||CELESTONE PED GTS 60 ML 4YBWF001         ||     Betametasona                                        ||        256.00      ||    162.91
+  0   ||   7501050699723 ||CRONOLEVEL HIPAK AMPULA 1ML              ||     Betametasona                                        ||        394.00      ||    250.73
+  0   ||   7501055403394 ||POMADA DE ARNICA 50 G                    ||     Arnica                                              ||         26.00      ||     19.76
+  0   ||   7501055403554 ||TE DE ARNICA 30 BOLSAS DE 1 G            ||     Arnica                                              ||         44.50      ||     33.81
+  0   ||   7501055403677 ||EUCAMIEL SPRAY C/PROPOLIO 70 ML          ||     Miel de Abeja, Eucalipto, Gordolobo, Propolio, Canel||         62.00      ||     47.10
+  0   ||   7501055403714 ||VIVORA DE CASCABEL 50 CAPS FIBRA         ||                                                         ||        166.00      ||    125.00
+  0   ||   7501055404575 ||EUCAMIEL JBE C/PROPOLIO 250 ML           ||     Miel de Abeja, Eucalipto, Gordolobo, Propolio, Canel||         82.50      ||     62.69
+  0   ||   7501055404643 ||NEO SAN JUAN 650 MG C/100                ||                                                         ||         74.00      ||     55.50
+  0   ||   7501057005312 ||CALADRYL SUSPENSIÓN CUTANEA 180 ML       ||     Calamina Alcanfor                                   ||        103.53      ||     57.19
+  0   ||   7501057005848 ||CALADRYL CLEAR LOCION                    ||     Calamina Alcanfor                                   ||        121.72      ||     67.27
+  0   ||   7501061014003 ||PLASIL 4 MG GTS PED 20 ML LOTE.B3U794    ||     Metoclopramida                                      ||        166.00      ||    107.68
+  0   ||   7501070615451 ||ZANIDIP 10 MG C/30 TABLETAS 314AS242     ||     Lercanidipino                                       ||       1038.00      ||    664.95
+  0   ||   7501070636272 ||PRANDIN 2 MG C/30 TABLETAS               ||     Repaglinida                                         ||        656.00      ||    420.24
+  0   ||   7501070636395 ||ZOTANIXIN 500 MG C6 TABLETAS             ||     Nitazoxanida                                        ||        321.00      ||    205.64
+  0   ||   7501070636531 ||OMURO 40MG TABLETAS C30 34535B           ||     Ebromuro de otilono                                 ||        703.00      ||    450.35
+  0   ||   7501086301041 || OXAL 150MG/200MG C2 TABLETAS 406318     ||     quinfamida/albendazol                               ||        122.00      ||     75.77
+  0   ||   7501088505706 || ALIN 0.75 MG TAB 30                     ||     Dexametasona                                        ||         62.27      ||     39.72
+  0   ||   7501092774815 ||TECTA 20 MG 28 TAB                       ||     Omeprazool                                          ||        764.00      ||    476.95
+  0   ||   7501092774822 ||TECTA 40 MG 7 TAB                        ||     Omeprazol                                           ||        401.00      ||    252.81
+  0   ||   7501092774839 ||TECTA 40 MG C/14 TAB                     ||     Omeprazol                                           ||        714.00      ||    430.75
+  0   ||   7501092776413 ||DAGLA 50 MG C/30 TAB                     ||     Itorprida                                           ||        362.00      ||    235.02
+  0   ||   7501092777380 ||PANTOZOL 20 MG C/14                      ||     Pantoprazol                                         ||        431.00      ||    260.75
+  0   ||   7501092785019 ||PANTOZOL 40 MG TAB 7                     ||     Pantoprazol                                         ||        394.00      ||    252.00
+  0   ||   7501092785026 ||PANTOZOL 40 MG CAP 14                    ||     Patoprazol                                          ||        702.00      ||    423.82
+  0   ||   7501092786054 ||PANTOZOL 20 MG  28 TAB                   ||     Pantoprazol                                         ||        813.00      ||    514.00
+  0   ||   7501101600227 || CAPTRAL 50MG TAB C30                    ||     Captopril                                           ||        764.00      ||    303.18
+  0   ||   7501101601279 || DOLO TIAMINAL 2ML AMP C3                ||     Metamizol, Vit B                                    ||        341.00      ||    149.61
+  0   ||   7501101609268 || VERTISAL 400MG CAP C40                  ||     Metronidazol                                        ||        239.00      ||     94.85
+  0   ||   7501101610004 || K ASMAL 1MG TAB C30                     ||     Ketotifeno                                          ||        653.00      ||    259.13
+  0   ||   7501101611001 || K ASMAL SOL 120ML                       ||     Ketotifeno                                          ||        467.00      ||    185.32
+  0   ||   7501101614026 || MALIVAL 25MG CAP C30                    ||     Indometacina                                        ||        190.00      ||     75.39
+  0   ||   7501101620027 || TIAMIDEXAL SOL INY AMP C3               ||     Dexametasona, Vit B                                 ||        437.00      ||    173.42
+  0   ||   7501101620355 || VERTISAL 125MG SUSP 180ML               ||     Metronidazol                                        ||        187.00      ||     74.20
+  0   ||   7501101620386 || VERTISAL 250MG SUSP 180ML               ||     Metronidazol                                        ||        264.00      ||    104.76
+  0   ||   7501101622229 || K ASMAL JBE 120ML                       ||     Ketotifeno                                          ||        467.00      ||    185.32
+  0   ||   7501101623349 || PRE DIAL 1000MG TAB C40                 ||     Metformina                                          ||        417.00      ||    165.48
+  0   ||   7501101623769 || TIAMINAL B12 50000UI 10ML C5            ||     Vitamina B                                          ||        282.00      ||    135.32
+  0   ||   7501101623776 || SUFISAL 400MG TAB C30                   ||     Pentoxifilina                                       ||        447.00      ||    177.38
+  0   ||   7501101624636 || TIAMINAL B12 AP TRIV AMP 2MLC3          ||     Vitamina B                                          ||        288.00      ||    114.29
+  0   ||   7501101627224 || TIAMINAL B12 AP TRIV CAP C30            ||     Vitamina B                                          ||        341.00      ||    111.90
+  0   ||   7501101627507 || DOLO TIAMINAL CAP C24                   ||     Metamizol, Vit B                                    ||        377.00      ||    135.32
+  0   ||   7501101633348 || FOLIVITAL 4MG TAB C90                   ||     Acido Folico                                        ||        252.00      ||    100.00
+  0   ||   7501101640049 || CAPTRAL 25MG TAB C30                    ||     Captopril                                           ||        399.00      ||    158.33
+  0   ||   7501101642234 || SIL NORBORAL 5/500MG TAB C40            ||     Glibenclamida/Metformina                            ||        403.00      ||    159.92
+  0   ||   7501101643286 || SIL NORBORAL 2.5/500MG TAB C40          ||     Glibenclamida/Metformina                            ||        295.00      ||    117.06
+  0   ||   7501101648717 || AZIDRAL 500MG TAB C3                    ||     Azitromicina                                        ||        304.00      ||    120.63
+  0   ||   7501101649332 || MELOSTERAL 15 MG C/10 TAB               ||     Meloxicam                                           ||        411.00      ||    163.10
+  0   ||   7501101649493 || CERTEZZA PBA DE EMBARAZO C1             ||     Prueba de embarazo                                  ||        103.45      ||     65.48
+  0   ||   7501101656156 || PRE DIAL 850MG TAB C30                  ||     Metformina                                          ||        273.00      ||    108.33
+  0   ||   7501101656163 || PRE DIAL 500MG TAB C40                  ||     Metformina                                          ||        236.00      ||     93.65
+  0   ||   7501122900801 ||IVEXTERM TAB 6 MG C/4                    ||     Ivermectina                                         ||        228.42      ||    115.35
+  0   ||   7501122961017 ||ARGENTAFIL CREMA 30 G                    ||     Sulfadiazina Plata                                  ||        136.59      ||     68.98
+  0   ||   7501122963028 ||ESPAVEN ENZIMATICO TAB C/50              ||     Simeticona/Pancreatina                              ||        205.08      ||    103.57
+  0   ||   7501122967019 ||SUPRA TAB C/30                           ||     Clorhidrato de Lidamidina                           ||        380.58      ||    211.43
+  0   ||   7501122969808 ||IVEXTERM TAB 6 MG C/2                    ||     Ivermectina                                         ||        152.64      ||     77.08
+  0   ||   7501123001019 ||DOLO BEDOYECTA TAB ORAL C/30             ||     Complejo B/Diclofenaco                              ||        425.65      ||    143.30
+  0   ||   7501123010608 ||CARDISPAN SON INY 5 AMP                  ||     Levocarnitina                                       ||        322.03      ||    162.62
+  0   ||   7501123012107 ||ANAPENIL SUSP INY 1 000 000 U            ||     Bencilpenicilina sòdica                             ||        102.17      ||     34.40
+  0   ||   7501123013111 ||DOLO BEDOYECTA SOL INY                   ||     Complejo B/Diclofeneco                              ||        271.94      ||     91.56
+  0   ||   7501123013807 ||OTO ENI SUSP 10 ML GOTAS OTICAS          ||     Ciprofloxacino/Hidrocortisona  /Lidocaina           ||        304.85      ||    112.91
+  0   ||   7501123014705 ||FEMISAN CRM VAGINL 30 G                  ||     Clindamicina/Ketoconazol                            ||        349.68      ||    176.59
+  0   ||   7501123015405 ||MVI 12 SOL INY ADULTO                    ||     Multivitaminico                                     ||        150.93      ||     55.90
+  0   ||   7501123018031 ||VANTAL BUCOFARINGEO SOL 360 ML           ||     Bencidamida                                         ||        204.87      ||    113.81
+  0   ||   7501165007192 ||CERVILAN 80MG/.800MG C30 COMPRIMIDOS     ||     lomifilina/dihidroergocristina                      ||        624.00      ||    404.77
+  0   ||   7501188800084 ||CALANDA 30 CAPS                          ||     Multivitaminico                                     ||        109.47      ||     36.85
+  0   ||   7501188800176 ||DURADOCE 1 MG/2ML 2 AMP                  ||     Hidroxicobalamina                                   ||         54.37      ||     18.30
+  0   ||   7501188800473 ||LIPOVITASI-OR 60 TAB                     ||     L-Carnitina                                         ||        496.77      ||    250.86
+  0   ||   7501188800596 ||MAROVILINA 500 MG 20 CAP                 ||     Ampicilina                                          ||         88.68      ||     29.86
+  0   ||   7501188800671 ||PANCLASA 40 MG-0.04 MG/ 2 ML 5 AMPOLLETAS||     Floroglucinol/Trimetilfluroglucinol                 ||        151.95      ||     76.74
+  0   ||   7501188800701 ||KLONAZA 20 CAPS                          ||     Floroglucinol/Trimetilfluroglucinol/ Clonixinato de ||        282.99      ||    142.92
+  0   ||   7501188801227 ||PANCLASA 20 CAPS                         ||     Fluroglucinol/Trimetilfluroglucinol                 ||        214.91      ||    108.53
+  0   ||   7501188801272 ||LIPOVITASI-OR 30 TAB                     ||     L-Carnitina                                         ||        321.83      ||    162.52
+  0   ||   7501188801876 ||PANCLASA LIMON 30 ML GOTAS               ||     Floroglucinol/Trimetilfluroglucinol                 ||        212.74      ||    107.43
+  0   ||   7501201340016 || SEBRYL PLUS SH 150G                     ||     Alantoina, Alquitran, Clioquinol, Triclosan         ||        308.00      ||    122.23
+  0   ||   7501201340023 || SEBRYL FCO 150 G SHAMPOO VT             ||     Alantoina, Alquitran, Clioquinol                    ||        269.00      ||    106.75
+  0   ||   7501249605634 ||POSTDAY 0.75 MG TAB 2                    ||     Levonogestrel                                       ||        104.00      ||     39.38
+  0   ||   7501250818689 ||PREVEFEM COMP TAB 30                     ||     Soya,Calcio Vit E,C y A                             ||        425.00      ||    320.00
+  0   ||   7501287630506 ||TERRAMICINA 125 MG TROC 24               ||     Oxitetraciclina                                     ||        164.82      ||    105.00
+  0   ||   7501287670304 ||LYRICA 75 MG C/14                        ||     PREGABALINA                                         ||        609.27      ||    346.96
+  0   ||   7501287670311 ||LYRICA 75MG 28 CAPS                      ||     PREGABALINA                                         ||       1004.36      ||    571.97
+  0   ||   7501287670328 ||LYRICA 150 MG 14 CAPS                    ||     PREGABALINA                                         ||        615.24      ||    350.37
+  0   ||   7501287670335 ||LYRICA 150 MG C/28 CAPS                  ||     PREGABALINA                                         ||       1014.20      ||    577.57
+  0   ||   7501287678034 ||BONADOXINA 25MG/50MG  25 TAB             ||     meclozina/piridoxina                                ||        220.48      ||    146.10
+  0   ||   7501287678096 ||BONADOXINA SOL. FCO 20 ML                ||     meclozina/piridoxina                                ||        113.09      ||     74.93
+  0   ||   7501287678171 ||BONADOXINA  JBE. 120 ML                  ||     meclozina/piridoxina                                ||        230.74      ||    152.90
+  0   ||   7501289511117 ||HIPOGLOS TBO 45 G                        ||     Alantoina, Ac Borico, Vit A, Oxido de Zinc          ||         89.59      ||     54.75
+  0   ||   7501289511414 ||PASTA DE LASAAR TARRO 60 G               ||     Oxido de Zinc                                       ||         64.75      ||     37.73
+  0   ||   7501289511421 ||PASTA DE LASSAR TARRO 30G                ||     Oxido de Zinc                                       ||         34.20      ||     19.92
+  0   ||   7501289511438 ||PASTA DE LASSAR TB 60 G                  ||     Oxido de Zinc                                       ||         73.88      ||     35.30
+  0   ||   7501293200069 || ATHOS 30 MG CAPS                        ||     Dextrometorfano                                     ||        158.91      ||    108.69
+  0   ||   7501293200151 || ESBELTEX 500 MG TABS                    ||     Polvo Konjac                                        ||        415.96      ||    284.44
+  0   ||   7501293200250 || NEOMICOL CREMA 2% 20 MG                 ||     Nitrato de Miconazol                                ||        116.34      ||     79.56
+  0   ||   7501293200281 || OXATHOS JARABE 115 ML                   ||     Oxolamina                                           ||        131.32      ||     89.80
+  0   ||   7501293200298 || PRENATEX 2 Ul GRAG                      ||     Vitaminas y Minerales para el Embarazo              ||        263.33      ||    180.08
+  0   ||   7501293200335 || SERONEX 10 MG TAB                       ||     Domperidona                                         ||        259.54      ||    161.35
+  0   ||   7501293200465 || CROMOTEX 20 ug CAPS                     ||     Cromo                                               ||        283.84      ||    194.10
+  0   ||   7501293200625 || TEROCAPS 500 MG CAPS                    ||     Garcinia Cambogia                                   ||        435.81      ||    248.38
+  0   ||   7501293200649 || CRONOCAPS 3 MG CAPS                     ||     Metionina                                           ||        218.18      ||    135.64
+  0   ||   7501293200656 || CRONOCAPS 5 MG CAPS                     ||     Melatonina                                          ||        370.16      ||    230.12
+  0   ||   7501293200946 || PYLOPACC 30 MG CAPS                     ||     Lansoprazol/Claritromicina/Amoxicilina              ||       1515.06      ||    941.86
+  0   ||   7501293201301 || PREPRAM 20 MG TABS                      ||     Citalopram                                          ||        863.45      ||    492.09
+  0   ||   7501293201509 || SERONEX LP 60 MG TAB                    ||     Domperidona                                         ||        499.00      ||    341.23
+  0   ||   7501293201523 || LIVERMED 140 MG/3 MG  CAPS 60           ||     Siliphos/Metionina/ Ac lipoico                      ||        636.15      ||    401.55
+  0   ||   7501293201646 || SENEX 3 CAJA CON 30 SOBRES              ||     Fermentos Lacticos Vivos                            ||        589.05      ||    366.20
+  0   ||   7501293201707 || ANDANZA 120 MG TAB                      ||     Orlistat                                            ||        454.51      ||    259.02
+  0   ||   7501293201806 || ENCONTROPINA TAB 10/20 MG               ||     Butilbromuro de Hioscina/Ketorolaco                 ||        226.29      ||    142.84
+  0   ||   7501298205205 ||DIABION CAP 30                           ||     Multivitaminico                                     ||        292.65      ||    175.79
+  0   ||   7501298212210 ||DOLO NEUROBION RETARD TAB C/20           ||     Complejoj B/Diclofenaco                             ||        692.04      ||    415.71
+  0   ||   7501298214986 ||DOLO NEUROBION FORTE TAB C/10            ||     Complejo B/Diclofeneco                              ||        185.71      ||    111.56
+  0   ||   7501298217611 ||NEUROBION DC 10 MG JERINGAS C/5          ||     Complejo B                                          ||        378.79      ||    227.54
+  0   ||   7501298217635 ||DOLO-NEUROBION FTE JGA C/1               ||     Complejo B/Diclofeneco                              ||        305.23      ||    185.24
+  0   ||   7501298217659 ||DOLO NEUROBION DC INY 3 ML C/3           ||     Complejo B/Diclofeneco                              ||        453.62      ||    272.49
+  0   ||   7501298217673 ||DEXABION DC INY 3 ML JGA C/1             ||     Complejo B/Dexametasona                             ||        215.64      ||    129.53
+  0   ||   7501298217697 ||DEXABION DC INY 3 ML JGA C/2             ||     Complejo B/Dexametasona                             ||        343.79      ||    206.51
+  0   ||   7501298217703 ||DEXABION DC INY 3 ML JGA C/3             ||     Complejo B/Dexametasona                             ||        457.14      ||    274.60
+  0   ||   7501298221397 ||NEUROBION TAB C/30                       ||     Complejo B                                          ||        195.51      ||    117.44
+  0   ||   7501298221403 ||DOLO-NEUROBION FTE TAB C/30              ||     Complejo B/Diclofeneco                              ||        468.95      ||    284.60
+  0   ||   7501298221823 ||NEUROBION DOBLE CAMARA INY 10 MG         ||     Complejo B                                          ||        311.99      ||    187.41
+  0   ||   7501298221830 ||NEUROBION DOBLE CAMARA INY 1 MG          ||     Complejo B                                          ||        247.01      ||    148.38
+  0   ||   7501298265100 ||NEUROBION TAB C/60                       ||     Complejo B                                          ||        310.59      ||    186.57
+  0   ||   7501300407122 ||LERK 100 MG C/1                          ||     Sindenafil                                          ||         83.00      ||     40.00
+  0   ||   7501300407139 ||LERK 100  MG C/4                         ||     Sindenafil                                          ||        280.00      ||    100.00
+  0   ||   7501314701322 || BIOMICS 400 MG CAPS 6        066        ||     Cefixima                                            ||        750.00      ||    507.12
+  0   ||   7501314701353 || BIOMICS 100MG15ML SUS-PV5OML 233        ||     Cefixima                                            ||        605.00      ||    409.07
+  0   ||   7501314701612 || BREDELIN 500 MG TAB 7        167        ||     Levofloxacino                                       ||        585.00      ||    395.55
+  0   ||   7501314701650 || BREDELIN 750 MG TAB 7        227        ||     Levofloxacino                                       ||        660.00      ||    446.26
+  0   ||   7501314701704 || FOSFOCIL 250MG SUSP 120ML               ||     Fosfomicina                                         ||        375.00      ||    253.56
+  0   ||   7501314701711 || FOSFOCIL 1G F A D171                    ||     Fosfomicina                                         ||        135.00      ||     91.29
+  0   ||   7501314701728 || FOSFOCIL 500 MG AMP 1 0172              ||     Fosfomicina                                         ||        100.00      ||     67.61
+  0   ||   7501314701735 || FOSFOCIL IV 1 G AMP                     ||     Fosfomicina                                         ||        150.00      ||     97.69
+  0   ||   7501314701742 || FOSFOCIL 5 G SUSP 60 ML                 ||     Fosfomicina                                         ||        235.00      ||    158.90
+  0   ||   7501314701766 || FOSFOCIL 500 MG CAPS 12      133        ||     Fosfomicina                                         ||        445.00      ||    289.81
+  0   ||   7501314701773 || FOSFOCIL G.U. AD GDO 3G SB 1            ||     Fosfomicina                                         ||        430.00      ||    280.04
+  0   ||   7501314701827 || CIPROFLOX 500 MG CAPS 12     021        ||     Ciprofloxacino                                      ||        475.00      ||    321.16
+  0   ||   7501314701834 || CIPROFLOX 500 MG CAPS6                  ||     Ciprofloxacino                                      ||        260.00      ||    175.79
+  0   ||   7501314701872 || CIPROFLOX INY 400 MG 200 ML             ||     Cioprofloxacino                                     ||        760.00      ||    513.88
+  0   ||   7501314701889 || CIPROFLOX DM 1 G TAB 7                  ||     Ciprofloxacino                                      ||        530.00      ||    358.37
+  0   ||   7501314701926 || ADEL 500 MG TAB 10           511        ||     Claritromicina                                      ||        685.00      ||    463.16
+  0   ||   7501314702114 || SENOCICLIN BMO AD FA 211                ||     Tetraciclina                                        ||         90.00      ||     60.85
+  0   ||   7501314702121 || SENOCICLIN BMO INF F A #212             ||     Tetraciclina                                        ||         70.00      ||     47.33
+  0   ||   7501314702640 || FLUMIL 2/75/75 MG GTS 25 ML  324        ||     Aminofenazona, bufenina, difenilpiralina            ||        210.00      ||    142.00
+  0   ||   7501314702657 || FLUMIL 40/1.5/1.5MG CAPS 20             ||     Aminofenazona, bufenina, difenilpiralina            ||        210.00      ||    142.00
+  0   ||   7501314702701 || REZPLEN 500/45 MG TAB 10     541        ||     Ambroxol/Claritromicina                             ||        495.00      ||    334.69
+  0   ||   7501314703128 || FACICAM 20 MG CAPS 20                   ||     Piroxicam                                           ||        350.00      ||    227.94
+  0   ||   7501314703173 || FACICAM GEL TB 40 G 317                 ||     Piroxicam                                           ||        100.00      ||     67.61
+  0   ||   7501314703227 || SIES 200 MG CAPS 20          092        ||     Hidrosmina                                          ||        340.00      ||    229.90
+  0   ||   7501314703432 || EXEL 15 MG CAPS 10           575        ||     Meloxicam                                           ||        499.00      ||    337.40
+  0   ||   7501314703562 || SENOVITAL 4 MG SB 15                    ||     Montelukast                                         ||        405.00      ||    273.84
+  0   ||   7501314703616 || DIMEGAN-D 5/20 MG CAPS 10    329        ||     Fenilefrina/Loratadina                              ||        330.00      ||    223.13
+  0   ||   7501314703623 || DIMEGAN-D 5/20 MG CAPS 20    572        ||     Fenilefrina/Loratadina                              ||        565.00      ||    382.03
+  0   ||   7501314703630 || DIMEGAN-D 0.5/2MG PED SOL 60 486        ||     Fenilefrina/Loratadina                              ||        330.00      ||    223.13
+  0   ||   7501314703647 || DIMEGAN-D 1/4MG JBE 60ML+VSO 328        ||     Fenilefrina/Loratadina                              ||        330.00      ||    223.13
+  0   ||   7501314703753 || DIMEGAN 10 MG CAPS 10                   ||     Loratadina                                          ||        285.00      ||    192.69
+  0   ||   7501314703821 || RAPIX 10 MG CAPS 10                     ||     Ketorolaco                                          ||        185.00      ||    125.09
+  0   ||   7501314704040 || UNIVAL 1G TAB 40             448        ||     Sucralfato                                          ||        280.00      ||    189.32
+  0   ||   7501314704057 || UNIVAL 1G/5ML SUSP 230ML                ||     Sucralfato                                          ||        300.00      ||    202.86
+  0   ||   7501314704149 || SUPS SENOSIAIN AD 2.632G C20            ||     Glicerol                                            ||         40.00      ||     27.04
+  0   ||   7501314704156 || SUPS SENOSIAIN AD 2.632G C10            ||     Glicerol                                            ||         30.00      ||     20.26
+  0   ||   7501314704163 || SUPS SENOSIAIN NINO 1.380G C10          ||     Glicerol                                            ||         28.00      ||     18.93
+  0   ||   7501314704170 || SUPS SENOSIAIN BEBE 1.380G C20          ||     Glicerol                                            ||         44.00      ||     29.75
+  0   ||   7501314704187 || SUPS SENOSIAIN BEBE 1.380G C10          ||     Glicerol                                            ||         32.00      ||     21.63
+  0   ||   7501314704330 || RANISEN 300MG CPR10 OFTA1+1             ||     Ranitidina                                          ||        135.00      ||     87.92
+  0   ||   7501314704347 || RANISEN 150MG CPR20 OFTA 1+1            ||     Ranitidina                                          ||        135.00      ||     87.92
+  0   ||   7501314704361 || RANISEN 50MG AMP 5X2ML                  ||     Ranitidina                                          ||         90.00      ||     58.61
+  0   ||   7501314704385 || RANISEN JBE 200 ML                      ||     Ranitidina                                          ||        260.00      ||    175.79
+  0   ||   7501314704392 || RANISEN PED 4 G SOL 30 ML               ||     Ranitidina                                          ||        230.00      ||    155.51
+  0   ||   7501314704460 || ORECIL NF SOL 10 ML C/GOTERO            ||     Hidrocortisona,Lidocaina, Ofloxacino                ||        295.00      ||    199.45
+  0   ||   7501314704552 || MICCIL CPR 20 455            520        ||     Bumetanida                                          ||        145.00      ||     94.43
+  0   ||   7501314704644 || DURATER 40 MG CPR 10 N464               ||     Famotidina                                          ||        230.00      ||    149.79
+  0   ||   7501314704712 || UNAMOL 10MG CPR 30 471                  ||     Cisaprida                                           ||        350.00      ||    236.66
+  0   ||   7501314704743 || UNAMOL PED PIP1MG/MLSUSP60ML 525        ||     Cisaprida                                           ||        195.00      ||    131.84
+  0   ||   7501314704828 || ULSEN-PCS 40 MG CAPS 14      109        ||     Omeprazol                                           ||        370.00      ||    250.17
+  0   ||   7501314704866 || ULSEN 40 MG SOL INY FA C/AMPOLLETA      ||     Omeprazol                                           ||        290.00      ||    196.09
+  0   ||   7501314704873 || ULSEN 20 MG CAPS 7 OFTA 1+1             ||     Omeprazol                                           ||        240.00      ||    162.27
+  0   ||   7501314704880 || ULSEN 20 MG CAPS 14 OFTA 1+1            ||     Omeprazol                                           ||        410.00      ||    277.22
+  0   ||   7501314704927 || SPASMOPRIV 200 MG CAPS 12               ||     Fenoverina                                          ||        240.00      ||    162.27
+  0   ||   7501314704934 || SPASMOPRIV 200 MG CAPS 24               ||     Fenoverina                                          ||        370.00      ||    250.17
+  0   ||   7501314704958 || LACTULAX 66.66GJBE125ML C/DO            ||     Lactulosa                                           ||        180.00      ||    121.71
+  0   ||   7501314704965 || LACTULAX 66.66G JBE  250 ML             ||     Lactulosa                                           ||        285.00      ||    192.69
+  0   ||   7501314705139 || ISOX 3D 100MG CAPS 6 OFTA1+1            ||     Itraconazol                                         ||        325.00      ||    219.75
+  0   ||   7501314705153 || ISOX 15D 100 MG CAPS 15      481        ||     Itraconazol                                         ||        465.00      ||    314.41
+  0   ||   7501314705313 || AFUNGIL 150 MG CAPS1 OFTA1+1 238        ||     Fluconazol                                          ||        390.00      ||    263.71
+  0   ||   7501314705467 || NEXUS 5 MG CAPS 30                      ||     Amlodipino                                          ||        330.00      ||    223.13
+  0   ||   7501314705535 || EVIPRESS 10 MG TAB 30        162        ||     Lercanidipino                                       ||        880.00      ||    595.01
+  0   ||   7501314705542 || AFUMIX 37.5/500 MG TAB 4     135        ||     Fluconazol/Tinidazol                                ||        480.00      ||    324.55
+  0   ||   7501314706228 || VITERNUM JBE 140 ML 622      475        ||     Dihexazin                                           ||        215.00      ||    140.02
+  0   ||   7501314707638 || GENTIL AD CPR 10 N763                   ||     Cafeina, Clorfenamina, Fenilefrina,Paracetamol      ||         33.00      ||     22.31
+  0   ||   7501314707645 || GENTILITO CPR 10 N764                   ||      Paracetamol, fenilefrina, clorfenamina             ||         33.00      ||     22.30
+  0   ||   7501314707805 || PLEXUS AD 225/225MG JBE 150 ML          ||     Ambroxol/Dextrometorfano                            ||        140.00      ||     91.17
+  0   ||   7501314707812 || PLEXUS INF 113/150 MG JBE 150 ML        ||     Ambroxol/Dextrometorfano                            ||        140.00      ||     91.17
+  0   ||   7501326003513 ||RENITEC 10 MG TAB 30                     ||     Maleato de enalapril                                ||        615.00      ||    396.45
+  0   ||   7501349012004 ||AMCEF I.M 1G INY                         ||     Ceftriaxona                                         ||          0.00      ||     35.00
+  0   ||   7501369200016 ||ESTOMAQUIL  CAJA C/20 SOBRES             ||     Subsalicilato de Magnesio/Carbonato de Calcio/Hidrox||        107.00      ||     59.61
+  0   ||   7501369200030 ||VINO DE CUASIA GENCIANA Y COLOMBO        ||     vino de cuasia                                      ||        100.00      ||     55.71
+  0   ||   7501369200078 ||ESTOMAQUIL DISPENSER C/ 20 SB            ||     Subsalicilato de Magnesio/Carbonato de Calcio/Hidrox||        107.00      ||     59.61
+  0   ||   7501369200085 ||ESTOMAQUIL DISPENSER C/10 SB             ||     Subsalicilato de Magnesio/Carbonato de Calcio/Hidrox||         65.00      ||     35.50
+  0   ||   7501385410055 || HEMOSIN K IM FA 3X5 ML 381JP019B        ||     Vitamina K                                          ||        265.00      ||    170.83
+  0   ||   7501385420504 || LUCEBANOL 30 MG C30 GRAGEAS             ||     Idebenona                                           ||        515.00      ||    331.99
+  0   ||   7501537100452 ||TRIBEDOCE DX SOL INY                     ||     Complejo B/Dexametasona                             ||        195.00      ||     42.36
+  0   ||   7501537102180 ||TRIBEDOCE 100MG/5MG/50MCG 30 TAB         ||     Ceftriaxona                                         ||         39.00      ||     12.00
+  0   ||   7501537163266 ||TRIBEDOCE COMPUESTO SOL INY              ||     Complejo B                                          ||        180.00      ||     42.36
+  0   ||   7501537164713 ||TRIBEDOCE  COMPUETO C/30 GRAG            ||     Complejo B                                          ||         99.00      ||     31.16
+  0   ||   7501537182960 ||TRIBEDOCE 50000 INY C/5                  ||     Complejo B                                          ||        156.00      ||     46.49
+  0   ||   7502001163805 ||BARMICIL CREMA 30 GR                     ||     Terbinafina                                         ||         69.00      ||     17.00
+  0   ||   7502208891198 ||TRIXONA IV (CETRIAXONA 1.0 G) SOL INY    ||     Ceftriaxona                                         ||        210.00      ||     23.36
+  0   ||   7502208891228 ||TRIXONA I.M (CEFTRIAXONA) 1 G SOL INY    ||     Ceftriaxona                                         ||        250.00      ||     30.18
+  0   ||   7502214982026 ||PRESERVATIVO TRUST C/100  (iva incluido) ||                                                         ||        237.80      ||    154.41
+  0   ||   7502214984440 ||PRESERVATIVO TRUST CLASICO C/3 + 1  (iva ||                                                         ||         15.31      ||      9.26
+  0   ||   7502246640611 || CRONADYN 15 MG C14 TABLETAS 3           ||     paroxetina                                          ||        632.00      ||    399.77
+  0   ||   7502270750003 ||COM BAL PRO PERFORMANCE CJ C/FOC 30 TAB (||     vitaminas y minerales                               ||        110.00      ||     52.20
+  0   ||   7502270750010 ||COM BAL PRO SILVER CJ C/FOC 30 TABS (iva ||     vitaminas y minerales                               ||        110.00      ||     52.20
+  0   ||   7502270750027 ||COMP BAL PRO MATERNA CJ C/FCO 30 TAB (iva||     vitaminas y minerales/calcio/acido folico           ||        140.00      ||     68.58
+  0   ||   7502270750034 ||COMP BAL PRO DIABETIC CJ C/FCO 30 TAB (iv||     vitaminas y minerales                               ||        110.00      ||     52.20
+  0   ||   7502270750041 ||COMP BAL PRO INFANTIL CJ C/FCO 30 TAB (iv||     vitaminas y minerales/calcio/hierro                 ||        110.00      ||     52.20
+  0   ||   7502270750058 ||CALTRUM 600+D CJ C/FCO 60 TAB (iva inclui||     omega/calcio/vitamina D                             ||        110.00      ||     52.20
+  0   ||   7502270750348 ||HAPPY C 100 TAB MASTICABLES (iva incluido||     vitamina C                                          ||         82.00      ||     39.70
+  0   ||   7503007315311 ||ABRIXONE 500 MG TAB 10  OFERTA 50%       ||     Metadoxina                                          ||        460.00      ||    230.00
+  0   ||   7803510773104 || CIRUELAX EXH 25 C/4                     ||      Hojas de Cassia angustifolia                       ||                    ||     75.00
+  0   ||   8056736700112 ||CANDIFLUX SH INTIMO USO DIARIO 250 ML    ||                                                         ||         86.00      ||     57.88

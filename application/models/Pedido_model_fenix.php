@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////////pedido a 60 dias o mas
 function formula_fanasa_dias($sucursales)
 {
-$dias=60;
+$dias=30;
 $aa="select
 case when day(date(now()))<3 then month(subdate(date(now()),interval 3 month)) else  month(subdate(date(now()),interval 2 month)) end as mes1,
 case when day(date(now()))<3 then month(subdate(date(now()),interval 2 month)) else  month(subdate(date(now()),interval 1 month)) end as mes2,
@@ -37,7 +37,24 @@ $this->db->query($s1);
   $central1="insert ignore into compras.pre_pedido_fenix_for(fecha, suc, cod, descri, pedido,venta,inv, costo, prv, rel, far, oferta, financiero,iva)
 (select date(now()),a.suc,c.codigo,c.descripcion,0,sum(cant),
 ifnull((select sum(cantidad) from desarrollo.inv m where m.suc=a.suc and m.rel=a.rel),0)
-,costo,825,a.rel,farmacia,d.oferta,financiero,c.iva
+,costo,825,a.rel,farmacia,d.oferta_normal,descuento_normal,c.iva
+From vtadc.vta_backoffice a
+join catalogo.sucursal b on b.suc=a.suc
+join catalogo.cat_fanasa c on c.rel1=a.rel
+join compras.ofertas_fanasa_especiales d on d.codigo=c.codigo
+where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro1) and d.aaa=year(date(now())) and d.mes=month(date(now())) and 
+fecha_modificado>=date(now()) and
+(select rel1 from compras.bloqueados_x_mes_todas x where x.rel1=a.rel and date(now()) between fecha1 and fecha2 group by rel1) is null and
+(select rel1 from catalogo.cat_mercadotecnia x where x.rel1=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel1) is null and
+(select rel1 from catalogo.cat_fenix_sec_cod x where x.rel1=a.rel group by rel1)is null and
+(select rel1 from sucursal.codigos_bloqueados_pedido x where x.rel1=a.rel and activo=1 group by rel1)is null and
+(select rel1 from compras.ofertas_lab_far x 
+where x.rel1=a.rel and activo=2 and  date(now()) between fecha1 and fecha2 and rel1 not in(3409) group by rel1)is null
+group  by a.suc,rel)";
+echo "insert ignore into compras.pre_pedido_fenix_for(fecha, suc, cod, descri, pedido,venta,inv, costo, prv, rel, far, oferta, financiero,iva)
+(select date(now()),a.suc,c.codigo,c.descripcion,0,sum(cant),
+ifnull((select sum(cantidad) from desarrollo.inv m where m.suc=a.suc and m.rel=a.rel),0)
+,costo,825,a.rel,farmacia,d.oferta_normal,descuento_normal,c.iva
 From vtadc.vta_backoffice a
 join catalogo.sucursal b on b.suc=a.suc
 join catalogo.cat_fanasa c on c.rel1=a.rel
@@ -55,7 +72,7 @@ $this->db->query($central1);
    $central2="insert ignore into compras.pre_pedido_fenix_for(fecha, suc, cod, descri, pedido,venta,inv, costo, prv, rel, far, oferta, financiero,iva)
 (select date(now()),a.suc,c.codigo,c.descripcion,0,sum(cant),
 ifnull((select sum(cantidad) from desarrollo.inv m where m.suc=a.suc and m.rel=a.rel),0)
-,costo,825,a.rel,farmacia,d.oferta,financiero,c.iva
+,costo,825,a.rel,farmacia,d.oferta_normal,descuento_normal,c.iva
 From vtadc.vta_backoffice a
 join catalogo.sucursal b on b.suc=a.suc
 join catalogo.cat_fanasa c on c.rel2=a.rel
@@ -82,6 +99,7 @@ $fol="update compras.pre_pedido_fenix_for
 set fol=((select max(fol) from compras.pre_pedido_fenix_ctl)+1)
 where fol=0 and pedido>0";
 $this->db->query($fol);
+//die();
 }
 ////////////////////////////////////////////////////////////////////////////////////pedido a 60 dias o mas
 ////////////////////////////////////////////////////////////////////////////////////
@@ -326,8 +344,173 @@ $this->db->query($s8);
 
 
 
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////NADRO
+function graba_archivo_nadro($fol)
+{
+ $s="SELECT a.suc,concat('NNADRO',cuenta,'000 ')as plano1,fol,date_format(date(now()),'%Y%m%d')as fecha,
+costo,pedido
+FROM compras.pre_pedido_fenix_for a
+join compras.cuentas_mayorista b on b.suc=a.suc and a.prv=b.prv
+where b.prv=221 and pedido>0 and fol=$fol
+group by a.suc";
+$q=$this->db->query($s);
+    $datos=date('ymd');
+    $File = "./txt/PN$datos.001";
+    $nom="PN$datos.001";
+    $Handle = fopen($File, 'w');
+$Data='';
+foreach($q->result() as $r)
+{
+ $sql="SELECT cod,pedido
+FROM compras.pre_pedido_fenix_for a
+join compras.cuentas_mayorista b on b.suc=a.suc and a.prv=b.prv
+where pedido>0 and b.prv=221 and fol=$r->fol and a.suc=$r->suc";
+$query=$this->db->query($sql);
+     $imp=0;
+$Data.=
+         str_pad($r->plano1,17," ",STR_PAD_LEFT)
+        .str_pad($r->fol,15,"0",STR_PAD_LEFT)
+        .str_pad($r->fecha,8,"0",STR_PAD_LEFT)
+        ."\r\n";
+    fwrite($Handle, $Data);
+    
+foreach($query->result() as $row)
+{
+     
+    $Data1=
+         str_pad($row->cod,14,"0",STR_PAD_LEFT)
+        .str_pad($row->pedido,6,"0",STR_PAD_LEFT)
+        ."\r\n";
+    fwrite($Handle, $Data1);
+    
+}
+$Data='';
+}
+echo "FORM. AUTORIZADOS ".number_format($imp,2);
+return $nom;   
+    
+}
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+function graba_archivo_nadro_400()
+{
+ $s="select date_format(fecha,'%Y%m%d')as fecha,prv,fac,suc,
+ifnull((select lin from catalogo.cat_mercadotecnia x where x.codigo=a.cod),1)as lin,
+ifnull((select descripcion from catalogo.cat_mercadotecnia x where x.codigo=a.cod),' ')as descri,
+can,far,(can*far)as tot_ren,iva,cod
+from compras.pre_factura_fenix a
+where prv=221 and fecha='2014-07-26'
+order by fac ";
+$q=$this->db->query($s);
+    $datos=date('ymd');
+    $File = "./txt/$datos.txt";
+    $nom="$datos.txt";
+    $Handle = fopen($File, 'w');
+$Data='';
+foreach($q->result() as $r)
+{
+$Data.=
+         str_pad($r->fecha,8," ",STR_PAD_RIGHT)
+        .str_pad($r->prv,4,"0",STR_PAD_LEFT)
+        .str_pad($r->fac,15," ",STR_PAD_RIGHT)
+        .str_pad('P',1," ",STR_PAD_RIGHT)
+        .str_pad($r->suc,8,"0",STR_PAD_LEFT)
+        .str_pad($r->lin,2,"0",STR_PAD_LEFT)
+        .str_pad($r->descri,35," ",STR_PAD_RIGHT)
+        .str_pad($r->can,7,"0",STR_PAD_LEFT)
+        .str_pad('0',12,"0",STR_PAD_LEFT)
+        .str_pad(($r->far*100),11,"0",STR_PAD_LEFT)
+        .str_pad(($r->far*100),11,"0",STR_PAD_LEFT)
+        .str_pad(($r->tot_ren*100),11,"0",STR_PAD_LEFT)
+        .str_pad(($r->tot_ren*100),11,"0",STR_PAD_LEFT)
+        .str_pad(($r->iva*100),11,"0",STR_PAD_LEFT)
+        .str_pad('0',12,"0",STR_PAD_LEFT)
+        .str_pad($r->cod,13,"0",STR_PAD_LEFT)
+        .str_pad('0',4,"0",STR_PAD_LEFT)
+        .str_pad(' ',3," ",STR_PAD_LEFT)
+        .str_pad('0',26,"0",STR_PAD_LEFT)
+        .str_pad(' ',40," ",STR_PAD_LEFT)
+        ."\r\n";
+    fwrite($Handle, $Data);
+ 
+}
+echo "FORM. AUTORIZADOS ".number_format($imp,2);
+return $nom;   
+    
+}
+/////////////////////////////////////////////////////////////////////////////////////
 
+function formula_nadro($sucursales)
+{
+$dias=15;
+$aa="select
+case when day(date(now()))<3 then month(subdate(date(now()),interval 3 month)) else  month(subdate(date(now()),interval 2 month)) end as mes1,
+case when day(date(now()))<3 then month(subdate(date(now()),interval 2 month)) else  month(subdate(date(now()),interval 1 month)) end as mes2,
+case when day(date(now()))<3 then month(subdate(date(now()),interval 1 month)) else  month(date(now())) end as mes3";
+$qq=$this->db->query($aa);
+$rr=$qq->row();
+$mes1=$rr->mes1;
+$mes2=$rr->mes2;
+$mes3=$rr->mes3;
+$ver_s="select *from catalogo.sucursal where suc in $sucursales";
+$ver_q=$this->db->query($ver_s);
+$filtro1='0';$filtro2='0'; 
+foreach($ver_q->result()as $ver_r)
+{
+    if($ver_r->back==1){$filtro1.=','.$ver_r->suc;}else{$filtro2.=','.$ver_r->suc;}
+}
+$s1="delete from compras.pre_pedido_fenix_for_nadro";
+$this->db->query($s1);
+  $central1="insert ignore into compras.pre_pedido_fenix_for_nadro(fecha, suc, cod, descri, pedido,venta,inv, costo, prv, rel, far, oferta, financiero,iva)
+(select date(now()),a.suc,c.codigo,c.descripcion,0,sum(cant),
+ifnull((select sum(cantidad) from desarrollo.inv m where m.suc=a.suc and m.rel=a.rel),0)
+,costo,825,a.rel,costo,0,0,0
+From vtadc.vta_backoffice a
+join catalogo.sucursal b on b.suc=a.suc
+join catalogo.cat_nadro c on c.rel1=a.rel
+where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro1) and
+fecha_alta>=date(now()) and
+(select rel1 from compras.bloqueados_x_mes_todas x where x.rel1=a.rel and date(now()) between fecha1 and fecha2 group by rel1) is null and
+(select rel1 from catalogo.cat_mercadotecnia x where x.rel1=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel1) is null and
+(select rel1 from catalogo.cat_fenix_sec_cod x where x.rel1=a.rel group by rel1)is null and
+(select rel1 from sucursal.codigos_bloqueados_pedido x where x.rel1=a.rel and activo=1 group by rel1)is null and
 
+(select rel1 from compras.ofertas_lab_far x 
+where x.rel1=a.rel and activo=2 and  date(now()) between fecha1 and fecha2 and rel1 not in(3409) group by rel1)is null
+group  by a.suc,rel)";
+$this->db->query($central1);
+   $central2="insert ignore into compras.pre_pedido_fenix_for_nadro(fecha, suc, cod, descri, pedido,venta,inv, costo, prv, rel, far, oferta, financiero,iva)
+(select date(now()),a.suc,c.codigo,c.descripcion,0,sum(cant),
+ifnull((select sum(cantidad) from desarrollo.inv m where m.suc=a.suc and m.rel=a.rel),0)
+,costo,825,a.rel,costo,0,0,0
+From vtadc.vta_backoffice a
+join catalogo.sucursal b on b.suc=a.suc
+join catalogo.cat_nadro c on c.rel2=a.rel
+where fecha >=subdate(date(now()),$dias) and vtatip=1 and rel>0 and a.suc in($filtro2) and
+fecha_alta>=date(now()) and
+(select rel2 from compras.bloqueados_x_mes_todas x where x.rel2=a.rel and date(now()) between fecha1 and fecha2 group by rel2) is null and
+(select rel2 from catalogo.cat_mercadotecnia x where x.rel2=a.rel and lin=1 and sublin in(3,4,5,7,8) group by rel2) is null and
+(select rel2 from catalogo.cat_fenix_sec_cod x where x.rel2=a.rel group by rel2)is null and
+(select rel2 from sucursal.codigos_bloqueados_pedido x where x.rel2=a.rel and activo=1 group by rel2)is null and
+
+(select rel2 from compras.ofertas_lab_far x 
+where x.rel2=a.rel and activo=2 and  date(now()) between fecha1 and fecha2 and rel2 not in(3409) group by rel2)is null
+group  by a.suc,rel)";
+$this->db->query($central2); 
+
+$pedido="update compras.pre_pedido_fenix_for_nadro
+set pedido=case 
+when inv=0 and venta>2 then round(venta*1.5) 
+when inv=0 and venta<=2 then (venta)
+when round(venta*.4)>inv then round(venta*.4)-inv end 
+where fol=0 and venta>0";
+$this->db->query($pedido);
+$fol="update compras.pre_pedido_fenix_for_nadro
+set fol=((select max(fol) from compras.pre_pedido_fenix_ctl)+1)
+where fol=0 and pedido>0";
+$this->db->query($fol);
+}
 
 
 

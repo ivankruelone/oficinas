@@ -110,7 +110,7 @@ class Orden extends CI_Controller
         $data['base'] = $r->base;
         $data['fecha'] = $r->fecha_envio;
         $data['base'] = $r->base;
-        $data['licitacion'] = $this->catalogos_model->busca_licita($r->licitacion);
+        $data['licitacion'] = $this->catalogos_model->busca_licita_embarque($r->embarca);
         $data['aaa'] = $r->aaa;
         $data['mes'] = $r->mes;
         $data['prv'] = $this->catalogos_model->busca_prv_indicado($r->prv, $r->prvx);
@@ -572,6 +572,16 @@ class Orden extends CI_Controller
         $data['js'] =  'orden/s_orden_especial_det_js';
         $this->load->view('main', $data);   
     }
+    function s_orden_especial_det_fac($id_orden,$prv)
+    {
+        $nivel=$this->session->userdata('nivel');
+        $data['titulo'] = "Generar orden de compra especial";
+        $data['id_orden'] = $id_orden;
+        $data['prv'] = $prv;
+        $data['q'] = $this->orden_model->orden_captura_especial_det($id_orden);
+        $data['js'] =  'orden/s_orden_especial_det_js';
+        $this->load->view('main', $data);   
+    }
     function s_orden_especial_det_agrega()
 	{
 	$this->orden_model->sumit_detalle_pat(
@@ -588,7 +598,7 @@ class Orden extends CI_Controller
      $prv = $this->input->post('prv');
      $id_orden = $this->input->post('id_orden');
      $this->orden_model->sumit_detalle_pat_fac($this->input->post('fac'),$id_orden);
-     redirect('orden/s_orden_especial_det/'.$id_orden.'/'.$prv);
+     redirect('orden/s_orden_especial_det_fac/'.$id_orden.'/'.$prv);
     }
     
     

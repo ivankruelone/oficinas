@@ -275,71 +275,46 @@ where dia='$dia'";
 $this->db->query($n1);
 
 $opt="
-update almacen.max_sucursal a, vtadc.venta_detalle_semana_sec b
+update almacen.max_sucursal a, vtadc.venta_detalle_semana_sec b,catalogo.sucursal c,catalogo.cat_almacen_clasifica d
 set a.final=
 case
-when (select can from catalogo.almacen_paquetes x where x.sec=a.sec)is null
+when final>0 and (select can from catalogo.almacen_paquetes x where x.sec=a.sec)is null and final=1
+then 2
+when final>0 and (select can from catalogo.almacen_paquetes x where x.sec=a.sec)is null and final=2
+then 3
+when final>0 and (select can from catalogo.almacen_paquetes x where x.sec=a.sec)is null and final>1
 then round((final*1.20))
-when (select can from catalogo.almacen_paquetes x where x.sec=a.sec)>0
+when final>0 and (select can from catalogo.almacen_paquetes x where x.sec=a.sec)>0
 then
 ((round((round((final*1.11)))/(select can from catalogo.almacen_paquetes x where x.sec=a.sec)))*
 (select can from catalogo.almacen_paquetes x where x.sec=a.sec))
 end
-where a.suc=b.suc and a.sec=b.sec and round(a.final*1.20)<(b.vendio)";
+
+where a.suc=c.suc and a.suc=b.suc and a.sec=b.sec  
+and d.sec=a.sec and round(a.final*1.2)<(b.vendio) and tipo3='DA' and descon='N' and final>0 ";
 $this->db->query($opt);
 
-$activa_pag="update  catalogo.cat_almacen_clasifica set descon='N'
-where sec in(969,970,971)";
-//$this->db->query($activa_pag);
-
-$ver_activar="select
-a.sec,a.susa,sum(b.final),d.final
-from catalogo.cat_almacen_clasifica a,almacen.max_sucursal b, catalogo.sucursal c, almacen.max_cedis d
-
-where a.sec=b.sec and b.suc=c.suc and a.sec=d.sec and a.descon='N' and c.tipo3='DA' and c.dia<>'CER'
-group by a.sec";
 $actualiza_max_cedis="
-insert ignore into almacen.max_cedis(sec,final)
-(select
-a.sec,sum(b.final)
-from catalogo.cat_almacen_clasifica a,almacen.max_sucursal b, catalogo.sucursal c
+update almacen.max_cedis a, catalogo.cat_almacen_clasifica b
+set
+opt_suc=ifnull((select sum(final) from almacen.max_sucursal x join catalogo.sucursal y on y.suc=x.suc
+where x.sec=a.sec and tlid=1 and tipo3 in('DA') and fecha_act='0000-00-00'),0),
+exis_cedis=(ifnull((select inv1 from desarrollo.inv_cedis_sec1 x where x.sec=a.sec),0)+
+ifnull((select sum(sur) from desarrollo.pedidos aa join catalogo.sucursal bb on bb.suc=aa.suc
+where tipo3='DA' and sur>0 and fechasur>=subdate(date(now()),6) and aa.sec=a.sec),0))
 
-where a.sec=b.sec and b.suc=c.suc and a.descon='N' and c.tipo3='DA' and c.dia<>'CER'
-group by a.sec
-order by sec)";
+where b.sec=a.sec
+and descon='N'";
 $this->db->query($actualiza_max_cedis);
 
 $actualiza_max_cedis1="
-update desarrollo.inv_cedis_sec1 a, catalogo.cat_almacen_clasifica b,almacen.max_cedis c
-set
-final_act=(select sum(final)
-from almacen.max_sucursal x join catalogo.sucursal y on y.suc=x.suc where tlid=1 and tipo3='DA' and x.sec=a.sec),
-
-porce=case when(
-(a.inv1+
-ifnull((select sum(sur) From desarrollo.pedidos x
-where fecha>=subdate(date(now()),6) and fol<99999999 and inv='S' and x.sec=a.sec ),0))/
-
-(select sum(final)
-from almacen.max_sucursal x join catalogo.sucursal y on y.suc=x.suc where tlid=1 and tipo3='DA' and x.sec=a.sec)
-)>=1
-
-then 1
-
-else(
-(a.inv1+
-ifnull((select sum(sur) From desarrollo.pedidos x
-where fecha>=subdate(date(now()),6) and fol<99999999 and inv='S' and x.sec=a.sec ),0))/
-
-(select sum(final)
-from almacen.max_sucursal x join catalogo.sucursal y on y.suc=x.suc where tlid=1 and tipo3='DA' and x.sec=a.sec)
-)
+update almacen.max_cedis a
+set porce=case
+when final=0 then 0
+when final>0 and final>=exis_cedis then 1
+when final>0 and final<exis_cedis then (final/exis_cedis)
 end
-
-
-
-where b.sec=a.sec and a.sec=c.sec
-and descon='N' and inv1>0";
+";
 $this->db->query($actualiza_max_cedis1);
 
 

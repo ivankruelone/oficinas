@@ -6,9 +6,6 @@
                            <span class="tools">
                                <a href="javascript:;" class="icon-chevron-down"></a>
                            </span>
-                         </div>
-                         <div class="widget-body">
-                         
                          
                                 <?php
                                 

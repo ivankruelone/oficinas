@@ -662,6 +662,26 @@ class Exchange extends REST_Controller
         }
     }
 
+    function ordenes_get()
+    {
+        if(!$this->get('clvsucursal'))
+        {
+            $this->response(NULL, 400);
+        }
+
+        $data = $this->exchange_model->getOrdenesExtendido( $this->get('clvsucursal') );
+        
+        if($data)
+        {
+            $this->response($data, 200); // 200 being the HTTP response code
+        }
+
+        else
+        {
+            $this->response(array('error' => 'No data'), 404);
+        }
+    }
+
     function getDetalleOrdenByIDOrden_get()
     {
         if(!$this->get('id_orden'))
@@ -670,6 +690,31 @@ class Exchange extends REST_Controller
         }
 
         $data = $this->exchange_model->getDetalleOrdenByIDOrden( $this->get('id_orden') );
+        
+        if($data)
+        {
+            $this->response($data, 200); // 200 being the HTTP response code
+        }
+
+        else
+        {
+            $this->response(array('error' => 'No data'), 404);
+        }
+    }
+
+    function cambiaOrdenVigencia_get()
+    {
+        if(!$this->get('id_orden'))
+        {
+            $this->response(NULL, 400);
+        }
+
+        if(!$this->get('fecha'))
+        {
+            $this->response(NULL, 400);
+        }
+
+        $data = $this->exchange_model->cambiaOrdenVigencia( $this->get('id_orden'), $this->get('fecha') );
         
         if($data)
         {

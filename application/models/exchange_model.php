@@ -108,8 +108,21 @@ FROM maestro.gobierno g where clave = ?;";
             $sql2 = "SELECT TRIM(upper(clagob)) as cvearticulo, trim(upper(susa)) as susa, concat(trim(upper(presenta)), ' ', trim(upper(gramaje))) as descripcion, concat(trim(upper(contenido)), ' ', trim(upper(presenta))) as pres, iva as tipoprod,  0 as ventaxuni, 1 as numunidades, 0 as fcb, 1 as sp, 1 as pa, 1 as op, 0 as preciocon, 0 as precioven, 0 as servicio, 0 as preciosinser, 0 as ultimo_costo, 1 as activo, 1 as tipoPresentacion, ' ' as cvecliente, 0 as antibiotico, 0 as semaforo
 FROM catalogo.cat_nuevo_general c where clagob = ? group by clagob;";
             $query2 = $this->db->query($sql2, $clave);
+
+            if($query2->num_rows() == 0)
+            {
+                $sql3 = "SELECT TRIM(upper(claves)) as cvearticulo, trim(upper(susa1)) as susa, concat(trim(upper(susa1))) as descripcion, trim(upper(susa3)) as pres, case when lin = 5 then 1 else 0 end as tipoprod,  0 as ventaxuni, 1 as numunidades, 0 as fcb, 1 as sp, 1 as pa, 1 as op, 0 as preciocon, 0 as precioven, 0 as servicio, 0 as preciosinser, 0 as ultimo_costo, 1 as activo, 1 as tipoPresentacion, ' ' as cvecliente, 0 as antibiotico, 0 as semaforo
+FROM catalogo.segpop c where claves = ? group by claves;";
+                
+                $query3 = $this->db->query($sql3, array($clave));
+
+                 return $query3->result();
+            }else
+            {
+                return $query2->result();
+            }
             
-            return $query2->result();
+            
         }
         
     }
@@ -502,6 +515,37 @@ group by id_orden
 order by folprv desc;";
         
         $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    function cambiaOrdenVigencia($id_orden, $fecha)
+    {
+        $data = array('fecha_limite' => $fecha);
+        $this->db->update('orden_c', $data, array('id_orden' => $id_orden, 'fecha_limite  >= ' => $fecha));
+
+        $this->db->where('id_orden', $id_orden);
+        $this->db->select('id_orden, folprv, fecha_limite');
+        $query = $this->db->get('compras.orden_c');
+
+        return $query->result();
+    }
+
+    function getOrdenesExtendido($clvsucursal)
+    {
+        $sql = "SELECT id_orden, folprv, prv, razo, fecha_captura, fecha_envio, fecha_limite, trim(completo) as responsable, trim(u.nombre) as captura, recibe, trim(s1.nombre) as recibeNombre, embarca, trim(s2.nombre) as embarcaNombre, sum(cans) as cans, sum(aplica) as aplica
+FROM compras.orden_c o
+join compras.orden_d d using(id_orden)
+left join catalogo.provedor p on o.prv = p.prov
+left join catalogo.cat_empleado e on o.id_responsable = e.nomina
+left join compras.usuarios u on o.id_captura = u.id
+left join catalogo.sucursal s1 on o.recibe = s1.suc
+left join catalogo.sucursal s2 on o.embarca = s2.suc
+where (recibe = ? or embarca = ?) and o.tipo = 1 and fecha_captura >= '2016-01-01'
+group by id_orden
+order by folprv desc;";
+
+        $query = $this->db->query($sql, array((int)$clvsucursal, (int)$clvsucursal));
 
         return $query->result();
     }

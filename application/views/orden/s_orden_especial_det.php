@@ -9,20 +9,6 @@
                          </div>
                          <div class="widget-body">
 <?php
-/*
-$atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
-    echo form_open('orden/s_orden_especial_det_agrega_fac', $atributos1);
-    
-    $data_fac = array(
-              'name'        => 'fac',
-              'id'          => 'fac',
-              'class'       => 'span11',
-              'value'       => '',
-              'maxlength'   => '40',
-              'size'        => '40'
-            );
-            */
-
   $atributos = array('id' => 's_orden_especial_det_agrega');
     echo form_open('orden/s_orden_especial_det_agrega', $atributos);
     $data_cod = array(
@@ -54,33 +40,24 @@ $atributos1 = array('id' => 's_orden_especial_det_agrega_fac');
               'size'        => '11'
             );
   ?>
- <div>
- <table>
- <tr>
-  
- </table>
-<input type="hidden" value="<?php echo $id_orden?>" name="id_orden" id="id_orden" />
-<input type="hidden" value="<?php echo $prv?>" name="prv" id="prv" />
  
-  </div>
-  
   <table>
 <tr>
 <tr>
   <td align="left" ><font size="+1">Codigo: </font></td>
-  <td><?php echo form_input($data_cod, "", 'required');?><span id="mensaje"></span></td>
+  <td><?php echo form_input($data_cod, "");?><span id="mensaje"></span></td>
 </tr>
 <tr>
   <td align="left" ><font size="+1">Cantidad: </font></td>
-  <td><?php echo form_input($data_can, "", 'required');?></td>
+  <td><?php echo form_input($data_can, "");?></td>
 </tr>
 <tr>
   <td align="left" ><font size="+1">Descuento: </font></td>
-  <td><?php echo form_input($data_des, "", 'required');?></td>
+  <td><?php echo form_input($data_des, "");?></td>
 </tr>
 <tr>
   <td align="left" ><font size="+1">Costo: </font></td>
-  <td><?php echo form_input($data_cos, "", 'required');?></td>
+  <td><?php echo form_input($data_cos, "");?></td>
 </tr>
   <td colspan="2" align="center"><?php echo form_submit('envio', 'aceptar');?></td>
 </tr>

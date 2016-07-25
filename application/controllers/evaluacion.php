@@ -31,6 +31,7 @@ class Evaluacion extends CI_Controller
     }
     function eval_cedis_cla($var)
     {
+        
         $data['titulo'] = "NIVEL DE SURTIDO POR CLASIFICACION ".$var ;
         $data['var'] = $var;
         $data['q'] = $this->Evaluacion_model->eval_cedis_cla($var);
@@ -44,6 +45,15 @@ class Evaluacion extends CI_Controller
         $data['var'] = $var;
         $data['q'] = $this->Evaluacion_model->eval_cedis_cla_sec($var,$prv);
         $data['js'] = 'evaluacion/eval_cedis_cla_sec_js';
+        $this->load->view('main', $data);
+    }
+    function eval_cedis_producto($var)
+    {
+        
+        $data['titulo'] = "NIVEL DE SURTIDO POR CLASIFICACION ".$var ;
+        $data['var'] = $var;
+        $data['q'] = $this->Evaluacion_model->eval_cedis_producto($var);
+        $data['js'] = 'catalogos/descontin_js';
         $this->load->view('main', $data);
     } 
     function eval_cedis_compra()
@@ -128,16 +138,16 @@ class Evaluacion extends CI_Controller
     function s_evaluacion_nac()
    {
     
-    $data['q1'] = $this->Evaluacion_model->evaluacion_rentas();
-    $data['q2'] = $this->Evaluacion_model->evaluacion_ventas_costo();
-    $data['q3'] = $this->Evaluacion_model->evaluacion_nominas();
-    $data['q4'] = $this->Evaluacion_model->evaluacion_nominas_det();
-    $data['q5'] = $this->Evaluacion_model->evaluacion_porce();
-    $this->load->view('excel/s_evaluacion_nac', $data);
+        $data['q1'] = $this->Evaluacion_model->evaluacion_rentas();
+        $data['q2'] = $this->Evaluacion_model->evaluacion_ventas_costo();
+        $data['q3'] = $this->Evaluacion_model->evaluacion_nominas();
+        $data['q4'] = $this->Evaluacion_model->evaluacion_nominas_det();
+        $data['q5'] = $this->Evaluacion_model->evaluacion_porce();
+        $this->load->view('excel/s_evaluacion_nac', $data);
    }
-   
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
-
+   /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+  
 }
